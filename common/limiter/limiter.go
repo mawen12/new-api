@@ -13,6 +13,7 @@ import (
 //go:embed lua/rate_limit.lua
 var rateLimitScript string
 
+// RedisLimiter 基于 redis 实现的令牌桶限流
 type RedisLimiter struct {
 	client         *redis.Client
 	limitScriptSHA string
@@ -24,6 +25,7 @@ var (
 )
 
 func New(ctx context.Context, r *redis.Client) *RedisLimiter {
+	// 确保仅初始化一次
 	once.Do(func() {
 		// 预加载脚本
 		limitSHA, err := r.ScriptLoad(ctx, rateLimitScript).Result()
@@ -39,6 +41,7 @@ func New(ctx context.Context, r *redis.Client) *RedisLimiter {
 	return instance
 }
 
+// Allow 是否允许
 func (rl *RedisLimiter) Allow(ctx context.Context, key string, opts ...Option) (bool, error) {
 	// 默认配置
 	config := &Config{
@@ -70,8 +73,11 @@ func (rl *RedisLimiter) Allow(ctx context.Context, key string, opts ...Option) (
 
 // Config 配置选项模式
 type Config struct {
-	Capacity  int64
-	Rate      int64
+	// 令牌桶容量
+	Capacity int64
+	// 令牌桶每秒填充令牌速率
+	Rate int64
+	// 当前请求的令牌数量
 	Requested int64
 }
 

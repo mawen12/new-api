@@ -38,11 +38,16 @@ var SessionCookieSecure = false
 var SessionCookieTrustedURLs []string
 
 const (
-	DefaultUserSessionActiveLimit           = 50
-	DefaultUserSessionIssuanceLimit         = 100
+	// 默认用户会话的活跃数
+	DefaultUserSessionActiveLimit = 50
+	// 默认用户会话的最大发行数
+	DefaultUserSessionIssuanceLimit = 100
+	// 默认用户会话的最大发行窗口间隔
 	DefaultUserSessionIssuanceWindowSeconds = 24 * 60 * 60
-	DefaultUserSessionRevokedRetentionDays  = 7
-	DefaultUserSessionHourlyAlertThreshold  = 5000
+	// 默认用户会话的撤销保留天数
+	DefaultUserSessionRevokedRetentionDays = 7
+	// 默认用户会话的每小时告警阈值
+	DefaultUserSessionHourlyAlertThreshold = 5000
 )
 
 var (
@@ -121,13 +126,21 @@ var TurnstileSecretKey = ""
 var TelegramBotToken = ""
 var TelegramBotName = ""
 
+// 新用户配额
 var QuotaForNewUser = 0
+// 邀请用户配额
 var QuotaForInviter = 0
+// 被邀请用户配额
 var QuotaForInvitee = 0
+// 通道禁用阈值
 var ChannelDisableThreshold = 5.0
+// 是否自动禁用通道的开关
 var AutomaticDisableChannelEnabled = false
+// 是否自动开启通道的开关
 var AutomaticEnableChannelEnabled = false
+// 配额提醒阈值
 var QuotaRemindThreshold = 1000
+// 预消费配合
 var PreConsumedQuota = 500
 
 var RetryTimes = 0
@@ -240,6 +253,7 @@ const (
 	RedemptionCodeStatusUsed     = 3 // also don't use 0
 )
 
+// 通道状态枚举
 const (
 	ChannelStatusUnknown          = 0
 	ChannelStatusEnabled          = 1 // don't use 0, 0 is the default value!

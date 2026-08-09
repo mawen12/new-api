@@ -20,6 +20,7 @@ func GenerateHMAC(data string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+// Password2Hash 将明文密码进行加密
 func Password2Hash(password string) (string, error) {
 	passwordBytes := []byte(password)
 	hashedPassword, err := bcrypt.GenerateFromPassword(passwordBytes, bcrypt.DefaultCost)

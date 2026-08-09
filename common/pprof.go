@@ -36,6 +36,7 @@ func Monitor() {
 				SysLog("启动pprof失败 " + err.Error())
 				continue
 			}
+			// TODO by mawen this should be 10 seconds
 			time.Sleep(10 * time.Second) // profile for 30 seconds
 			pprof.StopCPUProfile()
 			f.Close()

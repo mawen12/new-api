@@ -22,6 +22,7 @@ var (
 	LogDir       = flag.String("log-dir", "./logs", "specify the log directory")
 )
 
+// printHelp 输出帮助信息，对应 --help
 func printHelp() {
 	fmt.Println("NewAPI(Based OneAPI) " + Version + " - The next-generation LLM gateway and AI asset management system supports multiple languages.")
 	fmt.Println("Original Project: OneAPI by JustSong - https://github.com/songquanpeng/one-api")
@@ -37,11 +38,13 @@ func InitEnv() {
 		Version = envVersion
 	}
 
+	// --version
 	if *PrintVersion {
 		fmt.Println(Version)
 		os.Exit(0)
 	}
 
+	// --help
 	if *PrintHelp {
 		printHelp()
 		os.Exit(0)

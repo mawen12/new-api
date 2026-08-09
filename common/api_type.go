@@ -2,6 +2,7 @@ package common
 
 import "github.com/QuantumNous/new-api/constant"
 
+// ChannelType2APIType 将通道类型转换为对应的AI模型供应商，fallback为OpenAI
 func ChannelType2APIType(channelType int) (int, bool) {
 	apiType := -1
 	switch channelType {
@@ -88,6 +89,7 @@ func ChannelType2APIType(channelType int) (int, bool) {
 	return apiType, true
 }
 
+// IsResponsesCompactAPIType 响应是否为紧凑型API类型
 func IsResponsesCompactAPIType(apiType int) bool {
 	switch apiType {
 	case constant.APITypeOpenAI,

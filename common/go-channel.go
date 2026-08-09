@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// SafeSendBool 安全发送 bool 到通道，当通道被关闭时，可以通过 recove 来捕获错误
 func SafeSendBool(ch chan bool, value bool) (closed bool) {
 	defer func() {
 		// Recover from panic if one occured. A panic would mean the channel was closed.

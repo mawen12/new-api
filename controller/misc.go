@@ -41,6 +41,7 @@ func TestStatus(c *gin.Context) {
 	return
 }
 
+// GetStatus 获取应用的信息
 func GetStatus(c *gin.Context) {
 
 	cs := console_setting.GetConsoleSetting()

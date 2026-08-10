@@ -11,6 +11,7 @@ const RouteTagKey = "route_tag"
 
 func RouteTag(tag string) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// 写入 route_tag:api
 		c.Set(RouteTagKey, tag)
 		c.Next()
 	}

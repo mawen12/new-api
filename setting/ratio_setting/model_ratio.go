@@ -321,7 +321,9 @@ var defaultAudioCompletionRatio = map[string]float64{
 	"tts-1-hd-1106":        0,
 }
 
+// 模型价格
 var modelPriceMap = types.NewRWMap[string, float64]()
+// 模型倍率
 var modelRatioMap = types.NewRWMap[string, float64]()
 var completionRatioMap = types.NewRWMap[string, float64]()
 

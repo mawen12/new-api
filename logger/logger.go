@@ -43,6 +43,7 @@ func SetupLogger() {
 	defer func() {
 		setupLogWorking = false
 	}()
+	// 仅处理设置了日志目录的场景
 	if *common.LogDir != "" {
 		ok := setupLogLock.TryLock()
 		if !ok {
@@ -52,6 +53,7 @@ func SetupLogger() {
 		defer func() {
 			setupLogLock.Unlock()
 		}()
+		// 日志格式为：
 		logPath := filepath.Join(*common.LogDir, fmt.Sprintf("oneapi-%s.log", time.Now().Format("20060102150405")))
 		fd, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {

@@ -13,11 +13,11 @@ import (
 
 func SetApiRouter(router *gin.Engine) {
 	apiRouter := router.Group("/api")
-	apiRouter.Use(middleware.RouteTag("api"))
-	apiRouter.Use(gzip.Gzip(gzip.DefaultCompression))
-	apiRouter.Use(middleware.BodyStorageCleanup()) // 清理请求体存储
-	apiRouter.Use(middleware.GlobalAPIRateLimit())
-	anonymousRequestBodyLimit := middleware.AnonymousRequestBodyLimit()
+	apiRouter.Use(middleware.RouteTag("api"))                           // 在上下文中设置 route_tag:api
+	apiRouter.Use(gzip.Gzip(gzip.DefaultCompression))                   // gzip 压缩
+	apiRouter.Use(middleware.BodyStorageCleanup())                      // 清理请求体存储
+	apiRouter.Use(middleware.GlobalAPIRateLimit())                      // 全局限流，基于固定窗口算法
+	anonymousRequestBodyLimit := middleware.AnonymousRequestBodyLimit() // 匿名请求体大小限制
 	{
 		apiRouter.GET("/setup", controller.GetSetup)
 		apiRouter.POST("/setup", anonymousRequestBodyLimit, controller.PostSetup)
@@ -65,6 +65,7 @@ func SetApiRouter(router *gin.Engine) {
 		// Universal secure verification routes
 		apiRouter.POST("/verify", middleware.UserAuth(), middleware.CriticalRateLimit(), middleware.DisableCache(), controller.UniversalVerify)
 
+		// 用户登陆注册
 		userRoute := apiRouter.Group("/user")
 		{
 			userRoute.POST("/auth/refresh", middleware.SessionCookieOriginGuard(), middleware.CriticalRateLimit(), middleware.DisableCache(), controller.RefreshAuth)

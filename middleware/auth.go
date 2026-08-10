@@ -148,10 +148,13 @@ func authenticateDashboardRequest(c *gin.Context) (*model.UserBase, service.Auth
 }
 
 func classifyDashboardCredential(c *gin.Context) (*model.UserBase, service.AuthIdentity, dashboardCredentialKind, error) {
+	// 解析请求头 Authorization
 	raw, ok := authorizationToken(c.GetHeader("Authorization"))
 	if !ok {
 		return nil, service.AuthIdentity{}, dashboardCredentialUnmatched, nil
 	}
+
+	//
 	identity, internal, err := service.ParseDashboardAccessToken(raw)
 	if internal {
 		if err != nil {
@@ -177,6 +180,7 @@ func classifyDashboardCredential(c *gin.Context) (*model.UserBase, service.AuthI
 	return user, service.AuthIdentity{UserID: user.Id, UserAuthVersion: user.AuthVersion}, dashboardCredentialPAT, nil
 }
 
+// authorizationToken 解析请求头中 Bearer 空格后的内容
 func authorizationToken(header string) (string, bool) {
 	header = strings.TrimSpace(header)
 	if header == "" {
@@ -191,6 +195,7 @@ func authorizationToken(header string) (string, bool) {
 	return header, header != ""
 }
 
+// setDashboardAuthContext 向上下文中写入用户的信息
 func setDashboardAuthContext(c *gin.Context, user *model.UserBase, identity service.AuthIdentity, useAccessToken bool) {
 	c.Header("Auth-Version", "864b7076dbcd0a3c01b5520316720ebf")
 	c.Set("username", user.Username)
@@ -223,11 +228,12 @@ func writeDashboardAuthError(c *gin.Context, err error) {
 	c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"success": false, "code": "AUTH_INTERNAL_ERROR", "message": common.TranslateMessage(c, i18n.MsgDatabaseError)})
 }
 
+// RequirePermission 授权验证
 func RequirePermission(permission authz.Permission) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		role := c.GetInt("role")
 		userID := c.GetInt("id")
-		if authz.Can(userID, role, permission) {
+		if authz.Can(userID, role, permission) { // 检查用户是否具有权限
 			c.Next()
 			return
 		}

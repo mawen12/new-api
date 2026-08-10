@@ -261,6 +261,7 @@ func GetRandomInt(max int) int {
 	return rand.Intn(max)
 }
 
+// GetTimestamp 获取当前时间戳
 func GetTimestamp() int64 {
 	return time.Now().Unix()
 }

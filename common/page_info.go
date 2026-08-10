@@ -38,6 +38,7 @@ func (p *PageInfo) SetItems(items any) {
 	p.Items = items
 }
 
+// GetPageQuery 解析提取分页信息
 func GetPageQuery(c *gin.Context) *PageInfo {
 	pageInfo := &PageInfo{}
 	// 手动获取并处理每个参数

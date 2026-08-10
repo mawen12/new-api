@@ -97,13 +97,20 @@ func GetChannelOps(c *gin.Context) {
 	})
 }
 
+// GetAllChannels 读取所有通道
 func GetAllChannels(c *gin.Context) {
+	/* 查询参数解析 */
 	pageInfo := common.GetPageQuery(c)
 	channelData := make([]*model.Channel, 0)
+	// id排序
 	idSort, _ := strconv.ParseBool(c.Query("id_sort"))
+	// 排序字段和顺序
 	sortOptions := model.NewChannelSortOptions(c.Query("sort_by"), c.Query("sort_order"), idSort)
+	// 标签模式
 	enableTagMode, _ := strconv.ParseBool(c.Query("tag_mode"))
+	// 分组参数
 	groupFilter := model.NormalizeChannelGroupFilter(c.Query("group"))
+	// 状态参数
 	statusParam := c.Query("status")
 	// statusFilter: -1 all, 1 enabled, 0 disabled (include auto & manual)
 	statusFilter := parseStatusFilter(statusParam)
@@ -147,12 +154,14 @@ func GetAllChannels(c *gin.Context) {
 			channelData = append(channelData, tagChannels...)
 		}
 	} else {
+		// 查询渠道总数
 		if err := buildChannelListQuery(groupFilter, statusFilter, typeFilter).Count(&total).Error; err != nil {
 			common.SysError("failed to count channels: " + err.Error())
 			c.JSON(http.StatusOK, gin.H{"success": false, "message": "获取渠道数量失败，请稍后重试"})
 			return
 		}
 
+		// 分页查询渠道
 		err := sortOptions.Apply(buildChannelListQuery(groupFilter, statusFilter, typeFilter)).
 			Limit(pageInfo.GetPageSize()).
 			Offset(pageInfo.GetStartIdx()).
@@ -174,6 +183,7 @@ func GetAllChannels(c *gin.Context) {
 		Type  int64
 		Count int64
 	}
+	// 查询渠道类型统计
 	if err := countQuery.Select("type, count(*) as count").Group("type").Find(&results).Error; err != nil {
 		common.SysError("failed to count channel types: " + err.Error())
 		c.JSON(http.StatusOK, gin.H{"success": false, "message": "获取渠道类型统计失败，请稍后重试"})

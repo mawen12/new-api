@@ -27,6 +27,7 @@ func Password2Hash(password string) (string, error) {
 	return string(hashedPassword), err
 }
 
+// ValidatePasswordAndHash 校验明文与加密后密码是否相同
 func ValidatePasswordAndHash(password string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil

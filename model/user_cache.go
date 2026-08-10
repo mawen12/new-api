@@ -120,6 +120,7 @@ func GetUserCache(userId int) (*UserBase, error) {
 	return user.ToBaseUser(), nil
 }
 
+// cacheGetUserBase 从 redis hash 中读取用户信息，键为：user:<id>
 func cacheGetUserBase(userId int) (*UserBase, error) {
 	if !common.RedisEnabled {
 		return nil, fmt.Errorf("redis is not enabled")
@@ -130,6 +131,7 @@ func cacheGetUserBase(userId int) (*UserBase, error) {
 	if err != nil {
 		return nil, err
 	}
+	// 检查缓存的元信息是否匹配
 	if userCache.Id != userId || userCache.CacheSchema != userCacheSchemaVersion || userCache.AuthVersion <= 0 {
 		return nil, fmt.Errorf("user cache schema is stale")
 	}

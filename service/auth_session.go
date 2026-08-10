@@ -53,6 +53,7 @@ func CreateLoginSessionAtAuthVersion(userID int, expectedAuthVersion int64, logi
 	return createLoginSession(userID, expectedAuthVersion, loginMethod, ip, userAgent)
 }
 
+// createLoginSession 创建用户 session，签发 jwt
 func createLoginSession(userID int, expectedAuthVersion int64, loginMethod, ip, userAgent string) (*AuthBundle, error) {
 	user, err := model.GetUserCache(userID)
 	if err != nil {
@@ -65,6 +66,7 @@ func createLoginSession(userID int, expectedAuthVersion int64, loginMethod, ip, 
 		return nil, ErrLoginSessionRevoked
 	}
 	now := time.Now().Unix()
+	// 统计用户活跃 session 总数
 	activeCount, err := model.CountActiveUserSessions(userID, now)
 	if err != nil {
 		return nil, err
@@ -72,6 +74,7 @@ func createLoginSession(userID int, expectedAuthVersion int64, loginMethod, ip, 
 	if activeCount >= int64(common.UserSessionActiveLimit) {
 		return nil, model.ErrUserSessionLimit
 	}
+	// 统计指定窗口内创建的用户 session 总数
 	issuanceCount, err := model.CountUserSessionsCreatedSince(userID, now-common.UserSessionIssuanceWindowSeconds)
 	if err != nil {
 		return nil, err
@@ -83,6 +86,7 @@ func createLoginSession(userID int, expectedAuthVersion int64, loginMethod, ip, 
 	if err != nil {
 		return nil, err
 	}
+	/* 创建用户 session */
 	session := &model.UserSession{
 		SID:             uuid.NewString(),
 		UserID:          userID,
@@ -100,9 +104,11 @@ func createLoginSession(userID int, expectedAuthVersion int64, loginMethod, ip, 
 	if session.LoginMethod == "" {
 		session.LoginMethod = "unknown"
 	}
+	// 写入数据库
 	if err := model.CreateUserSession(session); err != nil {
 		return nil, err
 	}
+	/* 签发 jwt token */
 	bundle, err := issueAuthBundle(session, session.SID+"."+refreshSecret, true)
 	if err != nil {
 		_, _ = model.RevokeUserSession(userID, session.SID, "token_issue_failed")
@@ -377,6 +383,7 @@ func deriveNextRefreshSecret(sid, currentSecret string) string {
 	return common.GenerateHMACWithKey(authSigningKey("refresh-rotate"), sid+"."+currentSecret)
 }
 
+// truncateAuthMetadata 将内容去首位空格，截断到最大长度
 func truncateAuthMetadata(value string, max int) string {
 	value = strings.TrimSpace(value)
 	if len(value) <= max {

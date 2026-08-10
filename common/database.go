@@ -33,6 +33,7 @@ func SetDatabaseTypes(mainType DatabaseType, logType DatabaseType) {
 	logDatabaseType = logType
 }
 
+// UsingMainDatabase 检查当前的主数据库是否为给定类型
 func UsingMainDatabase(databaseType DatabaseType) bool {
 	return mainDatabaseType == databaseType
 }

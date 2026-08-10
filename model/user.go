@@ -466,15 +466,16 @@ func SearchUsers(keyword string, group string, role *int, status *int, startIdx 
 	return users, total, nil
 }
 
+// GetUserById 从数据库查询用户
 func GetUserById(id int, selectAll bool) (*User, error) {
 	if id == 0 {
 		return nil, errors.New("id 为空！")
 	}
 	user := User{Id: id}
 	var err error = nil
-	if selectAll {
+	if selectAll { // 查询全部信息
 		err = DB.First(&user, "id = ?", id).Error
-	} else {
+	} else { // 忽略 password 和 access_token 敏感信息
 		err = DB.Omit("password", "access_token").First(&user, "id = ?", id).Error
 	}
 	return &user, err
@@ -960,6 +961,7 @@ func deleteUserAuthenticationData(tx *gorm.DB, userId int) error {
 }
 
 // ValidateAndFill check password & user status
+// 校验用户账户、密码是否匹配，状态是否正常
 func (user *User) ValidateAndFill() (err error) {
 	// When querying with struct, GORM will only query with non-zero fields,
 	// that means if your field's value is 0, '', false or other zero values,
@@ -972,16 +974,17 @@ func (user *User) ValidateAndFill() (err error) {
 	// find by username or email
 	err = DB.Where("username = ? OR email = ?", username, username).First(user).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
+		if errors.Is(err, gorm.ErrRecordNotFound) { // 记录不存在
 			return ErrInvalidCredentials
 		}
 		return fmt.Errorf("%w: %v", ErrDatabase, err)
 	}
-	if user.Password == "" {
+	if user.Password == "" { // 用户密码未设置
 		return ErrInvalidCredentials
 	}
+	// 密码校验
 	okay := common.ValidatePasswordAndHash(password, user.Password)
-	if !okay || user.Status != common.UserStatusEnabled {
+	if !okay || user.Status != common.UserStatusEnabled { // 用户状态检查
 		return ErrInvalidCredentials
 	}
 	return nil
@@ -1439,6 +1442,7 @@ func (user *User) FillUserByLinuxDOId() error {
 	return err
 }
 
+// RootUserExists 检查 root 角色的用户是否存在
 func RootUserExists() bool {
 	var user User
 	err := DB.Where("role = ?", common.RoleRootUser).First(&user).Error

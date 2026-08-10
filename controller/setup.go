@@ -24,6 +24,7 @@ type SetupRequest struct {
 	DemoSiteEnabled    bool   `json:"DemoSiteEnabled"`
 }
 
+// GetSetup 读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型
 func GetSetup(c *gin.Context) {
 	setup := Setup{
 		Status: constant.Setup,
@@ -43,6 +44,7 @@ func GetSetup(c *gin.Context) {
 	})
 }
 
+// PostSetup 发起应用配置变更，
 func PostSetup(c *gin.Context) {
 	// Check if setup is already completed
 	if constant.Setup {

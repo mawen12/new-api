@@ -37,11 +37,14 @@ var (
 	errOriginalPasswordFail = errors.New("original password is incorrect")
 )
 
+// Login 用户登陆
 func Login(c *gin.Context) {
+	// 禁用用户密码登陆检查
 	if !common.PasswordLoginEnabled {
 		common.ApiErrorI18n(c, i18n.MsgUserPasswordLoginDisabled)
 		return
 	}
+
 	var loginRequest LoginRequest
 	err := common.DecodeJson(c.Request.Body, &loginRequest)
 	if err != nil {
@@ -50,6 +53,7 @@ func Login(c *gin.Context) {
 	}
 	username := loginRequest.Username
 	password := loginRequest.Password
+	// 用户名和密码非空校验
 	if username == "" || password == "" {
 		common.ApiErrorI18n(c, i18n.MsgInvalidParams)
 		return
@@ -58,6 +62,7 @@ func Login(c *gin.Context) {
 		Username: username,
 		Password: password,
 	}
+	// 用户信息获取及密码校验
 	err = user.ValidateAndFill()
 	if err != nil {
 		switch {
@@ -156,10 +161,12 @@ func setupLogin(user *model.User, c *gin.Context) {
 }
 
 func setupLoginAtAuthVersion(user *model.User, expectedAuthVersion int64, c *gin.Context) {
+	// 用户合法性检查
 	if user == nil || user.Id <= 0 || user.Status != common.UserStatusEnabled {
 		common.ApiErrorI18n(c, i18n.MsgAuthUserBanned)
 		return
 	}
+	// 从数据库查询用户
 	currentUser, err := model.GetUserById(user.Id, false)
 	if err != nil {
 		common.ApiError(c, err)
@@ -175,6 +182,7 @@ func setupLoginAtAuthVersion(user *model.User, expectedAuthVersion int64, c *gin
 			c.Request.UserAgent(),
 		)
 	} else {
+		// 创建 session，签发 jwt token
 		bundle, err = service.CreateLoginSession(
 			user.Id,
 			loginMethodFromContext(c),
@@ -186,9 +194,12 @@ func setupLoginAtAuthVersion(user *model.User, expectedAuthVersion int64, c *gin
 		writeAuthSessionError(c, err)
 		return
 	}
+	// 更新上次登陆时间
 	model.UpdateUserLastLoginAt(user.Id)
+	// 将 token 写入 cookie
 	service.WriteRefreshCookie(c, bundle.RefreshToken)
 	setAuthNoStore(c)
+	// 登录写入审计日志
 	recordLoginAudit(user, c)
 	c.JSON(http.StatusOK, gin.H{
 		"message": "",

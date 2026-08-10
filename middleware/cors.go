@@ -17,6 +17,7 @@ func CORS() gin.HandlerFunc {
 
 func Version() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// 将版本写入请求头
 		c.Header("X-New-Api-Version", common.Version)
 		c.Next()
 	}

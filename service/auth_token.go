@@ -17,7 +17,7 @@ import (
 const (
 	AccessTokenTTL        = 15 * time.Minute
 	SecurityProofTTL      = 5 * time.Minute
-	LoginSessionTTL       = 30 * 24 * time.Hour
+	LoginSessionTTL       = 30 * 24 * time.Hour // 登陆会话过期
 	RefreshReplayWindow   = 30 * time.Second
 	accessTokenUse        = "access"
 	securityProofTokenUse = "security_proof"
@@ -115,12 +115,14 @@ func ParseDashboardAccessToken(raw string) (identity AuthIdentity, internal bool
 		return AuthIdentity{}, false, nil
 	}
 	audienceMatches := false
+	// 解析声明的受众是否为 new-api-dashboard
 	for _, audience := range claims.Audience {
 		if audience == authTokenAudience {
 			audienceMatches = true
 			break
 		}
 	}
+	// 解析声明的Token是否为 access/security_proof
 	knownTokenUse := claims.TokenUse == accessTokenUse || claims.TokenUse == securityProofTokenUse
 	if claims.Issuer != authTokenIssuer || !audienceMatches || !knownTokenUse {
 		return AuthIdentity{}, false, nil

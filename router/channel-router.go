@@ -16,11 +16,14 @@ type permissionRoute struct {
 	handler    gin.HandlerFunc
 }
 
+// registerChannelRoutes 负责处理 /api/channel 的路由
 func registerChannelRoutes(apiRouter *gin.RouterGroup) {
 	channelRoute := apiRouter.Group("/channel")
+	// 仅管理员和 Root 可以访问
 	channelRoute.Use(middleware.AdminAuth())
 
 	channelRoute.POST("/:id/key",
+		// 仅 Root 用户
 		middleware.RootAuth(),
 		middleware.CriticalRateLimit(),
 		middleware.DisableCache(),

@@ -27,20 +27,30 @@ import (
 
 // https://platform.openai.com/docs/api-reference/models/list
 
+// 保存所有的 ai 模型，并非只有 openai 一家的
 var openAIModels []dto.OpenAIModels
+
+// 维护了 modelId -> model 的关系，用于快速缓存
 var openAIModelsMap map[string]dto.OpenAIModels
+
+// 维护了 constant.ChannelTypeDummy -> 模型列表
 var channelId2Models map[int][]string
 
 func init() {
 	// https://platform.openai.com/docs/models/model-endpoint-compatibility
+	// 处理需要进行协议转换适配
 	for i := 0; i < constant.APITypeDummy; i++ {
-		if i == constant.APITypeAIProxyLibrary {
+		if i == constant.APITypeAIProxyLibrary { // 代理库不记入
 			continue
 		}
+		// 供应商适配器
 		adaptor := relay.GetAdaptor(i)
+		// 通道名称
 		channelName := adaptor.GetChannelName()
+		// 供应商支持的模型列表
 		modelNames := adaptor.GetModelList()
 		for _, modelName := range modelNames {
+			// 统一保存到 openAIModels 中
 			openAIModels = append(openAIModels, dto.OpenAIModels{
 				Id:      modelName,
 				Object:  "model",
@@ -49,6 +59,7 @@ func init() {
 			})
 		}
 	}
+	// 360
 	for _, modelName := range ai360.ModelList {
 		openAIModels = append(openAIModels, dto.OpenAIModels{
 			Id:      modelName,
@@ -57,6 +68,7 @@ func init() {
 			OwnedBy: ai360.ChannelName,
 		})
 	}
+	// 月之暗面
 	for _, modelName := range moonshot.ModelList {
 		openAIModels = append(openAIModels, dto.OpenAIModels{
 			Id:      modelName,
@@ -65,6 +77,7 @@ func init() {
 			OwnedBy: moonshot.ChannelName,
 		})
 	}
+	// 零一万物
 	for _, modelName := range lingyiwanwu.ModelList {
 		openAIModels = append(openAIModels, dto.OpenAIModels{
 			Id:      modelName,
@@ -73,6 +86,7 @@ func init() {
 			OwnedBy: lingyiwanwu.ChannelName,
 		})
 	}
+	// Minimax
 	for _, modelName := range minimax.ModelList {
 		openAIModels = append(openAIModels, dto.OpenAIModels{
 			Id:      modelName,
@@ -81,6 +95,7 @@ func init() {
 			OwnedBy: minimax.ChannelName,
 		})
 	}
+	// Midjourney
 	for modelName, _ := range constant.MidjourneyModel2Action {
 		openAIModels = append(openAIModels, dto.OpenAIModels{
 			Id:      modelName,
@@ -106,6 +121,7 @@ func init() {
 		adaptor.Init(meta)
 		channelId2Models[i] = adaptor.GetModelList()
 	}
+	// 根据 id 去除重复元素
 	openAIModels = lo.UniqBy(openAIModels, func(m dto.OpenAIModels) string {
 		return m.Id
 	})
@@ -313,6 +329,7 @@ func ChannelListModels(c *gin.Context) {
 	})
 }
 
+// DashboardListModels 返回 constant.ChannelTypeDummy -> 模型列表
 func DashboardListModels(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success": true,

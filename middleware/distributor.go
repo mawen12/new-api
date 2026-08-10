@@ -206,6 +206,7 @@ func getModelFromRequest(c *gin.Context) (*ModelRequest, error) {
 	return &modelRequest, nil
 }
 
+// getModelFromJSONBody 从请求中提取中继的模型和分组
 func getModelFromJSONBody(c *gin.Context) (*ModelRequest, error) {
 	storage, err := common.GetBodyStorage(c)
 	if err != nil {

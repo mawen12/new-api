@@ -36,6 +36,7 @@ func FatalLog(v ...any) {
 	os.Exit(1)
 }
 
+// LogStartupSuccess 输出启动成功日志到 gin
 func LogStartupSuccess(startTime time.Time, port string) {
 	duration := time.Since(startTime)
 	durationMs := duration.Milliseconds()

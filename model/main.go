@@ -124,18 +124,19 @@ func normalizeClickHouseDSN(dsn string) string {
 	return parsed.String()
 }
 
+// chooseDB 从环境变量中解析为对应的数据库，其中应用信息可选：SQLite/MySQL/PostgreSQL，日志数据库为 ClickHouse
 func chooseDB(envName string, isLog bool) (*gorm.DB, common.DatabaseType, error) {
 	dsn := os.Getenv(envName)
 	if dsn != "" {
 		if isClickHouseDSN(dsn) {
-			if !isLog {
+			if !isLog { // ClickHouse 不能被用作存储应用信息
 				return nil, "", fmt.Errorf("%s does not support ClickHouse; use SQLite, MySQL, or PostgreSQL for the primary database and LOG_SQL_DSN for ClickHouse logs", envName)
 			}
 			common.SysLog("using ClickHouse as log database")
 			db, err := gorm.Open(clickhouse.Open(normalizeClickHouseDSN(dsn)), newGormConfig(false))
 			return db, common.DatabaseTypeClickHouse, err
 		}
-		if strings.HasPrefix(dsn, "postgres://") || strings.HasPrefix(dsn, "postgresql://") {
+		if strings.HasPrefix(dsn, "postgres://") || strings.HasPrefix(dsn, "postgresql://") { // PostgreSQL
 			// Use PostgreSQL
 			common.SysLog("using PostgreSQL as database")
 			db, err := gorm.Open(postgres.New(postgres.Config{
@@ -144,7 +145,7 @@ func chooseDB(envName string, isLog bool) (*gorm.DB, common.DatabaseType, error)
 			}), newGormConfig(true))
 			return db, common.DatabaseTypePostgreSQL, err
 		}
-		if strings.HasPrefix(dsn, "local") {
+		if strings.HasPrefix(dsn, "local") { // 对于 local 开头的值，回退到 SQLite
 			common.SysLog("SQL_DSN not set, using SQLite as database")
 			db, err := gorm.Open(sqlite.Open(common.SQLitePath), newGormConfig(true))
 			return db, common.DatabaseTypeSQLite, err
@@ -162,12 +163,13 @@ func chooseDB(envName string, isLog bool) (*gorm.DB, common.DatabaseType, error)
 		db, err := gorm.Open(mysql.Open(dsn), newGormConfig(true))
 		return db, common.DatabaseTypeMySQL, err
 	}
-	// Use SQLite
+	// Use SQLite，此处回退到 SQLite
 	common.SysLog("SQL_DSN not set, using SQLite as database")
 	db, err := gorm.Open(sqlite.Open(common.SQLitePath), newGormConfig(true))
 	return db, common.DatabaseTypeSQLite, err
 }
 
+// InitDB 初始化应用和日志数据库
 func InitDB() (err error) {
 	db, dbType, err := chooseDB("SQL_DSN", false)
 	if err == nil {
@@ -201,6 +203,7 @@ func InitDB() (err error) {
 			//_, _ = sqlDB.Exec("ALTER TABLE channels MODIFY model_mapping TEXT;") // TODO: delete this line when most users have upgraded
 		}
 		common.SysLog("database migration started")
+		// 进行数据库迁移
 		err = migrateDB()
 		return err
 	} else {

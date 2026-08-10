@@ -41,10 +41,12 @@ var defNext = func(c *gin.Context) {
 	c.Next()
 }
 
+// redisIPRateLimitKey 构建基于IP限流key，格式为：rateLimit:v2:ip:<mark>:<ip>
 func redisIPRateLimitKey(mark string, clientIP string) string {
 	return fmt.Sprintf("%s:ip:%s:%s", redisRateLimitNamespace, mark, clientIP)
 }
 
+// redisUserRateLimitKey 构建基于用户限流key，格式为：rateLimit:v2:user:<mark>:<userID>
 func redisUserRateLimitKey(mark string, userID int) string {
 	return fmt.Sprintf("%s:user:%s:%d", redisRateLimitNamespace, mark, userID)
 }
@@ -106,6 +108,7 @@ func redisFixedWindowTake(ctx context.Context, key string, maxRequestNum int, du
 	return allowedValue == 1, count, ttlSeconds, nil
 }
 
+// redisRateLimiter 基于redis的限流实现
 func redisRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark string) {
 	allowed, _, ttlSeconds, err := redisFixedWindowTake(
 		c.Request.Context(),
@@ -144,8 +147,9 @@ func writeRateLimited(c *gin.Context, retryAfterSeconds int64) {
 	c.Abort()
 }
 
+// rateLimitFactory 面向通用的限流工厂
 func rateLimitFactory(maxRequestNum int, duration int64, mark string) func(c *gin.Context) {
-	if common.RedisEnabled {
+	if common.RedisEnabled { // 开启了 redis
 		return func(c *gin.Context) {
 			redisRateLimiter(c, maxRequestNum, duration, mark)
 		}

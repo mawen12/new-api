@@ -46,6 +46,7 @@ var buildFS embed.FS
 var indexPage []byte
 
 func main() {
+	// 记录启动时间
 	startTime := time.Now()
 	kitutil.SetLogging(common.SysLog, func(message string) {
 		logger.LogError(nil, message)
@@ -157,6 +158,7 @@ func main() {
 		model.InitBatchUpdater()
 	}
 
+	// 当 ENABLE_PPROF=true 时，
 	if os.Getenv("ENABLE_PPROF") == "true" {
 		gopool.Go(func() {
 			log.Println(http.ListenAndServe("0.0.0.0:8005", nil))
@@ -209,6 +211,7 @@ func main() {
 		Handler: server,
 	}
 
+	// 异步启动 gin server
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			common.FatalLog("failed to start HTTP server: " + err.Error())
@@ -217,8 +220,10 @@ func main() {
 
 	time.Sleep(100 * time.Millisecond)
 
+	// 日志输出启动
 	common.LogStartupSuccess(startTime, port)
 
+	// 监听 SIGINT、SIGTERM 退出信号
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	sig := <-quit
@@ -252,7 +257,7 @@ func InjectUmamiAnalytics() {
 		analyticsInjectBuilder.WriteString(umamiSiteID)
 		analyticsInjectBuilder.WriteString("\"></script>")
 	}
-	analyticsInjectBuilder.WriteString("<!--Umami QuantumNous-->\n")
+	analyticsInjectBuilder.WriteString("<!--Umhttp://localhost:3000/ami QuantumNous-->\n")
 	analyticsInject := []byte(analyticsInjectBuilder.String())
 	placeholder := []byte("<!--umami-->\n")
 	indexPage = bytes.ReplaceAll(indexPage, placeholder, analyticsInject)
@@ -281,6 +286,7 @@ func InjectGoogleAnalytics() {
 	indexPage = bytes.ReplaceAll(indexPage, placeholder, analyticsInject)
 }
 
+// InitResources 加载 .env 文件
 func InitResources() error {
 	// Initialize resources here if needed
 	// This is a placeholder function for future resource initialization
@@ -294,6 +300,7 @@ func InitResources() error {
 	// 加载环境变量
 	common.InitEnv()
 
+	// 设置 logger
 	logger.SetupLogger()
 
 	// Initialize model settings

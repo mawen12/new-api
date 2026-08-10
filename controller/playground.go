@@ -15,6 +15,7 @@ import (
 func Playground(c *gin.Context) {
 	var newAPIError *types.NewAPIError
 
+	// 对于 newApi 的错误进行特殊处理
 	defer func() {
 		if newAPIError != nil {
 			c.JSON(newAPIError.StatusCode, gin.H{

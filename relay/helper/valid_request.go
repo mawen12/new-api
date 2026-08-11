@@ -19,10 +19,11 @@ import (
 )
 
 func GetAndValidateRequest(c *gin.Context, format types.RelayFormat) (request dto.Request, err error) {
+	// 根据请求路径映射中继模式
 	relayMode := relayconstant.Path2RelayMode(c.Request.URL.Path)
 
 	switch format {
-	case types.RelayFormatOpenAI:
+	case types.RelayFormatOpenAI: // openai
 		request, err = GetAndValidateTextRequest(c, relayMode)
 	case types.RelayFormatGemini:
 		if strings.Contains(c.Request.URL.Path, ":embedContent") {

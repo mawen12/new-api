@@ -30,7 +30,7 @@ func AnonymousRequestBodyLimit() gin.HandlerFunc {
 			return
 		}
 
-		// 重新设置请求体和长度
+		// 将截取后的消息体覆盖到请求体上
 		c.Request.Body = io.NopCloser(bytes.NewReader(limitedBody))
 		c.Request.ContentLength = int64(len(limitedBody))
 		c.Next()

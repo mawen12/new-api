@@ -33,31 +33,34 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+// relayHandler 通用中继处理器
 func relayHandler(c *gin.Context, info *relaycommon.RelayInfo) *types.NewAPIError {
 	var err *types.NewAPIError
+
 	switch info.RelayMode {
-	case relayconstant.RelayModeImagesGenerations, relayconstant.RelayModeImagesEdits:
+	case relayconstant.RelayModeImagesGenerations, relayconstant.RelayModeImagesEdits: // 图片中继
 		err = relay.ImageHelper(c, info)
-	case relayconstant.RelayModeAudioSpeech:
+	case relayconstant.RelayModeAudioSpeech: // 音频中继
 		fallthrough
-	case relayconstant.RelayModeAudioTranslation:
+	case relayconstant.RelayModeAudioTranslation: // 音频中继
 		fallthrough
-	case relayconstant.RelayModeAudioTranscription:
+	case relayconstant.RelayModeAudioTranscription: // 音频中继
 		err = relay.AudioHelper(c, info)
-	case relayconstant.RelayModeRerank:
+	case relayconstant.RelayModeRerank: // 重排序中继
 		err = relay.RerankHelper(c, info)
-	case relayconstant.RelayModeEmbeddings:
+	case relayconstant.RelayModeEmbeddings: // 向量中继
 		err = relay.EmbeddingHelper(c, info)
 	case relayconstant.RelayModeResponses, relayconstant.RelayModeResponsesCompact:
 		err = relay.ResponsesHelper(c, info)
 	case relayconstant.RelayModeAlphaSearch:
 		err = relay.AlphaSearchHelper(c, info)
-	default:
+	default: // 文本中继
 		err = relay.TextHelper(c, info)
 	}
 	return err
 }
 
+// geminiRelayHandler gemini 中继处理器
 func geminiRelayHandler(c *gin.Context, info *relaycommon.RelayInfo) *types.NewAPIError {
 	var err *types.NewAPIError
 	if strings.Contains(c.Request.URL.Path, "embed") {
@@ -68,8 +71,9 @@ func geminiRelayHandler(c *gin.Context, info *relaycommon.RelayInfo) *types.NewA
 	return err
 }
 
+// Relay 中继入口
 func Relay(c *gin.Context, relayFormat types.RelayFormat) {
-
+	// 读取请求ID
 	requestId := c.GetString(common.RequestIdKey)
 	//group := common.GetContextKeyString(c, constant.ContextKeyUsingGroup)
 	//originalModel := common.GetContextKeyString(c, constant.ContextKeyOriginalModel)
@@ -79,6 +83,7 @@ func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 		ws          *websocket.Conn
 	)
 
+	// 如果是 openai_realtime 的话，则需要使用 websocket 来传递消息
 	if relayFormat == types.RelayFormatOpenAIRealtime {
 		var err error
 		ws, err = upgrader.Upgrade(c.Writer, c.Request, nil)
@@ -89,19 +94,21 @@ func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 		defer ws.Close()
 	}
 
+	// 退出前处理错误
 	defer func() {
 		if newAPIError != nil {
 			logger.LogError(c, fmt.Sprintf("relay error: %s", common.LocalLogPreview(newAPIError.Error())))
 			newAPIError.SetMessage(common.MessageWithRequestId(newAPIError.Error(), requestId))
+
 			switch relayFormat {
-			case types.RelayFormatOpenAIRealtime:
+			case types.RelayFormatOpenAIRealtime: // openai_realtime，转换为 openai 的错误
 				helper.WssError(c, ws, newAPIError.ToOpenAIError())
-			case types.RelayFormatClaude:
+			case types.RelayFormatClaude: // claude，转换为 claude 错误
 				c.JSON(newAPIError.StatusCode, gin.H{
 					"type":  "error",
 					"error": newAPIError.ToClaudeError(),
 				})
-			default:
+			default: // 默认为 opanai
 				c.JSON(newAPIError.StatusCode, gin.H{
 					"error": newAPIError.ToOpenAIError(),
 				})
@@ -109,6 +116,7 @@ func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 		}
 	}()
 
+	// 
 	request, err := helper.GetAndValidateRequest(c, relayFormat)
 	if err != nil {
 		// Map "request body too large" to 413 so clients can handle it correctly

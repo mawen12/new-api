@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>Think Gin</title>
+<link href='style.css' rel='stylesheet'>
+<style type='text/css'>
+        code {
+            border: none;
+            white-space: pre;
+        }
+        
+        code::before, code::after {
+            content: "";
+        }
+
+        tr {
+            border-bottom: 2px dashed #b8b8b8;
+        }
+    </style>
+<link href='//dash_ref/Category/报文响应/1'>
+<link href='//dash_ref_报文响应/Entry/是否成功标识，bool 类型/0'>
+<link href='//dash_ref_报文响应/Entry/消息内容，经过 i18n 处理/0'>
+<link href='//dash_ref_报文响应/Entry/数据信息，当 success = false 时没有/0'>
+<link href='//dash_ref/Category/路由/1'>
+<link href='//dash_ref_路由/Entry/读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型/0'>
+<link href='//dash_ref_路由/Entry/变更应用配置，用于当系统初始化失败时，用户可以通过页面调整，然后正确完成初始化/0'>
+<link href='//dash_ref_路由/Entry/获取应用的信息/0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref_路由/Entry//0'>
+<link href='//dash_ref/Category/Playground/1'>
+<link href='//dash_ref_Playground/Entry/主流程/0'>
+<link href='//dash_ref_Playground/Entry/token 使用估算/0'>
+<link href='//dash_ref_Playground/Entry/预扣费/0'>
+<link href='//dash_ref_Playground/Entry/限流/0'>
+</head>
+<body>
+<header>
+<h1>Think Gin</h1>
+</header>
+<article>
+<p></p>
+<section class='category'>
+<h2 id='//dash_ref/Category/报文响应/1'>
+报文响应
+</h2>
+<div class='scrollable'>
+<table>
+<tr id='//dash_ref_报文响应/Entry/是否成功标识，bool 类型/0'>
+<td class='command'>
+<p>
+<code>success</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>是否成功标识，bool 类型</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_报文响应/Entry/消息内容，经过 i18n 处理/0'>
+<td class='command'>
+<p>
+<code>message</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>消息内容，经过 i18n 处理</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_报文响应/Entry/数据信息，当 success = false 时没有/0'>
+<td class='command'>
+<p>
+<code>data</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>数据信息，当 success = false 时没有</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class='category'>
+<h2 id='//dash_ref/Category/路由/1'>
+路由
+</h2>
+<div class='scrollable'>
+<table>
+<tr id='//dash_ref_路由/Entry/读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型/0'>
+<td class='command'>
+<p>
+<code>GET /api/setup</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry/变更应用配置，用于当系统初始化失败时，用户可以通过页面调整，然后正确完成初始化/0'>
+<td class='command'>
+<p>
+<code>POST /api/setup</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>变更应用配置，用于当系统初始化失败时，用户可以通过页面调整，然后正确完成初始化</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry/获取应用的信息/0'>
+<td class='command'>
+<p>
+<code>GET /api/status</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'><p>获取应用的信息</p>
+</div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/uptime/status</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/models</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/status/test</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/notice</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/user-agreement</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/privacy-policy</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/about</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/home_page_content</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/pricing</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/perf-metrics/summary</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/perf-metrics</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_路由/Entry//0'>
+<td class='command'>
+<p>
+<code>GET /api/perf-metrics/summary</code>
+</p>
+</td>
+<td class='description'>
+<div class='name'></div>
+<div class='notes'></div>
+<div class='notes'></div>
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class='category'>
+<h2 id='//dash_ref/Category/Playground/1'>
+Playground
+</h2>
+<div class='scrollable'>
+<table>
+<tr id='//dash_ref_Playground/Entry/主流程/0'>
+<td class='description' colspan='2'>
+<div class='name'><p>主流程</p>
+</div>
+<div class='notes'><pre class="highlight plaintext"><code>gin.Engine.handleHttpRequest&#x000A;│    ↓&#x000A;│    middleware.RequestId：写入 common.RequestIdKey 到 gin.Context、http.Request.Context、http.Header&#x000A;│    ↓&#x000A;│    middleware.Version：写入 X-New-Api-Version 到 http.Header&#x000A;│    ↓&#x000A;│    middleware.I18n：写入 constant.ContextKeyLanguage 到 gin.Context&#x000A;│    ↓&#x000A;│    middleware.DecompressRequestMiddleware：将 Request.Body 解压，支持 gzip、br、zstd&#x000A;│    ↓&#x000A;│    middleware.BodyStorageCleanup：请求完成后，清理存储和文件&#x000A;│    ↓&#x000A;│    middleware.StatsMiddleware：全局 http 连接统计&#x000A;│    ↓&#x000A;│    middleware.RouteTag：写入 route_tag 到 gin.Context&#x000A;│    ↓&#x000A;│    middleware.SystemPerformanceCheck：检查系统性能是否超过阈值&#x000A;│    ↓&#x000A;│    middleware.UserAuth：检查是否有普通用户的权限&#x000A;│    ↓&#x000A;│    middleware.Distribute：&#x000A;↓&#x000A;controller.Playground：&#x000A;↓&#x000A;controller.Relay：&#x000A;│    ↓                                                          &#x000A;│    service.CheckSensitiveText：敏感词检查&#x000A;│    ↓  &#x000A;│    service.EstimateRequestToken：token 消耗计算&#x000A;│    ↓&#x000A;│    service.PreconsumeBilling：预扣费&#x000A;↓&#x000A;controler.relayHandler&#x000A;↓&#x000A;service.TextHelper&#x000A;↓&#x000A;helper.ModelMapperHelper&#x000A;↓&#x000A;relay.GetAdaptor&#x000A;↓&#x000A;relay.Init&#x000A;↓&#x000A;adaptor.ConvertOpenAIRequest&#x000A;↓&#x000A;common.AppendRequestConversionFromRequest&#x000A;↓&#x000A;common.Marshal&#x000A;↓&#x000A;common.RemoveDisabledFields&#x000A;↓&#x000A;common.NewOutboundJSONBody&#x000A;↓&#x000A;adaptor.DoRequest&#x000A;↓&#x000A;adaptor.DoResponse&#x000A;↓&#x000A;adaptor.DoResponse&#x000A;↓&#x000A;service.PostTextConsumeQuota&#x000A;</code></pre></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_Playground/Entry/token 使用估算/0'>
+<td class='description' colspan='2'>
+<div class='name'><p>token 使用估算</p>
+</div>
+<div class='notes'><pre class="highlight plaintext"><code>service.EstimateRequestToken&#x000A;↓&#x000A;service.CountTextToken&#x000A;↓(openai)                   ↓(非openai)&#x000A;service.getTokenEncoder     service.EstimateTokenByModel&#x000A;↓                           ↓&#x000A;service.getTokenNum         service.EstimateToken&#x000A;↓                              &#x000A;tokenizer.Count             &#x000A;</code></pre></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_Playground/Entry/预扣费/0'>
+<td class='description' colspan='2'>
+<div class='name'><p>预扣费</p>
+</div>
+<div class='notes'><p>预扣费偏好：</p>
+
+<ul>
+<li>subscription_first</li>
+<li>wallet_first </li>
+<li>subscription_only</li>
+<li>wallet_only</li>
+</ul>
+<pre class="highlight plaintext"><code>service.PreConsumeBilling&#x000A;↓&#x000A;service.NewBillingSession&#x000A;↓ subscription_only         ↓ wallet_only           ↓ wallet_first      ↓ subscription_first      &#x000A;trySubscription             tryWallet               tryWallet           trySubscription&#x000A;↓                           ↓                       ↓ failed            ↓ failed&#x000A;service.preConsume          model.GetUserQuota      trySubscription     tryWallet&#x000A;                            ↓&#x000A;                            service.preConsume&#x000A;</code></pre></div>
+<div class='notes'></div>
+</td>
+</tr>
+<tr id='//dash_ref_Playground/Entry/限流/0'>
+<td class='description' colspan='2'>
+<div class='name'><p>限流</p>
+</div>
+<div class='notes'><pre class="highlight plaintext"><code>GlobalWebRateLimit      GlobalAPIRateLimit      CriticalRateLimit       UserCriticalRateLimit       DownloadRateLimit       UploadRateLimit&#x000A;↓GW                     ↓GA                     ↓CT                     ↓UC:&lt;scope&gt;                 ↓DW                     ↓UP&#x000A;middleware.rateLimitFactory&#x000A;↓redis                          ↓memory&#x000A;middleware.redisRateLimiter     middleware.memoryRateLimiter&#x000A;↓rateLimit:v2:ip:&lt;mark&gt;:&lt;ip&gt;    ↓&lt;mark&gt;&lt;ip&gt;&#x000A;middleware.redisFixedWindowTake common.InMemoryRateLimiter.Request&#x000A;↓                               ↓&#x000A;底层: redis.String               底层结构: map[string]*[]int64&#x000A;</code></pre></div>
+<div class='notes'></div>
+</td>
+</tr>
+</table>
+</div>
+</section>
+</article>
+<footer>
+Generated with <a onclick="window.dash.openExternal_(this.href); return false;" href='https://github.com/Kapeli/cheatset#readme'>cheatset</a>
+</footer>
+</body>
+</html>

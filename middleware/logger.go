@@ -11,18 +11,21 @@ const RouteTagKey = "route_tag"
 
 func RouteTag(tag string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 写入 route_tag:api
+		// 写入 route_tag:<tag>
 		c.Set(RouteTagKey, tag)
 		c.Next()
 	}
 }
 
+// SetUpLogger 
 func SetUpLogger(server *gin.Engine) {
 	server.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 		var requestID string
 		if param.Keys != nil {
+			// 从 Request 上下文中读取 
 			requestID, _ = param.Keys[common.RequestIdKey].(string)
 		}
+		// 从 Request 上下文中读取
 		tag, _ := param.Keys[RouteTagKey].(string)
 		if tag == "" {
 			tag = "web"

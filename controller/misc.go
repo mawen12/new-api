@@ -22,6 +22,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TestStatus 检查数据库能够访问，返回系统中当前HTTP连接数
 func TestStatus(c *gin.Context) {
 	err := model.PingDB()
 	if err != nil {
@@ -184,6 +185,7 @@ func GetNotice(c *gin.Context) {
 	return
 }
 
+// GetAbout 获取关于信息
 func GetAbout(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
 	defer common.OptionMapRWMutex.RUnlock()
@@ -195,6 +197,7 @@ func GetAbout(c *gin.Context) {
 	return
 }
 
+// GetUserAgreement 获取用户同意信息
 func GetUserAgreement(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,

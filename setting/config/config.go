@@ -47,7 +47,7 @@ func (cm *ConfigManager) LoadFromDB(options map[string]string) error {
 		prefix := name + "."
 		configMap := make(map[string]string)
 
-		// 收集属于此配置的所有选项
+		// 通过名称前缀收集属于此配置的所有选项
 		for key, value := range options {
 			if strings.HasPrefix(key, prefix) {
 				configKey := strings.TrimPrefix(key, prefix)

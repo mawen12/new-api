@@ -14,6 +14,7 @@ import (
 // acquire Lock when swapping writers and closing old files.
 var LogWriterMu sync.RWMutex
 
+// 写入到 gin 的 SYS
 func SysLog(s string) {
 	t := time.Now()
 	LogWriterMu.RLock()
@@ -21,6 +22,7 @@ func SysLog(s string) {
 	LogWriterMu.RUnlock()
 }
 
+// 写入到 gin 的 SYS
 func SysError(s string) {
 	t := time.Now()
 	LogWriterMu.RLock()
@@ -28,6 +30,7 @@ func SysError(s string) {
 	LogWriterMu.RUnlock()
 }
 
+// 写入到 gin 的 FATAL
 func FatalLog(v ...any) {
 	t := time.Now()
 	LogWriterMu.RLock()

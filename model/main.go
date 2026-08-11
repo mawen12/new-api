@@ -808,26 +808,31 @@ var (
 	pingMutex    sync.Mutex
 )
 
+// PingDB 检查数据库能够 ping 通过，该方法限制 10s 内仅能调用一次
 func PingDB() error {
 	pingMutex.Lock()
 	defer pingMutex.Unlock()
 
+	// 10s 内仅能调用一次
 	if time.Since(lastPingTime) < time.Second*10 {
 		return nil
 	}
 
+	// 获取GORM封装的DB
 	sqlDB, err := DB.DB()
 	if err != nil {
 		log.Printf("Error getting sql.DB from GORM: %v", err)
 		return err
 	}
 
+	// 执行 ping
 	err = sqlDB.Ping()
 	if err != nil {
 		log.Printf("Error pinging DB: %v", err)
 		return err
 	}
 
+	// 更新 ping
 	lastPingTime = time.Now()
 	common.SysLog("Database pinged successfully")
 	return nil

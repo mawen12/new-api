@@ -71,3 +71,8 @@ reset-setup:
 		echo "Start the dev stack with 'make dev-api', or set SQLITE_PATH/DEV_SQLITE_PATH to your local SQLite database."; \
 		exit 1; \
 	fi
+
+ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+
+generate:
+	podman run --rm  -it --volume $$PWD:/tmp:z --name cheatset jonasbn/cheatset:latest generate $(ARGS)

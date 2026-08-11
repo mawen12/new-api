@@ -19,17 +19,24 @@ const redisRateLimitNamespace = "rateLimit:v2"
 // simple fixed-window behavior: traffic at a window boundary can burst up to
 // twice the configured limit. Do not replace this with a sliding-window ZSET
 // unless that externally visible behavior is intentionally changed.
+// 有意使用固定窗口的 Redis 限流，需要注意的是窗口边界处的流量峰值可达限制的两倍。
+// 使用固定窗口的目的只是为了简单
 const redisFixedWindowScript = `
+-- 增加计数，每次请求1
 local count = redis.call('INCR', KEYS[1])
 if count == 1 then
+  -- 首次增加，设置过期时间
   redis.call('EXPIRE', KEYS[1], ARGV[2])
 end
+-- 读取过期时间
 local ttl = redis.call('TTL', KEYS[1])
 if ttl < 0 then
+  -- 已过期，重置过期时间
   redis.call('EXPIRE', KEYS[1], ARGV[2])
   ttl = redis.call('TTL', KEYS[1])
 end
 if count > tonumber(ARGV[1]) then
+  -- 总数超过了限制，不允许
   return {0, count, ttl}
 end
 return {1, count, ttl}
@@ -41,16 +48,17 @@ var defNext = func(c *gin.Context) {
 	c.Next()
 }
 
-// redisIPRateLimitKey 构建基于IP限流key，格式为：rateLimit:v2:ip:<mark>:<ip>
+// redisIPRateLimitKey 基于IP限流key，格式为：rateLimit:v2:ip:<mark>:<ip>
 func redisIPRateLimitKey(mark string, clientIP string) string {
 	return fmt.Sprintf("%s:ip:%s:%s", redisRateLimitNamespace, mark, clientIP)
 }
 
-// redisUserRateLimitKey 构建基于用户限流key，格式为：rateLimit:v2:user:<mark>:<userID>
+// redisUserRateLimitKey 基于用户限流key，格式为：rateLimit:v2:user:<mark>:<userID>
 func redisUserRateLimitKey(mark string, userID int) string {
 	return fmt.Sprintf("%s:user:%s:%d", redisRateLimitNamespace, mark, userID)
 }
 
+// redisReplyInteger 将值转换为 int64
 func redisReplyInteger(value interface{}) (int64, error) {
 	switch typed := value.(type) {
 	case int64:
@@ -64,6 +72,7 @@ func redisReplyInteger(value interface{}) (int64, error) {
 	}
 }
 
+// redisFixedWindowTake
 func redisFixedWindowTake(ctx context.Context, key string, maxRequestNum int, duration int64) (bool, int64, int64, error) {
 	if common.RDB == nil {
 		return false, 0, 0, errors.New("Redis client is not initialized")
@@ -78,16 +87,18 @@ func redisFixedWindowTake(ctx context.Context, key string, maxRequestNum int, du
 		return false, 0, 0, errors.New("rate limit duration must be positive")
 	}
 
+	// 执行 Lua 脚本
 	values, err := common.RDB.Eval(
 		ctx,
 		redisFixedWindowScript,
-		[]string{key},
-		maxRequestNum,
-		duration,
+		[]string{key}, // key
+		maxRequestNum, // 最大请求数
+		duration,      // 间隔
 	).Slice()
 	if err != nil {
 		return false, 0, 0, err
 	}
+	// 返回格式检查
 	if len(values) != 3 {
 		return false, 0, 0, fmt.Errorf("unexpected Redis rate limit reply length %d", len(values))
 	}
@@ -105,6 +116,7 @@ func redisFixedWindowTake(ctx context.Context, key string, maxRequestNum int, du
 		return false, 0, 0, err
 	}
 
+	// 结果检查
 	return allowedValue == 1, count, ttlSeconds, nil
 }
 
@@ -127,6 +139,7 @@ func redisRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark st
 	}
 }
 
+// memoryRateLimiter 基于内存的限流器
 func memoryRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark string) {
 	key := mark + c.ClientIP()
 	if !inMemoryRateLimiter.Request(key, maxRequestNum, duration) {
@@ -140,6 +153,7 @@ func memoryRateLimiter(c *gin.Context, maxRequestNum int, duration int64, mark s
 // The in-memory limiter cannot report the remaining window, so callers
 // without a TTL pass the full window duration as a conservative upper bound.
 func writeRateLimited(c *gin.Context, retryAfterSeconds int64) {
+	// 写入到响应头中
 	if retryAfterSeconds > 0 {
 		c.Header("Retry-After", strconv.FormatInt(retryAfterSeconds, 10))
 	}

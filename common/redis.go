@@ -22,6 +22,7 @@ func RedisKeyCacheSeconds() int {
 
 // InitRedisClient This function is called after init()
 func InitRedisClient() (err error) {
+	// 检查 redis 连接字符串，如果没有代表未提供
 	if os.Getenv("REDIS_CONN_STRING") == "" {
 		RedisEnabled = false
 		SysLog("REDIS_CONN_STRING not set, Redis is not enabled")
@@ -32,10 +33,12 @@ func InitRedisClient() (err error) {
 		SyncFrequency = 60
 	}
 	SysLog("Redis is enabled")
+	// redis 连接字符串
 	opt, err := redis.ParseURL(os.Getenv("REDIS_CONN_STRING"))
 	if err != nil {
 		FatalLog("failed to parse Redis connection string: " + err.Error())
 	}
+	// redis 连接池数量
 	opt.PoolSize = GetEnvOrDefault("REDIS_POOL_SIZE", 10)
 	RDB = redis.NewClient(opt)
 
@@ -61,6 +64,7 @@ func ParseRedisOption() *redis.Options {
 	return opt
 }
 
+// RedisSet SET 命令
 func RedisSet(key string, value string, expiration time.Duration) error {
 	if DebugEnabled {
 		SysLog(fmt.Sprintf("Redis SET: key=%s, value=%s, expiration=%v", key, value, expiration))
@@ -69,6 +73,7 @@ func RedisSet(key string, value string, expiration time.Duration) error {
 	return RDB.Set(ctx, key, value, expiration).Err()
 }
 
+// RedisGet GET 命令
 func RedisGet(key string) (string, error) {
 	if DebugEnabled {
 		SysLog(fmt.Sprintf("Redis GET: key=%s", key))
@@ -88,6 +93,7 @@ func RedisGet(key string) (string, error) {
 //	return RDB.GetSet(ctx, key, expiration).Result()
 //}
 
+// RedisDel DEL 命令
 func RedisDel(key string) error {
 	if DebugEnabled {
 		SysLog(fmt.Sprintf("Redis DEL: key=%s", key))
@@ -96,6 +102,7 @@ func RedisDel(key string) error {
 	return RDB.Del(ctx, key).Err()
 }
 
+// RedisDelKey TODO by mawen 与上一个一致
 func RedisDelKey(key string) error {
 	if DebugEnabled {
 		SysLog(fmt.Sprintf("Redis DEL Key: key=%s", key))

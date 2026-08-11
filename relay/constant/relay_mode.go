@@ -56,17 +56,18 @@ const (
 	RelayModeAlphaSearch
 )
 
+// Path2RelayMode 将路径映射到中继模式
 func Path2RelayMode(path string) int {
 	relayMode := RelayModeUnknown
-	if strings.HasPrefix(path, "/v1/chat/completions") || strings.HasPrefix(path, "/pg/chat/completions") {
+	if strings.HasPrefix(path, "/v1/chat/completions") || strings.HasPrefix(path, "/pg/chat/completions") { // 文本中继
 		relayMode = RelayModeChatCompletions
 	} else if strings.HasPrefix(path, "/v1/completions") {
 		relayMode = RelayModeCompletions
-	} else if strings.HasPrefix(path, "/v1/embeddings") {
+	} else if strings.HasPrefix(path, "/v1/embeddings") { // 向量中继
 		relayMode = RelayModeEmbeddings
-	} else if strings.HasSuffix(path, "embeddings") {
+	} else if strings.HasSuffix(path, "embeddings") { // 向量中继
 		relayMode = RelayModeEmbeddings
-	} else if strings.HasPrefix(path, "/v1/moderations") {
+	} else if strings.HasPrefix(path, "/v1/moderations") { 
 		relayMode = RelayModeModerations
 	} else if strings.HasPrefix(path, "/v1/images/generations") {
 		relayMode = RelayModeImagesGenerations

@@ -1,0 +1,82 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Swagger new-api",
+        "contact": {}
+    },
+    "paths": {
+        "/api/about": {
+            "get": {
+                "summary": "获取关于信息",
+                "responses": {}
+            }
+        },
+        "/api/home_page_content": {
+            "get": {
+                "summary": "获取主页内容",
+                "responses": {}
+            }
+        },
+        "/api/models": {
+            "get": {
+                "summary": "返回 constant.ChannelTypeDummy -\u003e 模型列表",
+                "responses": {}
+            }
+        },
+        "/api/notice": {
+            "get": {
+                "summary": "获取通知",
+                "responses": {}
+            }
+        },
+        "/api/pricing": {
+            "get": {
+                "summary": "读取用户的价格",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/setup": {
+            "get": {
+                "description": "读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型",
+                "summary": "读取应用初始化状态",
+                "responses": {}
+            },
+            "post": {
+                "summary": "发起应用配置变更",
+                "responses": {}
+            }
+        },
+        "/api/status": {
+            "get": {
+                "summary": "获取应用的信息",
+                "responses": {}
+            }
+        },
+        "/api/status/test": {
+            "get": {
+                "summary": "检查数据库能够访问，返回系统中当前HTTP连接数",
+                "responses": {}
+            }
+        },
+        "/api/uptime/status": {
+            "get": {
+                "responses": {}
+            }
+        },
+        "/api/user-agreement": {
+            "get": {
+                "summary": "获取用户同意信息",
+                "responses": {}
+            }
+        }
+    }
+}

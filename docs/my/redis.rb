@@ -39,6 +39,7 @@ cheatsheet do
                 
                 1. middleware.XXXRateLimit 中使用 redis.String + Lua 实现固定窗口限流
                 2. middleware.ModelRequestRateLimit 中使用 redis.List 实现的滑动窗口限流
+                3.
             END
         end
     end

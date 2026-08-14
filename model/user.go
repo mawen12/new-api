@@ -277,6 +277,7 @@ func CheckUserExistOrDeleted(username string, email string) (bool, error) {
 	return true, nil
 }
 
+// NormalizeEmail 格式化邮箱，去除首尾空格，转换为小写
 func NormalizeEmail(email string) string {
 	return strings.ToLower(strings.TrimSpace(email))
 }

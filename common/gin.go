@@ -18,6 +18,8 @@ import (
 )
 
 const KeyRequestBody = "key_request_body"
+
+// 用于 gin 上下文的标志位，检查是否使用了存储
 const KeyBodyStorage = "key_body_storage"
 
 var ErrRequestBodyTooLarge = errors.New("request body too large")
@@ -105,6 +107,7 @@ func CleanupBodyStorage(c *gin.Context) {
 	}
 }
 
+// UnmarshalBodyReusable
 func UnmarshalBodyReusable(c *gin.Context, v any) error {
 	storage, err := GetBodyStorage(c)
 	if err != nil {

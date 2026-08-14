@@ -1,0 +1,54 @@
+info:
+  contact: {}
+  title: Swagger new-api
+paths:
+  /api/about:
+    get:
+      responses: {}
+      summary: 获取关于信息
+  /api/home_page_content:
+    get:
+      responses: {}
+      summary: 获取主页内容
+  /api/models:
+    get:
+      responses: {}
+      summary: 返回 constant.ChannelTypeDummy -> 模型列表
+  /api/notice:
+    get:
+      responses: {}
+      summary: 获取通知
+  /api/pricing:
+    get:
+      parameters:
+      - description: 用户id
+        in: query
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 读取用户的价格
+  /api/setup:
+    get:
+      description: 读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型
+      responses: {}
+      summary: 读取应用初始化状态
+    post:
+      responses: {}
+      summary: 发起应用配置变更
+  /api/status:
+    get:
+      responses: {}
+      summary: 获取应用的信息
+  /api/status/test:
+    get:
+      responses: {}
+      summary: 检查数据库能够访问，返回系统中当前HTTP连接数
+  /api/uptime/status:
+    get:
+      responses: {}
+  /api/user-agreement:
+    get:
+      responses: {}
+      summary: 获取用户同意信息
+swagger: "2.0"

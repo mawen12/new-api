@@ -7,6 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetRankings
+// @Summary
+// @Router /api/rankings [get]
 func GetRankings(c *gin.Context) {
 	result, err := service.GetRankingsSnapshot(c.DefaultQuery("period", "week"))
 	if err != nil {

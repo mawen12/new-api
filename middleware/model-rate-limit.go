@@ -22,7 +22,7 @@ const (
 	modelRateLimitTimeFormat              = "2006-01-02T15:04:05.000Z"
 )
 
-// 检查Redis中的请求限制
+// checkRedisRateLimit 使用滑动窗口检查Redis中的请求限制 TODO 应该改用 Lua
 func checkRedisRateLimit(ctx context.Context, rdb *redis.Client, key string, maxCount int, duration int64) (bool, error) {
 	// 如果maxCount为0，表示不限制
 	if maxCount == 0 {
@@ -40,7 +40,7 @@ func checkRedisRateLimit(ctx context.Context, rdb *redis.Client, key string, max
 		return true, nil
 	}
 
-	// 检查时间窗口
+	// 获取最早的检查时间窗口
 	oldTimeStr, _ := rdb.LIndex(ctx, key, -1).Result()
 	oldTime, err := time.Parse(modelRateLimitTimeFormat, oldTimeStr)
 	if err != nil {
@@ -84,6 +84,7 @@ func redisRateLimitHandler(duration int64, totalMaxCount, successMaxCount int) g
 
 		// 1. 检查成功请求数限制
 		successKey := fmt.Sprintf("rateLimit:%s:%s", ModelRequestRateLimitSuccessCountMark, userId)
+		// 限流预检
 		allowed, err := checkRedisRateLimit(ctx, rdb, successKey, successMaxCount, duration)
 		if err != nil {
 			fmt.Println("检查成功请求数限制失败:", err.Error())
@@ -100,6 +101,7 @@ func redisRateLimitHandler(duration int64, totalMaxCount, successMaxCount int) g
 			totalKey := fmt.Sprintf("rateLimit:%s", userId)
 			// 初始化
 			tb := limiter.New(ctx, rdb)
+			// 基于令牌桶的限流检查
 			allowed, err = tb.Allow(
 				ctx,
 				totalKey,

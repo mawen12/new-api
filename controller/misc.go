@@ -22,7 +22,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// TestStatus 检查数据库能够访问，返回系统中当前HTTP连接数
+// TestStatus godoc
+// @Summary 检查数据库能够访问，返回系统中当前HTTP连接数
+// @Router /api/status/test [get]
 func TestStatus(c *gin.Context) {
 	err := model.PingDB()
 	if err != nil {
@@ -42,7 +44,9 @@ func TestStatus(c *gin.Context) {
 	return
 }
 
-// GetStatus 获取应用的信息
+// GetStatus godoc
+// @Summary 获取应用的信息
+// @Router /api/status [get]
 func GetStatus(c *gin.Context) {
 
 	cs := console_setting.GetConsoleSetting()
@@ -174,6 +178,9 @@ func GetStatus(c *gin.Context) {
 	return
 }
 
+// GetNotice godoc
+// @Summary 获取通知
+// @Router /api/notice [get]
 func GetNotice(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
 	defer common.OptionMapRWMutex.RUnlock()
@@ -185,7 +192,9 @@ func GetNotice(c *gin.Context) {
 	return
 }
 
-// GetAbout 获取关于信息
+// GetAbout godoc
+// @Summary 获取关于信息
+// @Router /api/about [get]
 func GetAbout(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
 	defer common.OptionMapRWMutex.RUnlock()
@@ -197,7 +206,9 @@ func GetAbout(c *gin.Context) {
 	return
 }
 
-// GetUserAgreement 获取用户同意信息
+// GetUserAgreement godoc
+// @Summary 获取用户同意信息
+// @Router /api/user-agreement [get]
 func GetUserAgreement(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -207,6 +218,9 @@ func GetUserAgreement(c *gin.Context) {
 	return
 }
 
+// GetPrivacyPolicy godoc
+// @Summary 获取隐私政策
+// @Rouer /api/privacy-policy [get]
 func GetPrivacyPolicy(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": true,
@@ -227,6 +241,9 @@ func GetMidjourney(c *gin.Context) {
 	return
 }
 
+// GetHomePageContent godoc
+// @Summary 获取主页内容 
+// @Router /api/home_page_content [get]
 func GetHomePageContent(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
 	defer common.OptionMapRWMutex.RUnlock()
@@ -238,6 +255,9 @@ func GetHomePageContent(c *gin.Context) {
 	return
 }
 
+// SendEmailVerification godoc
+// @Summary 邮箱验证
+// @Router /api/verification [get]
 func SendEmailVerification(c *gin.Context) {
 	email := model.NormalizeEmail(c.Query("email"))
 	if err := common.Validate.Var(email, "required,email"); err != nil {
@@ -256,6 +276,7 @@ func SendEmailVerification(c *gin.Context) {
 	domainPart := parts[1]
 	if common.EmailDomainRestrictionEnabled {
 		allowed := false
+		// 检查邮箱域名必须为白名单
 		for _, domain := range common.EmailDomainWhitelist {
 			if domainPart == domain {
 				allowed = true

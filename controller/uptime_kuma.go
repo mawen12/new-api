@@ -128,6 +128,9 @@ func fetchGroupData(ctx context.Context, client *http.Client, groupConfig map[st
 	return result
 }
 
+// GetUptimeKumaStatus godoc
+// @Summary 
+// @Router /api/uptime/status [get]
 func GetUptimeKumaStatus(c *gin.Context) {
 	groups := console_setting.GetUptimeKumaGroups()
 	if len(groups) == 0 {

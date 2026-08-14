@@ -10,7 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 )
-
+// GetPerfMetricsSummary
+// @Summary 获取性能指标
+// @Router /api/perf-metrics/summary [get]
 func GetPerfMetricsSummary(c *gin.Context) {
 	hours := 24
 	if rawHours := c.Query("hours"); rawHours != "" {

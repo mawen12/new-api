@@ -21,6 +21,10 @@ type SubscriptionEpayPayRequest struct {
 	PaymentMethod string `json:"payment_method"`
 }
 
+// SubscriptionRequestEpay godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/epay/pay [post]
 func SubscriptionRequestEpay(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return

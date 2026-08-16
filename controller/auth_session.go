@@ -14,6 +14,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// RefreshAuth godoc
+// @Summary 刷新认证
+// @Tags 用户
+// @Router /api/user/auth/refresh [post]
 func RefreshAuth(c *gin.Context) {
 	setAuthNoStore(c)
 	rawRefreshToken, err := c.Cookie(service.RefreshCookieName)
@@ -44,6 +48,10 @@ func RefreshAuth(c *gin.Context) {
 	})
 }
 
+// AuthLogout godoc
+// @Summary 认证登出
+// @Tags 用户
+// @Router /api/user/auth/logout [post]
 func AuthLogout(c *gin.Context) {
 	setAuthNoStore(c)
 	expectedSID := strings.TrimSpace(c.GetHeader("X-Auth-Session"))
@@ -94,6 +102,10 @@ func AuthLogout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": ""})
 }
 
+// GetLoginSessions godoc
+// @Summary 获取用户的所有 sessions
+// @Tags 已登录用户
+// @Router /api/user/sessions [get]
 func GetLoginSessions(c *gin.Context) {
 	identity, ok := requireBrowserSession(c)
 	if !ok {
@@ -107,6 +119,11 @@ func GetLoginSessions(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": sessions})
 }
 
+// DeleteLoginSession godoc
+// @Summary 删除用户的指定 session
+// @Tags 已登录用户
+// @Param sid path string false "session id"
+// @Router /api/user/sessions/:sid [delete]
 func DeleteLoginSession(c *gin.Context) {
 	identity, ok := requireBrowserSession(c)
 	if !ok {
@@ -135,6 +152,10 @@ func DeleteLoginSession(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": true, "message": "", "data": gin.H{"revoked_sid": sid, "current": sid == identity.SessionID}})
 }
 
+// RevokeOtherLoginSessions godoc
+// @Summary 撤销该用户其他的所有 session
+// @Tags 已登录用户
+// @Router /api/user/sessions/revoke-others [post]
 func RevokeOtherLoginSessions(c *gin.Context) {
 	identity, ok := requireBrowserSession(c)
 	if !ok {

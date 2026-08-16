@@ -22,6 +22,10 @@ type WaffoPancakePayRequest struct {
 	Amount int64 `json:"amount"`
 }
 
+// RequestWaffoPancakeAmount godoc
+// @Summary 获取 Waffo Pancake 帐户余额
+// @Tags 已登录用户
+// @Router /api/user/waffo-pancake/amount [post]
 func RequestWaffoPancakeAmount(c *gin.Context) {
 	var req WaffoPancakePayRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -336,6 +340,10 @@ func getWaffoPancakeBuyerIdentity(user *model.User) string {
 	return service.WaffoPancakeBuyerIdentityFromUserID(user.Id)
 }
 
+// RequestWaffoPancakePay godoc
+// @Summary 创建 Waffo Pancake 支付订单
+// @Tags 已登录用户
+// @Router /api/user/waffo-pancake/pay [post]
 func RequestWaffoPancakePay(c *gin.Context) {
 	if !isWaffoPancakeTopUpEnabled() {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "Waffo Pancake 配置不完整"})
@@ -422,6 +430,11 @@ func RequestWaffoPancakePay(c *gin.Context) {
 	})
 }
 
+// WaffoPancakeWebhook godoc
+// @Summary 处理 Waffo Pancake 回调通知（支付/退款/订阅）
+// @Tags 通用
+// @Param env path string false "环境"
+// @Router /api/waffo-pancake/webhook/:env [post]
 func WaffoPancakeWebhook(c *gin.Context) {
 	if !isWaffoPancakeWebhookEnabled() {
 		logger.LogWarn(c.Request.Context(), fmt.Sprintf("Waffo Pancake webhook 被拒绝 reason=webhook_disabled path=%q client_ip=%s", c.Request.RequestURI, c.ClientIP()))

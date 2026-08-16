@@ -12,7 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetCheckinStatus 获取用户签到状态和历史记录
+// GetCheckinStatus godoc
+// @Summary 获取用户签到状态和历史记录
+// @Tags 已登录用户
+// @Router /api/user/checkin [get]
 func GetCheckinStatus(c *gin.Context) {
 	setting := operation_setting.GetCheckinSetting()
 	if !setting.Enabled {
@@ -43,7 +46,10 @@ func GetCheckinStatus(c *gin.Context) {
 	})
 }
 
-// DoCheckin 执行用户签到
+// DoCheckin godoc
+// @Summary 执行用户签到
+// @Tags 已登录用户
+// @Router /api/user/checkin [post]
 func DoCheckin(c *gin.Context) {
 	setting := operation_setting.GetCheckinSetting()
 	if !setting.Enabled {

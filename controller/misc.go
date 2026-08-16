@@ -24,6 +24,7 @@ import (
 
 // TestStatus godoc
 // @Summary 检查数据库能够访问，返回系统中当前HTTP连接数
+// @Tags 通用
 // @Router /api/status/test [get]
 func TestStatus(c *gin.Context) {
 	err := model.PingDB()
@@ -46,6 +47,7 @@ func TestStatus(c *gin.Context) {
 
 // GetStatus godoc
 // @Summary 获取应用的信息
+// @Tags 通用
 // @Router /api/status [get]
 func GetStatus(c *gin.Context) {
 
@@ -180,6 +182,7 @@ func GetStatus(c *gin.Context) {
 
 // GetNotice godoc
 // @Summary 获取通知
+// @Tags 通用
 // @Router /api/notice [get]
 func GetNotice(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
@@ -194,6 +197,7 @@ func GetNotice(c *gin.Context) {
 
 // GetAbout godoc
 // @Summary 获取关于信息
+// @Tags 通用
 // @Router /api/about [get]
 func GetAbout(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
@@ -208,6 +212,7 @@ func GetAbout(c *gin.Context) {
 
 // GetUserAgreement godoc
 // @Summary 获取用户同意信息
+// @Tags 通用
 // @Router /api/user-agreement [get]
 func GetUserAgreement(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
@@ -220,6 +225,7 @@ func GetUserAgreement(c *gin.Context) {
 
 // GetPrivacyPolicy godoc
 // @Summary 获取隐私政策
+// @Tags 通用
 // @Rouer /api/privacy-policy [get]
 func GetPrivacyPolicy(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
@@ -242,7 +248,8 @@ func GetMidjourney(c *gin.Context) {
 }
 
 // GetHomePageContent godoc
-// @Summary 获取主页内容 
+// @Summary 获取主页内容
+// @Tags 通用
 // @Router /api/home_page_content [get]
 func GetHomePageContent(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
@@ -257,6 +264,7 @@ func GetHomePageContent(c *gin.Context) {
 
 // SendEmailVerification godoc
 // @Summary 邮箱验证
+// @Tags 通用
 // @Router /api/verification [get]
 func SendEmailVerification(c *gin.Context) {
 	email := model.NormalizeEmail(c.Query("email"))
@@ -324,6 +332,10 @@ func SendEmailVerification(c *gin.Context) {
 	return
 }
 
+// SendPasswordResetEmail godoc
+// @Summary 发送密码重置的邮件
+// @Tags 通用
+// @Router /api/reset_password [get]
 func SendPasswordResetEmail(c *gin.Context) {
 	email := model.NormalizeEmail(c.Query("email"))
 	if err := common.Validate.Var(email, "required,email"); err != nil {
@@ -357,6 +369,10 @@ type PasswordResetRequest struct {
 	Token string `json:"token"`
 }
 
+// ResetPassword godoc
+// @Summary 重置用户密码
+// @Tags 通用
+// @Router /api/user/reset [post]
 func ResetPassword(c *gin.Context) {
 	var req PasswordResetRequest
 	err := json.NewDecoder(c.Request.Body).Decode(&req)

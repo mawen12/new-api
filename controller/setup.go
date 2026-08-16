@@ -27,6 +27,7 @@ type SetupRequest struct {
 // GetSetup godoc
 // @Summary 读取应用初始化状态
 // @Description 读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型
+// @Tags 通用
 // @Router /api/setup [get]
 func GetSetup(c *gin.Context) {
 	setup := Setup{
@@ -49,6 +50,7 @@ func GetSetup(c *gin.Context) {
 
 // PostSetup godoc
 // @Summary 发起应用配置变更
+// @Tags 通用
 // @Router /api/setup [post]
 func PostSetup(c *gin.Context) {
 	// Check if setup is already completed

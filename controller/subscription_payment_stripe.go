@@ -20,6 +20,10 @@ type SubscriptionStripePayRequest struct {
 	PlanId int `json:"plan_id"`
 }
 
+// SubscriptionRequestStripePay godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/stripe/pay [post]
 func SubscriptionRequestStripePay(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return

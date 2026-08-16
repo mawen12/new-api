@@ -20,6 +20,10 @@ type SubscriptionWaffoPancakePayRequest struct {
 	PlanId int `json:"plan_id"`
 }
 
+// SubscriptionRequestWaffoPancakePay godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/waffo-pancake/pay [post]
 func SubscriptionRequestWaffoPancakePay(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return

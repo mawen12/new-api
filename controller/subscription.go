@@ -28,7 +28,10 @@ type SubscriptionBalancePayRequest struct {
 }
 
 // ---- User APIs ----
-
+// GetSubscriptionPlans godoc
+// @Summary 获取订阅计划
+// @Tags 订阅
+// @Router /api/subscription/plans [get]
 func GetSubscriptionPlans(c *gin.Context) {
 	if !operation_setting.IsPaymentComplianceConfirmed() {
 		common.ApiSuccess(c, []SubscriptionPlanDTO{})
@@ -50,6 +53,10 @@ func GetSubscriptionPlans(c *gin.Context) {
 	common.ApiSuccess(c, result)
 }
 
+// GetSubscriptionSelf godoc
+// @Summary 获取订阅计划详细信息
+// @Tags 订阅
+// @Router /api/subscription/self [get]
 func GetSubscriptionSelf(c *gin.Context) {
 	userId := c.GetInt("id")
 	settingMap, _ := model.GetUserSetting(userId, false)
@@ -74,6 +81,10 @@ func GetSubscriptionSelf(c *gin.Context) {
 	})
 }
 
+// UpdateSubscriptionPreference godoc
+// @Summary 更新订阅
+// @Tags 订阅
+// @Router /api/subscription/self/preference [put]
 func UpdateSubscriptionPreference(c *gin.Context) {
 	userId := c.GetInt("id")
 	var req BillingPreferenceRequest
@@ -97,6 +108,10 @@ func UpdateSubscriptionPreference(c *gin.Context) {
 	common.ApiSuccess(c, gin.H{"billing_preference": pref})
 }
 
+// SubscriptionRequestBalancePay godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/balance/pay [post]
 func SubscriptionRequestBalancePay(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -117,7 +132,10 @@ func SubscriptionRequestBalancePay(c *gin.Context) {
 }
 
 // ---- Admin APIs ----
-
+// AdminListSubscriptionPlans godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/plans [get]
 func AdminListSubscriptionPlans(c *gin.Context) {
 	var plans []model.SubscriptionPlan
 	if err := model.DB.Order("sort_order desc, id desc").Find(&plans).Error; err != nil {
@@ -138,6 +156,10 @@ type AdminUpsertSubscriptionPlanRequest struct {
 	Plan model.SubscriptionPlan `json:"plan"`
 }
 
+// AdminCreateSubscriptionPlan godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/plans [post]
 func AdminCreateSubscriptionPlan(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -213,6 +235,10 @@ func AdminCreateSubscriptionPlan(c *gin.Context) {
 	common.ApiSuccess(c, req.Plan)
 }
 
+// AdminUpdateSubscriptionPlan godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/plans/:id [put]
 func AdminUpdateSubscriptionPlan(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -325,6 +351,10 @@ type AdminUpdateSubscriptionPlanStatusRequest struct {
 	Enabled *bool `json:"enabled"`
 }
 
+// AdminUpdateSubscriptionPlanStatus godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/plans/:id [patch]
 func AdminUpdateSubscriptionPlanStatus(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -353,6 +383,10 @@ type AdminBindSubscriptionRequest struct {
 	PlanId int `json:"plan_id"`
 }
 
+// AdminBindSubscription godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/bind [post]
 func AdminBindSubscription(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -478,6 +512,11 @@ func AdminResetUserSubscriptionsByPlan(c *gin.Context) {
 	common.ApiSuccess(c, result)
 }
 
+// AdminResetPlanSubscriptions godoc
+// @Summary 
+// @Tags 订阅
+// @Param id path int true "订阅ID"
+// @Router /api/subscription/plans/:id/subscriptions/reset [post]
 func AdminResetPlanSubscriptions(c *gin.Context) {
 	planId, _ := strconv.Atoi(c.Param("id"))
 	if planId <= 0 {

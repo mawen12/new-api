@@ -35,7 +35,10 @@ type Setup2FAResponse struct {
 	BackupCodes []string `json:"backup_codes"`
 }
 
-// Setup2FA 初始化2FA设置
+// Setup2FA godoc
+// @Summary 初始化2FA设置
+// @Tags 已登录用户
+// @Router /api/user/2fa/setup [post]
 func Setup2FA(c *gin.Context) {
 	userId := c.GetInt("id")
 
@@ -130,7 +133,10 @@ func Setup2FA(c *gin.Context) {
 	})
 }
 
-// Enable2FA 启用2FA
+// Enable2FA godoc
+// @Summary 启用2FA
+// @Tags 已登录用户
+// @Router /api/user/2fa/enable [post]
 func Enable2FA(c *gin.Context) {
 	var req Setup2FARequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -208,7 +214,10 @@ func Enable2FA(c *gin.Context) {
 	})
 }
 
-// Disable2FA 禁用2FA
+// Disable2FA godoc
+// @Summary 禁用2FA
+// @Tags 已登录用户
+// @Router /api/user/2fa/disable [post]
 func Disable2FA(c *gin.Context) {
 	var req Verify2FARequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -291,7 +300,10 @@ func Disable2FA(c *gin.Context) {
 	})
 }
 
-// Get2FAStatus 获取用户2FA状态
+// Get2FAStatus godoc
+// @Summary 获取用户2FA状态
+// @Tags 已登录用户
+// @Router /api/user/2fa/status [get]
 func Get2FAStatus(c *gin.Context) {
 	userId := c.GetInt("id")
 
@@ -327,7 +339,10 @@ func Get2FAStatus(c *gin.Context) {
 	})
 }
 
-// RegenerateBackupCodes 重新生成备用码
+// RegenerateBackupCodes godoc
+// @Summary 重新生成备用码
+// @Tags 已登录用户
+// @Router /api/user/2fa/backup_codes [post]
 func RegenerateBackupCodes(c *gin.Context) {
 	var req Verify2FARequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -423,7 +438,10 @@ func RegenerateBackupCodes(c *gin.Context) {
 	})
 }
 
-// Verify2FALogin 登录时验证2FA
+// Verify2FALogin
+// @Summary 登录时验证2FA
+// @Tags 用户
+// @Router /api/user/login/2fa [post]
 func Verify2FALogin(c *gin.Context) {
 	var req Verify2FARequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -525,7 +543,10 @@ func Verify2FALogin(c *gin.Context) {
 	setupLoginAtAuthVersion(user, flowPayload.AuthVersion, c)
 }
 
-// Admin2FAStats 管理员获取2FA统计信息
+// Admin2FAStats godoc
+// @Summary 管理员获取2FA统计信息
+// @Tags 管理员
+// @Router /api/user/2fa/stats [get]
 func Admin2FAStats(c *gin.Context) {
 	stats, err := model.GetTwoFAStats()
 	if err != nil {
@@ -540,7 +561,10 @@ func Admin2FAStats(c *gin.Context) {
 	})
 }
 
-// AdminDisable2FA 管理员强制禁用用户2FA
+// AdminDisable2FA godoc
+// @Summary 管理员强制禁用用户2FA
+// @Tags 管理员
+// @Router /api/user/:id/2fa [delete]
 func AdminDisable2FA(c *gin.Context) {
 	userIdStr := c.Param("id")
 	userId, err := strconv.Atoi(userIdStr)

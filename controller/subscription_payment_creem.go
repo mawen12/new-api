@@ -20,6 +20,10 @@ type SubscriptionCreemPayRequest struct {
 	PlanId int `json:"plan_id"`
 }
 
+// SubscriptionRequestCreemPay godoc
+// @Summary 
+// @Tags 订阅
+// @Router /api/subscription/creem/pay [post]
 func SubscriptionRequestCreemPay(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return

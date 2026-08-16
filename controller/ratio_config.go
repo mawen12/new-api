@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetRatioConfig godoc
+// @Summary 获取倍率配置
+// @Tags 通用
+// @Router /api/ratio_config [get]
 func GetRatioConfig(c *gin.Context) {
 	if !ratio_setting.IsExposeRatioEnabled() {
 		c.JSON(http.StatusForbidden, gin.H{

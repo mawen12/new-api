@@ -124,6 +124,10 @@ func (*StripeAdaptor) RequestPay(c *gin.Context, req *StripePayRequest) {
 	})
 }
 
+// RequestStripeAmount godoc
+// @Summary 获取 Stripe 帐户余额
+// @Tags 已登录用户
+// @Router /api/user/stripe/amount [post]
 func RequestStripeAmount(c *gin.Context) {
 	var req StripePayRequest
 	err := c.ShouldBindJSON(&req)
@@ -134,6 +138,10 @@ func RequestStripeAmount(c *gin.Context) {
 	stripeAdaptor.RequestAmount(c, &req)
 }
 
+// RequestStripePay godoc
+// @Summary 创建 Stripe 支付订单
+// @Tags 已登录用户
+// @Router /api/user/stripe/pay [post]
 func RequestStripePay(c *gin.Context) {
 	var req StripePayRequest
 	err := c.ShouldBindJSON(&req)
@@ -144,6 +152,10 @@ func RequestStripePay(c *gin.Context) {
 	stripeAdaptor.RequestPay(c, &req)
 }
 
+// StripeWebhook godoc
+// @Summary 处理 Stripe 回调通知（支付/退款/订阅）
+// @Tags 通用
+// @Router /api/stripe/webhook [post]
 func StripeWebhook(c *gin.Context) {
 	ctx := c.Request.Context()
 	if !isStripeWebhookEnabled() {

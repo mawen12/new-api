@@ -17,30 +17,162 @@ const docTemplate = `{
     "paths": {
         "/api/about": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "获取关于信息",
+                "responses": {}
+            }
+        },
+        "/api/creem/webhook": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "处理 Creem 回调通知（支付/退款/订阅）",
                 "responses": {}
             }
         },
         "/api/home_page_content": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "获取主页内容",
                 "responses": {}
             }
         },
         "/api/models": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "返回 constant.ChannelTypeDummy -\u003e 模型列表",
                 "responses": {}
             }
         },
         "/api/notice": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "获取通知",
+                "responses": {}
+            }
+        },
+        "/api/oauth/:provider": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "处理所有标准 OAuth 提供程序的 OAuth 回调",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OAuth 提供商",
+                        "name": "provider",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/oauth/email/bind": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "绑定邮箱到用户",
+                "responses": {}
+            }
+        },
+        "/api/oauth/state": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "生成用于 OAuth CSRF 保护的状态码",
+                "responses": {}
+            }
+        },
+        "/api/oauth/telegram/bind/:flow_token": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "绑定 Telegram",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "flow_token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/oauth/telegram/bind/start": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "使用 Telegram 登录",
+                "responses": {}
+            }
+        },
+        "/api/oauth/telegram/login": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "通过 Telegram 登录",
+                "responses": {}
+            }
+        },
+        "/api/oauth/wechat": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "微信登录",
+                "responses": {}
+            }
+        },
+        "/api/oauth/wechat/bind": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "绑定微信账号",
+                "responses": {}
+            }
+        },
+        "/api/perf-metrics": {
+            "get": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "获取性能指标",
+                "responses": {}
+            }
+        },
+        "/api/perf-metrics/summary": {
+            "get": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "获取性能指标摘要",
                 "responses": {}
             }
         },
         "/api/pricing": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "读取用户的价格",
                 "parameters": [
                     {
@@ -54,37 +186,259 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/rankings": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/ratio_config": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "获取倍率配置",
+                "responses": {}
+            }
+        },
+        "/api/reset_password": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "发送密码重置的邮件",
+                "responses": {}
+            }
+        },
         "/api/setup": {
             "get": {
                 "description": "读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型",
+                "tags": [
+                    "通用"
+                ],
                 "summary": "读取应用初始化状态",
                 "responses": {}
             },
             "post": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "发起应用配置变更",
                 "responses": {}
             }
         },
         "/api/status": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "获取应用的信息",
                 "responses": {}
             }
         },
         "/api/status/test": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "检查数据库能够访问，返回系统中当前HTTP连接数",
+                "responses": {}
+            }
+        },
+        "/api/stripe/webhook": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "处理 Stripe 回调通知（支付/退款/订阅）",
                 "responses": {}
             }
         },
         "/api/uptime/status": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "responses": {}
             }
         },
         "/api/user-agreement": {
             "get": {
+                "tags": [
+                    "通用"
+                ],
                 "summary": "获取用户同意信息",
+                "responses": {}
+            }
+        },
+        "/api/user/auth/logout": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "认证登出",
+                "responses": {}
+            }
+        },
+        "/api/user/auth/refresh": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "刷新认证",
+                "responses": {}
+            }
+        },
+        "/api/user/epay/notify": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "处理 epay 回调通知（支付/退款/订阅）",
+                "responses": {}
+            }
+        },
+        "/api/user/groups": {
+            "get": {
+                "tags": [
+                    "用户 已登录用户"
+                ],
+                "summary": "获取用户组",
+                "responses": {}
+            }
+        },
+        "/api/user/login": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户登录",
+                "responses": {}
+            }
+        },
+        "/api/user/login/2fa": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "登录时验证2FA",
+                "responses": {}
+            }
+        },
+        "/api/user/passkey/login/begin": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "passkey 登录",
+                "responses": {}
+            }
+        },
+        "/api/user/passkey/login/finish": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "passkey 登录",
+                "responses": {}
+            }
+        },
+        "/api/user/register": {
+            "post": {
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户注册",
+                "responses": {}
+            }
+        },
+        "/api/user/reset": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "重置用户密码",
+                "responses": {}
+            }
+        },
+        "/api/user/sessions": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取用户的所有 sessions",
+                "responses": {}
+            }
+        },
+        "/api/user/sessions/:sid": {
+            "delete": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "删除用户的指定 session",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "session id",
+                        "name": "sid",
+                        "in": "path"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/sessions/revoke-others": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "撤销该用户其他的所有 session",
+                "responses": {}
+            }
+        },
+        "/api/verification": {
+            "get": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "邮箱验证",
+                "responses": {}
+            }
+        },
+        "/api/verify": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "通用验证",
+                "responses": {}
+            }
+        },
+        "/api/waffo-pancake/webhook/:env": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "处理 Waffo Pancake 回调通知（支付/退款/订阅）",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "环境",
+                        "name": "env",
+                        "in": "path"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/waffo/webhook": {
+            "post": {
+                "tags": [
+                    "通用"
+                ],
+                "summary": "处理 Waffo 回调通知（支付/退款/订阅）",
                 "responses": {}
             }
         }

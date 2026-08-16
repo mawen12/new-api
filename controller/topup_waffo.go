@@ -111,6 +111,10 @@ type WaffoPayRequest struct {
 	PayMethodName  string `json:"pay_method_name"`  // Deprecated: 兼容旧前端，优先使用 pay_method_index
 }
 
+// RequestWaffoAmount godoc
+// @Summary 获取 Waffo 余额
+// @Tags 已登录用户
+// @Router /api/user/waffo/amount [post]
 func RequestWaffoAmount(c *gin.Context) {
 	var req WaffoPayRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -140,7 +144,10 @@ func RequestWaffoAmount(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": strconv.FormatFloat(payMoney, 'f', 2, 64)})
 }
 
-// RequestWaffoPay 创建 Waffo 支付订单
+// RequestWaffoPay godoc
+// @Summary 创建 Waffo 支付订单
+// @Tags 已登录用户
+// @Router /api/user/waffo/pay [post]
 func RequestWaffoPay(c *gin.Context) {
 	if !setting.WaffoEnabled {
 		c.JSON(http.StatusOK, gin.H{"message": "error", "data": "Waffo 支付未启用"})
@@ -329,7 +336,10 @@ type webhookSubscriptionInfo struct {
 	SubscriptionRequest string `json:"subscriptionRequest,omitempty"`
 }
 
-// WaffoWebhook 处理 Waffo 回调通知（支付/退款/订阅）
+// WaffoWebhook godoc
+// @Summary 处理 Waffo 回调通知（支付/退款/订阅）
+// @Tags 通用
+// @Router /api/waffo/webhook [post]
 func WaffoWebhook(c *gin.Context) {
 	if !isWaffoWebhookEnabled() {
 		logger.LogWarn(c.Request.Context(), fmt.Sprintf("Waffo webhook 被拒绝 reason=webhook_disabled path=%q client_ip=%s", c.Request.RequestURI, c.ClientIP()))

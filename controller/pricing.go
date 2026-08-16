@@ -35,6 +35,7 @@ func filterPricingByUsableGroups(pricing []model.Pricing, usableGroup map[string
 
 // GetPricing godoc
 // @Summary 读取用户的价格
+// @Tags 通用
 // @Param id query int true "用户id"
 // @Router /api/pricing [get]
 func GetPricing(c *gin.Context) {

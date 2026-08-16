@@ -23,6 +23,10 @@ func GetGroups(c *gin.Context) {
 	})
 }
 
+// GetUserGroups godoc
+// @Summary 获取用户组
+// @Tags 用户 已登录用户
+// @Router /api/user/groups [get]
 func GetUserGroups(c *gin.Context) {
 	usableGroups := make(map[string]map[string]interface{})
 	userGroup := ""

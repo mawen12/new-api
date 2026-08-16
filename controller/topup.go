@@ -21,6 +21,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// GetTopUpInfo godoc
+// @Summary 获取该用户的支付信息
+// @Tags 已登录用户
+// @Router /api/user/topup/info [get]
 func GetTopUpInfo(c *gin.Context) {
 	complianceConfirmed := operation_setting.IsPaymentComplianceConfirmed()
 
@@ -186,6 +190,10 @@ func getMinTopup() int64 {
 	return int64(minTopup)
 }
 
+// RequestEpay godoc
+// @Summary 请求支付
+// @Tags 已登录用户
+// @Router /api/user/pay [post]
 func RequestEpay(c *gin.Context) {
 	var req EpayRequest
 	err := c.ShouldBindJSON(&req)
@@ -307,6 +315,10 @@ func UnlockOrder(tradeNo string) {
 	createLock.Unlock()
 }
 
+// EpayNotify godoc
+// @Summary  处理 epay 回调通知（支付/退款/订阅）
+// @Tags 用户
+// @Router /api/user/epay/notify [post]
 func EpayNotify(c *gin.Context) {
 	if !isEpayWebhookEnabled() {
 		logger.LogWarn(c.Request.Context(), fmt.Sprintf("易支付 webhook 被拒绝 reason=webhook_disabled path=%q client_ip=%s", c.Request.RequestURI, c.ClientIP()))
@@ -411,6 +423,10 @@ func EpayNotify(c *gin.Context) {
 	}
 }
 
+// RequestAmount godoc
+// @Summary 充值帐户金额
+// @Tags 已登录用户
+// @Router /api/user/amount [get]
 func RequestAmount(c *gin.Context) {
 	var req AmountRequest
 	err := c.ShouldBindJSON(&req)
@@ -437,6 +453,10 @@ func RequestAmount(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": strconv.FormatFloat(payMoney, 'f', 2, 64)})
 }
 
+// GetUserTopUps godoc
+// @Summary 获取当前用户的充值记录
+// @Tags 已登录用户
+// @Router /api/user/topup/self [get]
 func GetUserTopUps(c *gin.Context) {
 	userId := c.GetInt("id")
 	pageInfo := common.GetPageQuery(c)
@@ -462,7 +482,10 @@ func GetUserTopUps(c *gin.Context) {
 	common.ApiSuccess(c, pageInfo)
 }
 
-// GetAllTopUps 管理员获取全平台充值记录
+// GetAllTopUps godoc
+// @Summary 管理员获取全平台充值记录
+// @Tags 管理员
+// @Router /api/user/topup [get]
 func GetAllTopUps(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	keyword := c.Query("keyword")
@@ -491,7 +514,10 @@ type AdminCompleteTopupRequest struct {
 	TradeNo string `json:"trade_no"`
 }
 
-// AdminCompleteTopUp 管理员补单接口
+// AdminCompleteTopUp godoc
+// @Summary 管理员补单接口
+// @Tags 管理员
+// @Router /api/user/topup/complete [post]
 func AdminCompleteTopUp(c *gin.Context) {
 	var req AdminCompleteTopupRequest
 	if err := c.ShouldBindJSON(&req); err != nil || req.TradeNo == "" {

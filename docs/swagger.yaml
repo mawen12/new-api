@@ -6,18 +6,104 @@ paths:
     get:
       responses: {}
       summary: 获取关于信息
+      tags:
+      - 通用
+  /api/creem/webhook:
+    post:
+      responses: {}
+      summary: 处理 Creem 回调通知（支付/退款/订阅）
+      tags:
+      - 通用
   /api/home_page_content:
     get:
       responses: {}
       summary: 获取主页内容
+      tags:
+      - 通用
   /api/models:
     get:
       responses: {}
       summary: 返回 constant.ChannelTypeDummy -> 模型列表
+      tags:
+      - 通用
   /api/notice:
     get:
       responses: {}
       summary: 获取通知
+      tags:
+      - 通用
+  /api/oauth/:provider:
+    get:
+      parameters:
+      - description: OAuth 提供商
+        in: path
+        name: provider
+        required: true
+        type: string
+      responses: {}
+      summary: 处理所有标准 OAuth 提供程序的 OAuth 回调
+      tags:
+      - 通用
+  /api/oauth/email/bind:
+    post:
+      responses: {}
+      summary: 绑定邮箱到用户
+      tags:
+      - 通用
+  /api/oauth/state:
+    post:
+      responses: {}
+      summary: 生成用于 OAuth CSRF 保护的状态码
+      tags:
+      - 通用
+  /api/oauth/telegram/bind/:flow_token:
+    get:
+      parameters:
+      - description: token
+        in: path
+        name: flow_token
+        required: true
+        type: string
+      responses: {}
+      summary: 绑定 Telegram
+      tags:
+      - 通用
+  /api/oauth/telegram/bind/start:
+    post:
+      responses: {}
+      summary: 使用 Telegram 登录
+      tags:
+      - 通用
+  /api/oauth/telegram/login:
+    get:
+      responses: {}
+      summary: 通过 Telegram 登录
+      tags:
+      - 通用
+  /api/oauth/wechat:
+    get:
+      responses: {}
+      summary: 微信登录
+      tags:
+      - 通用
+  /api/oauth/wechat/bind:
+    post:
+      responses: {}
+      summary: 绑定微信账号
+      tags:
+      - 通用
+  /api/perf-metrics:
+    get:
+      responses: {}
+      summary: 获取性能指标
+      tags:
+      - 性能
+  /api/perf-metrics/summary:
+    get:
+      responses: {}
+      summary: 获取性能指标摘要
+      tags:
+      - 性能
   /api/pricing:
     get:
       parameters:
@@ -28,27 +114,176 @@ paths:
         type: integer
       responses: {}
       summary: 读取用户的价格
+      tags:
+      - 通用
+  /api/rankings:
+    get:
+      responses: {}
+      tags:
+      - 通用
+  /api/ratio_config:
+    get:
+      responses: {}
+      summary: 获取倍率配置
+      tags:
+      - 通用
+  /api/reset_password:
+    get:
+      responses: {}
+      summary: 发送密码重置的邮件
+      tags:
+      - 通用
   /api/setup:
     get:
       description: 读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型
       responses: {}
       summary: 读取应用初始化状态
+      tags:
+      - 通用
     post:
       responses: {}
       summary: 发起应用配置变更
+      tags:
+      - 通用
   /api/status:
     get:
       responses: {}
       summary: 获取应用的信息
+      tags:
+      - 通用
   /api/status/test:
     get:
       responses: {}
       summary: 检查数据库能够访问，返回系统中当前HTTP连接数
+      tags:
+      - 通用
+  /api/stripe/webhook:
+    post:
+      responses: {}
+      summary: 处理 Stripe 回调通知（支付/退款/订阅）
+      tags:
+      - 通用
   /api/uptime/status:
     get:
       responses: {}
+      tags:
+      - 通用
   /api/user-agreement:
     get:
       responses: {}
       summary: 获取用户同意信息
+      tags:
+      - 通用
+  /api/user/auth/logout:
+    post:
+      responses: {}
+      summary: 认证登出
+      tags:
+      - 用户
+  /api/user/auth/refresh:
+    post:
+      responses: {}
+      summary: 刷新认证
+      tags:
+      - 用户
+  /api/user/epay/notify:
+    post:
+      responses: {}
+      summary: 处理 epay 回调通知（支付/退款/订阅）
+      tags:
+      - 用户
+  /api/user/groups:
+    get:
+      responses: {}
+      summary: 获取用户组
+      tags:
+      - 用户 已登录用户
+  /api/user/login:
+    post:
+      responses: {}
+      summary: 用户登录
+      tags:
+      - 用户
+  /api/user/login/2fa:
+    post:
+      responses: {}
+      summary: 登录时验证2FA
+      tags:
+      - 用户
+  /api/user/passkey/login/begin:
+    post:
+      responses: {}
+      summary: passkey 登录
+      tags:
+      - 用户
+  /api/user/passkey/login/finish:
+    post:
+      responses: {}
+      summary: passkey 登录
+      tags:
+      - 用户
+  /api/user/register:
+    post:
+      responses: {}
+      summary: 用户注册
+      tags:
+      - 用户
+  /api/user/reset:
+    post:
+      responses: {}
+      summary: 重置用户密码
+      tags:
+      - 通用
+  /api/user/sessions:
+    get:
+      responses: {}
+      summary: 获取用户的所有 sessions
+      tags:
+      - 已登录用户
+  /api/user/sessions/:sid:
+    delete:
+      parameters:
+      - description: session id
+        in: path
+        name: sid
+        type: string
+      responses: {}
+      summary: 删除用户的指定 session
+      tags:
+      - 已登录用户
+  /api/user/sessions/revoke-others:
+    post:
+      responses: {}
+      summary: 撤销该用户其他的所有 session
+      tags:
+      - 已登录用户
+  /api/verification:
+    get:
+      responses: {}
+      summary: 邮箱验证
+      tags:
+      - 通用
+  /api/verify:
+    post:
+      responses: {}
+      summary: 通用验证
+      tags:
+      - 通用
+  /api/waffo-pancake/webhook/:env:
+    post:
+      parameters:
+      - description: 环境
+        in: path
+        name: env
+        type: string
+      responses: {}
+      summary: 处理 Waffo Pancake 回调通知（支付/退款/订阅）
+      tags:
+      - 通用
+  /api/waffo/webhook:
+    post:
+      responses: {}
+      summary: 处理 Waffo 回调通知（支付/退款/订阅）
+      tags:
+      - 通用
 swagger: "2.0"

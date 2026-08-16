@@ -45,6 +45,10 @@ var (
 	errTelegramBindUserDisabled     = errors.New("telegram bind user is disabled")
 )
 
+// TelegramBindStart godoc
+// @Summary 使用 Telegram 登录
+// @Tags 通用
+// @Router /api/oauth/telegram/bind/start [post]
 func TelegramBindStart(c *gin.Context) {
 	if !common.TelegramOAuthEnabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -81,6 +85,11 @@ func TelegramBindStart(c *gin.Context) {
 	})
 }
 
+// TelegramBind godoc
+// @Summary 绑定 Telegram
+// @Tags 通用
+// @Param flow_token path string true "token"
+// @Router /api/oauth/telegram/bind/:flow_token [get]
 func TelegramBind(c *gin.Context) {
 	if !common.TelegramOAuthEnabled {
 		telegramBindFailure(c, telegramBindErrorDisabled)
@@ -233,6 +242,10 @@ func telegramBindFailure(c *gin.Context, errorCode string) {
 	c.Redirect(http.StatusFound, "/oauth/telegram?"+query.Encode())
 }
 
+// TelegramLogin godoc
+// @Summary 通过 Telegram 登录
+// @Tags 通用
+// @Router /api/oauth/telegram/login [get]
 func TelegramLogin(c *gin.Context) {
 	if !common.TelegramOAuthEnabled {
 		c.JSON(200, gin.H{

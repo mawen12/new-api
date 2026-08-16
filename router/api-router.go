@@ -67,7 +67,7 @@ func SetApiRouter(router *gin.Engine) {
 
 		// 用户登陆注册
 		userRoute := apiRouter.Group("/user")
-		{
+		{ // 用户
 			userRoute.POST("/auth/refresh", middleware.SessionCookieOriginGuard(), middleware.CriticalRateLimit(), middleware.DisableCache(), controller.RefreshAuth)
 			userRoute.POST("/auth/logout", middleware.SessionCookieOriginGuard(), middleware.CriticalRateLimit(), middleware.DisableCache(), controller.AuthLogout)
 			userRoute.POST("/register", middleware.CriticalRateLimit(), anonymousRequestBodyLimit, middleware.TurnstileCheck(), controller.Register)
@@ -82,7 +82,7 @@ func SetApiRouter(router *gin.Engine) {
 
 			selfRoute := userRoute.Group("/")
 			selfRoute.Use(middleware.UserAuth())
-			{
+			{ // 已登录的用户
 				selfRoute.GET("/sessions", middleware.DisableCache(), controller.GetLoginSessions)
 				selfRoute.DELETE("/sessions/:sid", middleware.DisableCache(), controller.DeleteLoginSession)
 				selfRoute.POST("/sessions/revoke-others", middleware.DisableCache(), controller.RevokeOtherLoginSessions)

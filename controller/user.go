@@ -37,7 +37,10 @@ var (
 	errOriginalPasswordFail = errors.New("original password is incorrect")
 )
 
-// Login 用户登陆
+// Login godoc
+// @Summary 用户登录
+// @Tags 用户
+// @Router /api/user/login [post]
 func Login(c *gin.Context) {
 	// 禁用用户密码登陆检查
 	if !common.PasswordLoginEnabled {
@@ -214,6 +217,10 @@ func setupLoginAtAuthVersion(user *model.User, expectedAuthVersion int64, c *gin
 	})
 }
 
+// Register godoc
+// @Summary 用户注册
+// @Tags 用户
+// @Router /api/user/register [post]
 func Register(c *gin.Context) {
 	if !common.RegisterEnabled {
 		common.ApiErrorI18n(c, i18n.MsgUserRegisterDisabled)
@@ -334,6 +341,10 @@ func Register(c *gin.Context) {
 	return
 }
 
+// GetAllUsers godoc
+// @Summary 获取所有系统内所有用户
+// @Tags 管理员
+// @Router /api/user/ [get]
 func GetAllUsers(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	sortOptions := model.NewUserSortOptions(c.Query("sort_by"), c.Query("sort_order"))
@@ -350,6 +361,10 @@ func GetAllUsers(c *gin.Context) {
 	return
 }
 
+// SearchUsers godoc
+// @Summary 查询系统内的用户
+// @Tags 管理员
+// @Router /api/user/search [get]
 func SearchUsers(c *gin.Context) {
 	keyword := c.Query("keyword")
 	group := c.Query("group")
@@ -383,6 +398,11 @@ func canManageTargetRole(myRole int, targetRole int) bool {
 	return myRole == common.RoleRootUser || myRole > targetRole
 }
 
+// GetUser godoc
+// @Summary 获取给定用户信息
+// @Tags 管理员
+// @Param id path int true "用户ID"
+// @Router /api/user/:id [get]
 func GetUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -408,6 +428,10 @@ func GetUser(c *gin.Context) {
 	return
 }
 
+// GenerateAccessToken godoc
+// @Summary 生成 access token
+// @Tags 已登录用户
+// @Router /api/user/token [get]
 func GenerateAccessToken(c *gin.Context) {
 	id := c.GetInt("id")
 	// get rand int 28-32
@@ -440,6 +464,10 @@ type TransferAffQuotaRequest struct {
 	Quota int `json:"quota" binding:"required"`
 }
 
+// TransferAffQuota godoc
+// @Summary 
+// @Tags 已登录用户
+// @Router /api/user/aff_transfer [post]
 func TransferAffQuota(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -464,6 +492,10 @@ func TransferAffQuota(c *gin.Context) {
 	common.ApiSuccessI18n(c, i18n.MsgUserTransferSuccess, nil)
 }
 
+// GetAffCode godoc
+// @Summary 获取该用户的 aff 代码
+// @Tags 已登录用户
+// @Router /api/user/aff [get]
 func GetAffCode(c *gin.Context) {
 	id := c.GetInt("id")
 	user, err := model.GetUserById(id, true)
@@ -489,6 +521,10 @@ func GetAffCode(c *gin.Context) {
 	return
 }
 
+// GetSelf godoc
+// @Summary 获取用户信息
+// @Tags 已登录用户
+// @Router /api/user/self [get]
 func GetSelf(c *gin.Context) {
 	id := c.GetInt("id")
 	userRole := c.GetInt("role")
@@ -639,6 +675,10 @@ func generateDefaultSidebarConfig(userRole int) string {
 	return string(configBytes)
 }
 
+// GetUserModels godoc
+// @Summary 获取用户的模型
+// @Tags 已登录用户
+// @Router /api/user/models [get]
 func GetUserModels(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -673,6 +713,10 @@ func GetUserModels(c *gin.Context) {
 	})
 }
 
+// UpdateUser godoc
+// @Summary 更新用户
+// @Tags 管理员
+// @Router /api/user/ [put]
 func UpdateUser(c *gin.Context) {
 	var updatedUser model.User
 	err := common.DecodeJson(c.Request.Body, &updatedUser)
@@ -750,6 +794,12 @@ func UpdateUser(c *gin.Context) {
 	return
 }
 
+// AdminClearUserBinding godoc
+// @Summary 
+// @Tags 管理员
+// @Param id path int true "用户ID"
+// @Param binding_type path string true "绑定类型"
+// @Router /api/user/:id/bindings/:binding_type [delete]
 func AdminClearUserBinding(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -791,6 +841,10 @@ func AdminClearUserBinding(c *gin.Context) {
 	})
 }
 
+// UpdateSelf godoc
+// @Summary 更新用户信息
+// @Tags 已登录用户
+// @Router /api/user/self [post]
 func UpdateSelf(c *gin.Context) {
 	var requestData map[string]interface{}
 	if err := common.DecodeJson(c.Request.Body, &requestData); err != nil {
@@ -958,6 +1012,11 @@ func checkUpdatePassword(originalPassword string, newPassword string, userId int
 	return
 }
 
+// DeleteUser godoc
+// @Summary 删除用户
+// @Tags 管理员
+// @Param id path int true "用户ID"
+// @Router /api/user/:id [delete]
 func DeleteUser(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -990,6 +1049,10 @@ func DeleteUser(c *gin.Context) {
 	return
 }
 
+// DeleteSelf godoc
+// @Summary 删除用户信息
+// @Tags 已登录用户
+// @Router /api/user/self [delete]
 func DeleteSelf(c *gin.Context) {
 	id := c.GetInt("id")
 	user, _ := model.GetUserById(id, false)
@@ -1011,6 +1074,10 @@ func DeleteSelf(c *gin.Context) {
 	return
 }
 
+// CreateUser godoc
+// @Summary 创建用户
+// @Tags 管理员
+// @Router /api/user/ [post]
 func CreateUser(c *gin.Context) {
 	var user model.User
 	err := common.DecodeJson(c.Request.Body, &user)
@@ -1092,7 +1159,10 @@ type ManageRequest struct {
 	Mode   string `json:"mode"`
 }
 
-// ManageUser Only admin user can do this
+// ManageUser godoc
+// @Summary 管理用户
+// @Tags 管理员
+// @Router /api/user/manage [post]
 func ManageUser(c *gin.Context) {
 	var req ManageRequest
 	err := common.DecodeJson(c.Request.Body, &req)
@@ -1278,6 +1348,10 @@ type emailBindRequest struct {
 	Code  string `json:"code"`
 }
 
+// EmailBind godoc
+// @Summary 绑定邮箱到用户
+// @Tags 通用
+// @Router /api/oauth/email/bind [post]
 func EmailBind(c *gin.Context) {
 	var req emailBindRequest
 	if err := common.DecodeJson(c.Request.Body, &req); err != nil {
@@ -1363,6 +1437,10 @@ func getTopUpLock(userID int) *topUpTryLock {
 	return l
 }
 
+// TopUp godoc
+// @Summary 当前用户充值
+// @Tags 已登录用户
+// @Router /api/user/topup [post]
 func TopUp(c *gin.Context) {
 	if !operation_setting.IsPaymentComplianceConfirmed() {
 		common.ApiErrorI18n(c, i18n.MsgPaymentComplianceRequired)
@@ -1411,6 +1489,10 @@ type UpdateUserSettingRequest struct {
 	RecordIpLog                      bool    `json:"record_ip_log"`
 }
 
+// UpdateUserSetting godoc
+// @Summary 更新用户设置
+// @Tags 已登录用户
+// @Router /api/user/setting [put]
 func UpdateUserSetting(c *gin.Context) {
 	var req UpdateUserSettingRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

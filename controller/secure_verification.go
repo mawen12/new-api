@@ -24,6 +24,10 @@ type UniversalVerifyRequest struct {
 	Scope  string `json:"scope"`
 }
 
+// UniversalVerify godoc
+// @Summary 通用验证
+// @Tags 通用
+// @Router /api/verify [post]
 func UniversalVerify(c *gin.Context) {
 	identity, ok := middleware.GetSessionAuthIdentity(c)
 	if !ok {

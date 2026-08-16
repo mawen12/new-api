@@ -331,6 +331,7 @@ func ChannelListModels(c *gin.Context) {
 
 // DashboardListModels godoc
 // @Summary 返回 constant.ChannelTypeDummy -> 模型列表
+// @Tags 通用
 // @Router /api/models [get]
 func DashboardListModels(c *gin.Context) {
 	c.JSON(200, gin.H{

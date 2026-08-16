@@ -10,8 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 )
+
 // GetPerfMetricsSummary
-// @Summary 获取性能指标
+// @Summary 获取性能指标摘要
+// @Tags 性能
 // @Router /api/perf-metrics/summary [get]
 func GetPerfMetricsSummary(c *gin.Context) {
 	hours := 24
@@ -37,6 +39,10 @@ func GetPerfMetricsSummary(c *gin.Context) {
 	})
 }
 
+// GetPerfMetrics godoc
+// @Summary 获取性能指标
+// @Tags 性能
+// @Router /api/perf-metrics [get]
 func GetPerfMetrics(c *gin.Context) {
 	modelName := c.Query("model")
 	if modelName == "" {

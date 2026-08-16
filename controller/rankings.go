@@ -8,7 +8,8 @@ import (
 )
 
 // GetRankings
-// @Summary
+// @Summary 
+// @Tags 通用
 // @Router /api/rankings [get]
 func GetRankings(c *gin.Context) {
 	result, err := service.GetRankingsSnapshot(c.DefaultQuery("period", "week"))

@@ -34,7 +34,10 @@ func providerParams(name string) map[string]any {
 	return map[string]any{"Provider": name}
 }
 
-// GenerateOAuthCode generates a state code for OAuth CSRF protection
+// GenerateOAuthCode godoc
+// @Summary 生成用于 OAuth CSRF 保护的状态码
+// @Tags 通用
+// @Router /api/oauth/state [post]
 func GenerateOAuthCode(c *gin.Context) {
 	var request oauthStateRequest
 	if err := common.DecodeJson(c.Request.Body, &request); err != nil {
@@ -92,6 +95,10 @@ func GenerateOAuthCode(c *gin.Context) {
 }
 
 // HandleOAuth handles OAuth callback for all standard OAuth providers
+// @Summary 处理所有标准 OAuth 提供程序的 OAuth 回调
+// @Tags 通用
+// @Param provider path string true "OAuth 提供商"
+// @Router /api/oauth/:provider [get]
 func HandleOAuth(c *gin.Context) {
 	providerName := c.Param("provider")
 	provider := oauth.GetProvider(providerName)

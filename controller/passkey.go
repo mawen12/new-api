@@ -46,6 +46,10 @@ func parsePasskeyFinishRequest(c *gin.Context) (*passkeyFinishRequest, error) {
 	return &request, nil
 }
 
+// PasskeyRegisterBegin godoc
+// @Summary passkey 注册开始
+// @Tags 已登录用户
+// @Router /api/user/passkey/register/begin [post]
 func PasskeyRegisterBegin(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -124,6 +128,10 @@ func PasskeyRegisterBegin(c *gin.Context) {
 	})
 }
 
+// PasskeyRegisterFinish godoc
+// @Summary 完成 passkey 注册
+// @Tags 已登录用户
+// @Router /api/user/passkey/register/finish [post]
 func PasskeyRegisterFinish(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -218,6 +226,10 @@ func PasskeyRegisterFinish(c *gin.Context) {
 	})
 }
 
+// PasskeyDelete godoc
+// @Summary 删除 passkey
+// @Tags 已登录用户
+// @Router /api/user/passkey [delete]
 func PasskeyDelete(c *gin.Context) {
 	user, err := getAuthenticatedUser(c)
 	if err != nil {
@@ -255,6 +267,10 @@ func PasskeyDelete(c *gin.Context) {
 	})
 }
 
+// PasskeyStatus godoc
+// @Summary 获取 passkey 状态
+// @Tags 已登录用户
+// @Router /api/user/passkey [get]
 func PasskeyStatus(c *gin.Context) {
 	user, err := getAuthenticatedUser(c)
 	if err != nil {
@@ -293,6 +309,10 @@ func PasskeyStatus(c *gin.Context) {
 	})
 }
 
+// PasskeyLoginBegin GODOC
+// @Summary passkey 登录
+// @Tags 用户
+// @Router /api/user/passkey/login/begin [post]
 func PasskeyLoginBegin(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -337,6 +357,10 @@ func PasskeyLoginBegin(c *gin.Context) {
 	})
 }
 
+// PasskeyLoginFinish godoc
+// @Summary passkey 登录
+// @Tags 用户
+// @Router /api/user/passkey/login/finish [post]
 func PasskeyLoginFinish(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -435,6 +459,11 @@ func PasskeyLoginFinish(c *gin.Context) {
 	setupLogin(modelUser, c)
 }
 
+// AdminResetPasskey godoc
+// @Summary 重置用户的 passkey
+// @Tags 管理员
+// @Param id path int true "用户ID"
+// @Router /api/user/:id/reset_passkey [delete]
 func AdminResetPasskey(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -484,6 +513,10 @@ func AdminResetPasskey(c *gin.Context) {
 	})
 }
 
+// PasskeyVerifyBegin godoc
+// @Summary 开始 passkey 验证
+// @Tags 已登录用户
+// @Router /api/user/passkey/verify/begin [post]
 func PasskeyVerifyBegin(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -561,6 +594,10 @@ func PasskeyVerifyBegin(c *gin.Context) {
 	})
 }
 
+// PasskeyVerifyFinish godoc
+// @Summary 验证 passkey 完成
+// @Tags 已登录用户
+// @Router /api/user/passkey/verify/finish [post]
 func PasskeyVerifyFinish(c *gin.Context) {
 	if !system_setting.GetPasskeySettings().Enabled {
 		c.JSON(http.StatusOK, gin.H{

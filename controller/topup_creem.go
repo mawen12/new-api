@@ -141,6 +141,10 @@ func (*CreemAdaptor) RequestPay(c *gin.Context, req *CreemPayRequest) {
 	})
 }
 
+// RequestCreemPay godoc
+// @Summary 创建 Creem 支付订单
+// @Tags 已登录用户
+// @Router /api/user/creem/pay [post]
 func RequestCreemPay(c *gin.Context) {
 	var req CreemPayRequest
 
@@ -226,6 +230,10 @@ type CreemWebhookEvent struct {
 	} `json:"object"`
 }
 
+// CreemWebhook godoc
+// @Summary 处理 Creem 回调通知（支付/退款/订阅）
+// @Tags 通用
+// @Router /api/creem/webhook [post]
 func CreemWebhook(c *gin.Context) {
 	if !isCreemWebhookEnabled() {
 		logger.LogWarn(c.Request.Context(), fmt.Sprintf("Creem webhook 被拒绝 reason=webhook_disabled path=%q client_ip=%s", c.Request.RequestURI, c.ClientIP()))

@@ -51,6 +51,10 @@ func getWeChatIdByCode(code string) (string, error) {
 	return res.Data, nil
 }
 
+// WeChatAuth godoc
+// @Summary 微信登录
+// @Tags 通用
+// @Router /api/oauth/wechat [get]
 func WeChatAuth(c *gin.Context) {
 	if !common.WeChatAuthEnabled {
 		c.JSON(http.StatusOK, gin.H{
@@ -124,6 +128,10 @@ type wechatBindRequest struct {
 	Code string `json:"code"`
 }
 
+// WeChatBind godoc
+// @Summary 绑定微信账号
+// @Tags 通用
+// @Router /api/oauth/wechat/bind [post]
 func WeChatBind(c *gin.Context) {
 	if !common.WeChatAuthEnabled {
 		c.JSON(http.StatusOK, gin.H{

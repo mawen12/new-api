@@ -465,7 +465,10 @@ func buildUserOAuthBindingsResponse(userId int) ([]UserOAuthBindingResponse, err
 	return response, nil
 }
 
-// GetUserOAuthBindings returns all OAuth bindings for the current user
+// GetUserOAuthBindings godoc
+// @Summary 返回当前用户绑定的所有 OAuth
+// @Tags 已登录用户
+// @Router /api/user/oauth/bindings [get]
 func GetUserOAuthBindings(c *gin.Context) {
 	userId := c.GetInt("id")
 	if userId == 0 {
@@ -486,6 +489,11 @@ func GetUserOAuthBindings(c *gin.Context) {
 	})
 }
 
+// GetUserOAuthBindingsByAdmin godoc
+// @Summary
+// @Tags 管理员
+// @Param id path int true "用户ID"
+// @Router /api/user/:id/oauth/bindings [get]
 func GetUserOAuthBindingsByAdmin(c *gin.Context) {
 	userIdStr := c.Param("id")
 	userId, err := strconv.Atoi(userIdStr)
@@ -519,7 +527,11 @@ func GetUserOAuthBindingsByAdmin(c *gin.Context) {
 	})
 }
 
-// UnbindCustomOAuth unbinds a custom OAuth provider from the current user
+// UnbindCustomOAuth godoc
+// @Summary 解绑指定的 OAuth
+// @Tags 已登录用户
+// @Param provider_id path string true "OAuth供应商"
+// @Router /api/user/oauth/bindings/:provider_id [post]
 func UnbindCustomOAuth(c *gin.Context) {
 	userId := c.GetInt("id")
 	if userId == 0 {
@@ -545,6 +557,12 @@ func UnbindCustomOAuth(c *gin.Context) {
 	})
 }
 
+// UnbindCustomOAuthByAdmin godoc
+// @Summary 解绑给定的 OAuth 供应商
+// @Tags 管理员
+// @Param id path string true "用户ID"
+// @Param provider_id path string true "OAuth供应商ID"
+// @Router /api/user/:id/oauth/bindings/:provider_id [delete]
 func UnbindCustomOAuthByAdmin(c *gin.Context) {
 	userIdStr := c.Param("id")
 	userId, err := strconv.Atoi(userIdStr)

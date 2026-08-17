@@ -14,13 +14,14 @@ const (
 	SystemInstanceStaleAfterSeconds int64 = 90
 )
 
+// SystemInstance 系统实例表
 type SystemInstance struct {
-	NodeName   string `json:"node_name" gorm:"type:varchar(128);primaryKey"`
-	Info       string `json:"info" gorm:"type:text"`
-	StartedAt  int64  `json:"started_at" gorm:"bigint;index"`
-	LastSeenAt int64  `json:"last_seen_at" gorm:"bigint;index"`
-	CreatedAt  int64  `json:"created_at" gorm:"bigint;index"`
-	UpdatedAt  int64  `json:"updated_at" gorm:"bigint;index"`
+	NodeName   string `json:"node_name" gorm:"type:varchar(128);primaryKey;comment:节点名称"`
+	Info       string `json:"info" gorm:"type:text;comment:系统详情"`
+	StartedAt  int64  `json:"started_at" gorm:"bigint;index;comment:启动时间"`
+	LastSeenAt int64  `json:"last_seen_at" gorm:"bigint;index;comment:最后活跃时间"`
+	CreatedAt  int64  `json:"created_at" gorm:"bigint;index;comment:创建时间"`
+	UpdatedAt  int64  `json:"updated_at" gorm:"bigint;index;comment:更新时间"`
 }
 
 type SystemInstanceResponse struct {

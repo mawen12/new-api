@@ -293,6 +293,10 @@ func checkMjTaskNeedUpdate(oldTask *model.Midjourney, newTask dto.MidjourneyDto)
 	return false
 }
 
+// GetAllMidjourney godoc 
+// @Summary 获取所有 Midjourney 任务
+// @Tags 任务
+// @Router /api/mj/ [get]
 func GetAllMidjourney(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 
@@ -318,6 +322,10 @@ func GetAllMidjourney(c *gin.Context) {
 	common.ApiSuccess(c, pageInfo)
 }
 
+// GetUserMidjourney godoc
+// @Summary 获取个人 Midjourney 任务
+// @Tags 任务
+// @Router /api/mj/self [get]
 func GetUserMidjourney(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 

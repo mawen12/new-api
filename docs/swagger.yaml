@@ -8,18 +8,448 @@ paths:
       summary: 获取关于信息
       tags:
       - 通用
+  /api/authz/catalog:
+    get:
+      description: 'returns the permission schema used by the client to render the
+        permission editor: the registry of resources with their actions and display
+        label keys, plus the roles with their baseline grant matrices. Defining it
+        in the authz package keeps the schema in a single place.'
+      responses: {}
+      summary: 返回客户端用户渲染权限编辑器的 schema
+      tags:
+      - 权限
+  /api/channel/:
+    get:
+      responses: {}
+      summary: 获取所有渠道
+      tags:
+      - 渠道
+    post:
+      responses: {}
+      summary: 添加渠道
+      tags:
+      - 渠道
+  /api/channel/:id:
+    delete:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 删除渠道
+      tags:
+      - 渠道
+    get:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取指定渠道
+      tags:
+      - 渠道
+    put:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 更新渠道
+      tags:
+      - 渠道
+  /api/channel/:id/codex/refresh:
+    post:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 刷新指定渠道的 Codex 凭证
+      tags:
+      - 渠道
+  /api/channel/:id/codex/usage:
+    get:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取指定渠道的 Codex 用量信息
+      tags:
+      - 渠道
+  /api/channel/:id/codex/usage/reset:
+    post:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 重置指定渠道的 Codex 用量
+      tags:
+      - 渠道
+  /api/channel/:id/codex/usage/reset-credits:
+    get:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取指定渠道的 Codex 重置次数详情
+      tags:
+      - 渠道
+  /api/channel/:id/key:
+    post:
+      description: 此函数依赖 SecureVerificationRequired 中间件，确保用户已通过安全验证
+      responses: {}
+      summary: 获取渠道密钥（需要通过安全验证中间件）
+      tags:
+      - 渠道
+  /api/channel/:id/status:
+    post:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 更新渠道
+      tags:
+      - 渠道
+  /api/channel/batch:
+    post:
+      responses: {}
+      summary: 批量删除渠道
+      tags:
+      - 渠道
+  /api/channel/batch/tag:
+    post:
+      responses: {}
+      summary: 批量设置渠道标签
+      tags:
+      - 渠道
+  /api/channel/copy/:id:
+    post:
+      parameters:
+      - description: 追加到原始名称的后缀
+        in: query
+        name: suffix
+        type: string
+      - description: 是否重置余额，并将用量设置为 0，默认为 true
+        in: query
+        name: reset_balance
+        type: boolean
+      responses: {}
+      summary: 拷贝指定渠道
+      tags:
+      - 渠道
+  /api/channel/disabled:
+    delete:
+      responses: {}
+      summary: 删除已禁用的渠道
+      tags:
+      - 渠道
+  /api/channel/fetch_models:
+    post:
+      responses: {}
+      summary: 获取所有渠道的上游模型列表
+      tags:
+      - 渠道
+  /api/channel/fetch_models/:id:
+    get:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取上游模型列表
+      tags:
+      - 渠道
+  /api/channel/fix:
+    post:
+      responses: {}
+      summary: 修复渠道能力
+      tags:
+      - 渠道
+  /api/channel/models:
+    get:
+      responses: {}
+      summary: 获取渠道模型列表
+      tags:
+      - 渠道
+  /api/channel/models_enabled:
+    get:
+      responses: {}
+      summary: 获取已启用模型列表
+      tags:
+      - 渠道
+  /api/channel/multi_key/manage:
+    post:
+      responses: {}
+      summary: 管理多密钥
+      tags:
+      - 渠道
+  /api/channel/ollama/delete:
+    delete:
+      responses: {}
+      summary: 删除 Ollama 模型
+      tags:
+      - 渠道
+  /api/channel/ollama/pull:
+    post:
+      responses: {}
+      summary: 拉取 Ollama 模型
+      tags:
+      - 渠道
+  /api/channel/ollama/pull/stream:
+    post:
+      responses: {}
+      summary: 流式拉取 Ollama 模型
+      tags:
+      - 渠道
+  /api/channel/ollama/version/:id:
+    get:
+      parameters:
+      - description: 渠道ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取 Ollama 服务版本信息
+      tags:
+      - 渠道
+  /api/channel/ops:
+    get:
+      responses: {}
+      summary: 获取渠道的重试次数
+      tags:
+      - 渠道
+  /api/channel/search:
+    get:
+      responses: {}
+      summary: 搜索渠道
+      tags:
+      - 渠道
+  /api/channel/status/batch:
+    post:
+      responses: {}
+      summary: 批量更新渠道状态
+      tags:
+      - 渠道
+  /api/channel/tag:
+    put:
+      responses: {}
+      summary: 标记标签渠道
+      tags:
+      - 渠道
+  /api/channel/tag/disabled:
+    post:
+      responses: {}
+      summary: 禁用标签渠道
+      tags:
+      - 渠道
+  /api/channel/tag/enabled:
+    post:
+      responses: {}
+      summary: 启用标签渠道
+      tags:
+      - 渠道
+  /api/channel/tag/models:
+    get:
+      parameters:
+      - description: 标签
+        in: query
+        name: tag
+        required: true
+        type: string
+      responses: {}
+      summary: 获取标签模型
+      tags:
+      - 渠道
+  /api/channel/test:
+    get:
+      description: enqueues a channel_test system task instead of running the test
+        loop inline. If any channel_test task is already active, the manual run is
+        rejected so the caller does not mistake a scheduled run for this manual one.
+      responses: {}
+      summary: 测试所有渠道
+      tags:
+      - 渠道
+  /api/channel/test/:id:
+    get:
+      responses: {}
+      summary: 测试指定渠道
+      tags:
+      - 渠道
+  /api/channel/update_balance:
+    get:
+      responses: {}
+      summary: 更新所有渠道余额
+      tags:
+      - 渠道
+  /api/channel/update_balance/:id:
+    get:
+      responses: {}
+      summary: 更新指定渠道余额
+      tags:
+      - 渠道
+  /api/channel/upstream_updates/apply:
+    post:
+      responses: {}
+      summary: 应用上游的模型更新
+      tags:
+      - 渠道
+  /api/channel/upstream_updates/apply_all:
+    post:
+      responses: {}
+      summary: 应用所有的上游模型更新
+      tags:
+      - 渠道
+  /api/channel/upstream_updates/detect:
+    post:
+      responses: {}
+      summary: 检测上游模型更新
+      tags:
+      - 渠道
+  /api/channel/upstream_updates/detect_all:
+    post:
+      description: enqueues a model_update system task (manual variant) instead of
+        scanning inline. Routing the manual trigger through the framework gives it
+        the same cross-instance lease dedup and run history as the scheduled scan.
+        If any model_update task is already active, the manual run is rejected so
+        the caller does not mistake a scheduled run for this manual one.
+      responses: {}
+      summary: 检测所有的上游模型渠道更新
+      tags:
+      - 渠道
   /api/creem/webhook:
     post:
       responses: {}
       summary: 处理 Creem 回调通知（支付/退款/订阅）
       tags:
       - 通用
+  /api/custom-oauth-provider/:
+    get:
+      responses: {}
+      summary: 返回所有的自定义 OAuth 提供商
+      tags:
+      - OAuth 提供商
+    post:
+      responses: {}
+      summary: 创建一个 OAuth 提供商
+      tags:
+      - OAuth 提供商
+    put:
+      parameters:
+      - description: OAuth提供商ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 更新一个 OAuth 提供商
+      tags:
+      - OAuth 提供商
+  /api/custom-oauth-provider/:id:
+    delete:
+      parameters:
+      - description: OAuth提供商ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 删除一个 OAuth 提供商
+      tags:
+      - OAuth 提供商
+    get:
+      parameters:
+      - description: OAuth提供商ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 返回给定的 OAuth 提供商
+      tags:
+      - OAuth 提供商
+  /api/custom-oauth-provider/discovery:
+    get:
+      responses: {}
+      summary: 返回后端（仅限根路由）获取 OIDC 发现文档
+      tags:
+      - OAuth 提供商
+  /api/group/:
+    get:
+      responses: {}
+      summary: 获取所有分组
+      tags:
+      - 分组
   /api/home_page_content:
     get:
       responses: {}
       summary: 获取主页内容
       tags:
       - 通用
+  /api/log/:
+    get:
+      responses: {}
+      summary: 获取所有日志
+      tags:
+      - 日志
+  /api/log/search:
+    get:
+      responses: {}
+      summary: 搜索日志
+      tags:
+      - 日志
+  /api/log/self:
+    get:
+      responses: {}
+      summary: 获取个人日志
+      tags:
+      - 日志
+  /api/log/self/search:
+    get:
+      responses: {}
+      summary: 搜索个人日志
+      tags:
+      - 日志
+  /api/log/self/stat:
+    get:
+      responses: {}
+      summary: 获取个人日志统计
+      tags:
+      - 日志
+  /api/log/stat:
+    get:
+      responses: {}
+      summary: 获取日志统计
+      tags:
+      - 日志
+  /api/log/token:
+    get:
+      responses: {}
+      summary: 通过令牌获取日志
+      tags:
+      - 日志
   /api/models:
     get:
       responses: {}
@@ -77,7 +507,7 @@ paths:
   /api/oauth/telegram/login:
     get:
       responses: {}
-      summary: 通过 Telegram 登录
+      summary: Telegram登录
       tags:
       - 通用
   /api/oauth/wechat:
@@ -89,9 +519,81 @@ paths:
   /api/oauth/wechat/bind:
     post:
       responses: {}
-      summary: 绑定微信账号
+      summary: 绑定微信
       tags:
       - 通用
+  /api/option/:
+    get:
+      responses: {}
+      summary: 获取选项
+      tags:
+      - 选项
+    put:
+      responses: {}
+      summary: 更新选项
+      tags:
+      - 选项
+  /api/option/channel_affinity_cache:
+    delete:
+      responses: {}
+      summary: 删除渠道亲和性的缓存统计信息
+      tags:
+      - 选项
+    get:
+      responses: {}
+      summary: 获取渠道亲和性的缓存统计信息
+      tags:
+      - 选项
+  /api/option/payment_compliance:
+    post:
+      responses: {}
+      summary: 确认合规声明
+      tags:
+      - 选项
+  /api/option/rest_model_ratio:
+    post:
+      responses: {}
+      summary: 重置模型倍率
+      tags:
+      - 选项
+  /api/option/waffo-pancake/catalog:
+    get:
+      description: 凭证解析请参考：resolveWaffoPancakeAdminCreds
+      responses: {}
+      summary: 返回商家的存储和一次性商品，同时兼做凭证探测，200 响应码代表解析后的凭证有效
+      tags:
+      - 选项
+  /api/option/waffo-pancake/pair:
+    post:
+      responses: {}
+      summary: 一次往返即可生成一个 Store + 一次产品对，当产品部分失效时，会显示一个孤立 Store 标志，以便前端可以预先选择/重试，而不会丢失上下文
+      tags:
+      - 选项
+  /api/option/waffo-pancake/save:
+    post:
+      responses: {}
+      summary: 原子地持久化所有五个操作符控制的字段，Catalog/pair 端点是瞬态的，只有此端点会写入 OptionMap
+      tags:
+      - 选项
+  /api/option/waffo-pancake/subscription-product:
+    post:
+      description: mints an OnetimeProduct (not SubscriptionProduct — see service.CreateWaffoPancakeProductForPlan)
+        sized to a plan's `name` + `amount`, using persisted Pancake credentials +
+        StoreID. Reads from the form, not the plan row, so newly-typed unsaved plans
+        can mint a product too.
+      responses: {}
+      summary: 使用持久化的 Pancake 凭证和 StoreID，创建一个一次性产品
+      tags:
+      - 选项
+  /api/option/waffo-pancake/subscription-product-options:
+    get:
+      description: returns the OnetimeProducts in the saved Pancake store, for the
+        subscription-plan dropdown. The name reflects new-api's plan concept; under
+        the hood it's still OnetimeProducts.
+      responses: {}
+      summary: 返回已保存的 Pancake 商店汇总的 OnetimeProducts 对象
+      tags:
+      - 选项
   /api/perf-metrics:
     get:
       responses: {}
@@ -102,6 +604,52 @@ paths:
     get:
       responses: {}
       summary: 获取性能指标摘要
+      tags:
+      - 性能
+  /api/performance/disk_cache:
+    delete:
+      responses: {}
+      summary: 清理不活跃的磁盘缓存
+      tags:
+      - 性能
+  /api/performance/gc:
+    post:
+      responses: {}
+      summary: 强制执行 GC
+      tags:
+      - 性能
+  /api/performance/logs:
+    delete:
+      parameters:
+      - description: by_count/by_days
+        in: query
+        name: mode
+        required: true
+        type: string
+      - description: 保留前value个/保留前value天
+        in: query
+        name: value
+        required: true
+        type: integer
+      responses: {}
+      summary: 清理过期日志文件
+      tags:
+      - 性能
+    get:
+      responses: {}
+      summary: 获取日志文件列表
+      tags:
+      - 性能
+  /api/performance/reset_stats:
+    post:
+      responses: {}
+      summary: 重置性能统计
+      tags:
+      - 性能
+  /api/performance/stats:
+    get:
+      responses: {}
+      summary: 获取性能统计信息
       tags:
       - 性能
   /api/pricing:
@@ -127,6 +675,78 @@ paths:
       summary: 获取倍率配置
       tags:
       - 通用
+  /api/ratio_sync/channels:
+    get:
+      responses: {}
+      summary: 获取可同步的渠道
+      tags:
+      - 性能
+  /api/ratio_sync/fetch:
+    post:
+      responses: {}
+      summary: 倍率同步
+      tags:
+      - 倍率同步
+  /api/redemption/:
+    get:
+      parameters:
+      - description: 页数
+        in: query
+        name: p
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      responses: {}
+      summary: 获取所有兑换码
+      tags:
+      - 兑换码
+    post:
+      responses: {}
+      summary: 创建兑换码
+      tags:
+      - 兑换码
+    put:
+      responses: {}
+      summary: 更新兑换码
+      tags:
+      - 兑换码
+  /api/redemption/:id:
+    delete:
+      parameters:
+      - description: 兑换码ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 删除兑换码
+      tags:
+      - 兑换码
+    get:
+      parameters:
+      - description: 兑换码ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取指定兑换码
+      tags:
+      - 兑换码
+  /api/redemption/invalid:
+    delete:
+      responses: {}
+      summary: 删除无效兑换码
+      tags:
+      - 兑换码
+  /api/redemption/search:
+    get:
+      responses: {}
+      summary: 搜索兑换码
+      tags:
+      - 兑换码
   /api/reset_password:
     get:
       responses: {}
@@ -178,9 +798,29 @@ paths:
       responses: {}
       tags:
       - 订阅
+  /api/subscription/epay/notify:
+    get:
+      responses: {}
+      tags:
+      - 订阅
+    post:
+      responses: {}
+      tags:
+      - 订阅
   /api/subscription/epay/pay:
     post:
       responses: {}
+      tags:
+      - 订阅
+  /api/subscription/epay/return:
+    get:
+      responses: {}
+      summary: 处理付款后浏览器返回，其会校验并结束订单，重定向到控制台
+      tags:
+      - 订阅
+    post:
+      responses: {}
+      summary: 处理付款后浏览器返回，其会校验并结束订单，重定向到控制台
       tags:
       - 订阅
   /api/subscription/plans:
@@ -226,15 +866,6 @@ paths:
       tags:
       - 订阅
   /api/subscription/stripe/pay:
-    post:
-      responses: {}
-      tags:
-      - 订阅
-  /api/subscription/subscription/epay/notify:
-    get:
-      responses: {}
-      tags:
-      - 订阅
     post:
       responses: {}
       tags:
@@ -291,11 +922,99 @@ paths:
       responses: {}
       tags:
       - 订阅
+  /api/token/:
+    get:
+      responses: {}
+      summary: 获取用户的 token 用量信息
+      tags:
+      - Token
+    post:
+      responses: {}
+      summary: 添加 token
+      tags:
+      - Token
+    put:
+      responses: {}
+      summary: 更新 token
+      tags:
+      - Token
+  /api/token/:id:
+    delete:
+      parameters:
+      - description: tokenID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 删除指定 token
+      tags:
+      - Token
+    get:
+      parameters:
+      - description: TokenId
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - Token
+  /api/token/:id/key:
+    get:
+      parameters:
+      - description: TokenId
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 读取指定 token 的 key
+      tags:
+      - Token
+  /api/token/auto-groups:
+    get:
+      responses: {}
+      tags:
+      - Token
+  /api/token/batch:
+    post:
+      responses: {}
+      summary: 批量删除 token
+      tags:
+      - Token
+  /api/token/batch/keys:
+    post:
+      responses: {}
+      summary: 获取指定用户名下多个 token key
+      tags:
+      - Token
+  /api/token/search:
+    get:
+      parameters:
+      - description: 关键词
+        in: query
+        name: keyword
+        type: string
+      - description: token
+        in: query
+        name: token
+        type: string
+      responses: {}
+      summary: 查询用户的 token 用量信息
+      tags:
+      - Token
   /api/uptime/status:
     get:
       responses: {}
       tags:
       - 通用
+  /api/usage/token/:
+    get:
+      responses: {}
+      summary: 获取 token 使用用量
+      tags:
+      - Token
   /api/user-agreement:
     get:
       responses: {}

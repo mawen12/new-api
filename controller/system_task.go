@@ -11,6 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateLogCleanupSystemTask godoc
+// @Summary 创建日子清理系统任务
+// @Tags 系统任务
+// @Router /api/system-task/log-cleanup [post]
 func CreateLogCleanupSystemTask(c *gin.Context) {
 	targetTimestamp, _ := strconv.ParseInt(c.Query("target_timestamp"), 10, 64)
 	if targetTimestamp == 0 {
@@ -34,6 +38,10 @@ func CreateLogCleanupSystemTask(c *gin.Context) {
 	})
 }
 
+// GetCurrentSystemTask godoc
+// @Summary 查询当前系统任务
+// @Tags 系统任务
+// @Router /api/system-task/current [get]
 func GetCurrentSystemTask(c *gin.Context) {
 	taskType := c.Query("type")
 	if taskType == "" {
@@ -65,6 +73,10 @@ func GetCurrentSystemTask(c *gin.Context) {
 	})
 }
 
+// ListSystemTasks godoc
+// @Summary 查询所有系统任务
+// @Tags 系统任务
+// @Router /api/system-task/list [get]
 func ListSystemTasks(c *gin.Context) {
 	limit, _ := strconv.Atoi(c.Query("limit"))
 
@@ -86,6 +98,11 @@ func ListSystemTasks(c *gin.Context) {
 	})
 }
 
+// GetSystemTask godoc
+// @Summary 查看系统任务
+// @Tags 系统任务
+// @Param task_id path string true "系统任务ID"
+// @Router /api/system-task/:task_id [get]
 func GetSystemTask(c *gin.Context) {
 	taskID := c.Param("task_id")
 	if taskID == "" {

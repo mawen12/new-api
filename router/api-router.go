@@ -283,7 +283,7 @@ func SetApiRouter(router *gin.Engine) {
 
 		systemTaskRoute := apiRouter.Group("/system-task")
 		systemTaskRoute.Use(middleware.RootAuth())
-		{
+		{ // 系统任务
 			systemTaskRoute.POST("/log-cleanup", controller.CreateLogCleanupSystemTask)
 			systemTaskRoute.GET("/list", controller.ListSystemTasks)
 			systemTaskRoute.GET("/current", controller.GetCurrentSystemTask)
@@ -291,7 +291,7 @@ func SetApiRouter(router *gin.Engine) {
 		}
 		systemInfoRoute := apiRouter.Group("/system-info")
 		systemInfoRoute.Use(middleware.RootAuth())
-		{
+		{ // 系统信息
 			systemInfoRoute.GET("/instances", controller.ListSystemInstances)
 			systemInfoRoute.DELETE("/stale-instances", controller.DeleteStaleSystemInstances)
 			systemInfoRoute.DELETE("/instances/:node_name", controller.DeleteStaleSystemInstance)
@@ -325,6 +325,8 @@ func SetApiRouter(router *gin.Engine) {
 			prefillGroupRoute.DELETE("/:id", controller.DeletePrefillGroup)
 		}
 
+		// 任务
+		// https://www.newapi.ai/zh/docs/api/management/tasks/task-get
 		mjRoute := apiRouter.Group("/mj")
 		mjRoute.GET("/self", middleware.UserAuth(), controller.GetUserMidjourney)
 		mjRoute.GET("/", middleware.AdminAuth(), controller.GetAllMidjourney)
@@ -337,7 +339,7 @@ func SetApiRouter(router *gin.Engine) {
 
 		vendorRoute := apiRouter.Group("/vendors")
 		vendorRoute.Use(middleware.AdminAuth())
-		{
+		{ // 供应商管理
 			vendorRoute.GET("/", controller.GetAllVendors)
 			vendorRoute.GET("/search", controller.SearchVendors)
 			vendorRoute.GET("/:id", controller.GetVendorMeta)
@@ -348,7 +350,7 @@ func SetApiRouter(router *gin.Engine) {
 
 		modelsRoute := apiRouter.Group("/models")
 		modelsRoute.Use(middleware.AdminAuth())
-		{
+		{ // 模型
 			modelsRoute.GET("/sync_upstream/preview", controller.SyncUpstreamPreview)
 			modelsRoute.POST("/sync_upstream", controller.SyncUpstreamModels)
 			modelsRoute.GET("/missing", controller.GetMissingModels)

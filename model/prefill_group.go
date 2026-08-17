@@ -73,15 +73,16 @@ func (j *JSONValue) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// PrefillGroup 预填分组表
 type PrefillGroup struct {
-	Id          int            `json:"id"`
-	Name        string         `json:"name" gorm:"size:64;not null;uniqueIndex:uk_prefill_name,where:deleted_at IS NULL"`
-	Type        string         `json:"type" gorm:"size:32;index;not null"`
-	Items       JSONValue      `json:"items" gorm:"type:json"`
-	Description string         `json:"description,omitempty" gorm:"type:varchar(255)"`
-	CreatedTime int64          `json:"created_time" gorm:"bigint"`
-	UpdatedTime int64          `json:"updated_time" gorm:"bigint"`
-	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index"`
+	Id          int            `json:"id" gorm:"comment:分组ID"`
+	Name        string         `json:"name" gorm:"size:64;not null;uniqueIndex:uk_prefill_name,where:deleted_at IS NULL;comment:分组名称"`
+	Type        string         `json:"type" gorm:"size:32;index;not null;comment:分组类型"`
+	Items       JSONValue      `json:"items" gorm:"type:json;comment:分组元素，JSON格式"`
+	Description string         `json:"description,omitempty" gorm:"type:varchar(255);comment:分组描述"`
+	CreatedTime int64          `json:"created_time" gorm:"bigint;comment:创建时间"`
+	UpdatedTime int64          `json:"updated_time" gorm:"bigint;comment:更新时间"`
+	DeletedAt   gorm.DeletedAt `json:"-" gorm:"index;comment:删除时间"`
 }
 
 // Insert 新建组

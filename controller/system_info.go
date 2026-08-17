@@ -10,6 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ListSystemInstances godoc
+// @Summary 获取所有系统实例
+// @Tags 系统信息
+// @Router /api/system-info/instances [get]
 func ListSystemInstances(c *gin.Context) {
 	instances, err := model.ListSystemInstances()
 	if err != nil {
@@ -30,6 +34,10 @@ func ListSystemInstances(c *gin.Context) {
 	})
 }
 
+// DeleteStaleSystemInstances godoc
+// @Summary 删除稳定的系统实例
+// @Tags 系统信息
+// @Router /api/system-info/stale-instances [delete]
 func DeleteStaleSystemInstances(c *gin.Context) {
 	deletedCount, err := model.DeleteStaleSystemInstances(common.GetTimestamp())
 	if err != nil {
@@ -42,6 +50,11 @@ func DeleteStaleSystemInstances(c *gin.Context) {
 	})
 }
 
+// DeleteStaleSystemInstance
+// @Summary 删除稳定的系统实例
+// @Tags 系统信息
+// @Param node_name path string true "系统节点名称"
+// @Router /api/system-info/instances/:node_name [delete]
 func DeleteStaleSystemInstance(c *gin.Context) {
 	nodeName := c.Param("node_name")
 	if strings.TrimSpace(nodeName) == "" {

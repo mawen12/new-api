@@ -14,6 +14,486 @@
                 "responses": {}
             }
         },
+        "/api/authz/catalog": {
+            "get": {
+                "description": "returns the permission schema used by the client to render the permission editor: the registry of resources with their actions and display label keys, plus the roles with their baseline grant matrices. Defining it in the authz package keeps the schema in a single place.",
+                "tags": [
+                    "权限"
+                ],
+                "summary": "返回客户端用户渲染权限编辑器的 schema",
+                "responses": {}
+            }
+        },
+        "/api/channel/": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取所有渠道",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "添加渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/:id": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取指定渠道",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "更新渠道",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "删除渠道",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/codex/refresh": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "刷新指定渠道的 Codex 凭证",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/codex/usage": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取指定渠道的 Codex 用量信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/codex/usage/reset": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "重置指定渠道的 Codex 用量",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/codex/usage/reset-credits": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取指定渠道的 Codex 重置次数详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/key": {
+            "post": {
+                "description": "此函数依赖 SecureVerificationRequired 中间件，确保用户已通过安全验证",
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取渠道密钥（需要通过安全验证中间件）",
+                "responses": {}
+            }
+        },
+        "/api/channel/:id/status": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "更新渠道",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/batch": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "批量删除渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/batch/tag": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "批量设置渠道标签",
+                "responses": {}
+            }
+        },
+        "/api/channel/copy/:id": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "拷贝指定渠道",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "追加到原始名称的后缀",
+                        "name": "suffix",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否重置余额，并将用量设置为 0，默认为 true",
+                        "name": "reset_balance",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/disabled": {
+            "delete": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "删除已禁用的渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/fetch_models": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取所有渠道的上游模型列表",
+                "responses": {}
+            }
+        },
+        "/api/channel/fetch_models/:id": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取上游模型列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/fix": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "修复渠道能力",
+                "responses": {}
+            }
+        },
+        "/api/channel/models": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取渠道模型列表",
+                "responses": {}
+            }
+        },
+        "/api/channel/models_enabled": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取已启用模型列表",
+                "responses": {}
+            }
+        },
+        "/api/channel/multi_key/manage": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "管理多密钥",
+                "responses": {}
+            }
+        },
+        "/api/channel/ollama/delete": {
+            "delete": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "删除 Ollama 模型",
+                "responses": {}
+            }
+        },
+        "/api/channel/ollama/pull": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "拉取 Ollama 模型",
+                "responses": {}
+            }
+        },
+        "/api/channel/ollama/pull/stream": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "流式拉取 Ollama 模型",
+                "responses": {}
+            }
+        },
+        "/api/channel/ollama/version/:id": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取 Ollama 服务版本信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "渠道ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/ops": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取渠道的重试次数",
+                "responses": {}
+            }
+        },
+        "/api/channel/search": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "搜索渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/status/batch": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "批量更新渠道状态",
+                "responses": {}
+            }
+        },
+        "/api/channel/tag": {
+            "put": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "标记标签渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/tag/disabled": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "禁用标签渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/tag/enabled": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "启用标签渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/tag/models": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "获取标签模型",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "标签",
+                        "name": "tag",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/channel/test": {
+            "get": {
+                "description": "enqueues a channel_test system task instead of running the test loop inline. If any channel_test task is already active, the manual run is rejected so the caller does not mistake a scheduled run for this manual one.",
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "测试所有渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/test/:id": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "测试指定渠道",
+                "responses": {}
+            }
+        },
+        "/api/channel/update_balance": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "更新所有渠道余额",
+                "responses": {}
+            }
+        },
+        "/api/channel/update_balance/:id": {
+            "get": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "更新指定渠道余额",
+                "responses": {}
+            }
+        },
+        "/api/channel/upstream_updates/apply": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "应用上游的模型更新",
+                "responses": {}
+            }
+        },
+        "/api/channel/upstream_updates/apply_all": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "应用所有的上游模型更新",
+                "responses": {}
+            }
+        },
+        "/api/channel/upstream_updates/detect": {
+            "post": {
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "检测上游模型更新",
+                "responses": {}
+            }
+        },
+        "/api/channel/upstream_updates/detect_all": {
+            "post": {
+                "description": "enqueues a model_update system task (manual variant) instead of scanning inline. Routing the manual trigger through the framework gives it the same cross-instance lease dedup and run history as the scheduled scan. If any model_update task is already active, the manual run is rejected so the caller does not mistake a scheduled run for this manual one.",
+                "tags": [
+                    "渠道"
+                ],
+                "summary": "检测所有的上游模型渠道更新",
+                "responses": {}
+            }
+        },
         "/api/creem/webhook": {
             "post": {
                 "tags": [
@@ -23,12 +503,159 @@
                 "responses": {}
             }
         },
+        "/api/custom-oauth-provider/": {
+            "get": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "返回所有的自定义 OAuth 提供商",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "更新一个 OAuth 提供商",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OAuth提供商ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "创建一个 OAuth 提供商",
+                "responses": {}
+            }
+        },
+        "/api/custom-oauth-provider/:id": {
+            "get": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "返回给定的 OAuth 提供商",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OAuth提供商ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "删除一个 OAuth 提供商",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "OAuth提供商ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/custom-oauth-provider/discovery": {
+            "get": {
+                "tags": [
+                    "OAuth 提供商"
+                ],
+                "summary": "返回后端（仅限根路由）获取 OIDC 发现文档",
+                "responses": {}
+            }
+        },
+        "/api/group/": {
+            "get": {
+                "tags": [
+                    "分组"
+                ],
+                "summary": "获取所有分组",
+                "responses": {}
+            }
+        },
         "/api/home_page_content": {
             "get": {
                 "tags": [
                     "通用"
                 ],
                 "summary": "获取主页内容",
+                "responses": {}
+            }
+        },
+        "/api/log/": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "获取所有日志",
+                "responses": {}
+            }
+        },
+        "/api/log/search": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "搜索日志",
+                "responses": {}
+            }
+        },
+        "/api/log/self": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "获取个人日志",
+                "responses": {}
+            }
+        },
+        "/api/log/self/search": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "搜索个人日志",
+                "responses": {}
+            }
+        },
+        "/api/log/self/stat": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "获取个人日志统计",
+                "responses": {}
+            }
+        },
+        "/api/log/stat": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "获取日志统计",
+                "responses": {}
+            }
+        },
+        "/api/log/token": {
+            "get": {
+                "tags": [
+                    "日志"
+                ],
+                "summary": "通过令牌获取日志",
                 "responses": {}
             }
         },
@@ -118,7 +745,7 @@
                 "tags": [
                     "通用"
                 ],
-                "summary": "通过 Telegram 登录",
+                "summary": "Telegram登录",
                 "responses": {}
             }
         },
@@ -136,7 +763,105 @@
                 "tags": [
                     "通用"
                 ],
-                "summary": "绑定微信账号",
+                "summary": "绑定微信",
+                "responses": {}
+            }
+        },
+        "/api/option/": {
+            "get": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "获取选项",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "更新选项",
+                "responses": {}
+            }
+        },
+        "/api/option/channel_affinity_cache": {
+            "get": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "获取渠道亲和性的缓存统计信息",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "删除渠道亲和性的缓存统计信息",
+                "responses": {}
+            }
+        },
+        "/api/option/payment_compliance": {
+            "post": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "确认合规声明",
+                "responses": {}
+            }
+        },
+        "/api/option/rest_model_ratio": {
+            "post": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "重置模型倍率",
+                "responses": {}
+            }
+        },
+        "/api/option/waffo-pancake/catalog": {
+            "get": {
+                "description": "凭证解析请参考：resolveWaffoPancakeAdminCreds",
+                "tags": [
+                    "选项"
+                ],
+                "summary": "返回商家的存储和一次性商品，同时兼做凭证探测，200 响应码代表解析后的凭证有效",
+                "responses": {}
+            }
+        },
+        "/api/option/waffo-pancake/pair": {
+            "post": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "一次往返即可生成一个 Store + 一次产品对，当产品部分失效时，会显示一个孤立 Store 标志，以便前端可以预先选择/重试，而不会丢失上下文",
+                "responses": {}
+            }
+        },
+        "/api/option/waffo-pancake/save": {
+            "post": {
+                "tags": [
+                    "选项"
+                ],
+                "summary": "原子地持久化所有五个操作符控制的字段，Catalog/pair 端点是瞬态的，只有此端点会写入 OptionMap",
+                "responses": {}
+            }
+        },
+        "/api/option/waffo-pancake/subscription-product": {
+            "post": {
+                "description": "mints an OnetimeProduct (not SubscriptionProduct — see service.CreateWaffoPancakeProductForPlan) sized to a plan's `name` + `amount`, using persisted Pancake credentials + StoreID. Reads from the form, not the plan row, so newly-typed unsaved plans can mint a product too.",
+                "tags": [
+                    "选项"
+                ],
+                "summary": "使用持久化的 Pancake 凭证和 StoreID，创建一个一次性产品",
+                "responses": {}
+            }
+        },
+        "/api/option/waffo-pancake/subscription-product-options": {
+            "get": {
+                "description": "returns the OnetimeProducts in the saved Pancake store, for the subscription-plan dropdown. The name reflects new-api's plan concept; under the hood it's still OnetimeProducts.",
+                "tags": [
+                    "选项"
+                ],
+                "summary": "返回已保存的 Pancake 商店汇总的 OnetimeProducts 对象",
                 "responses": {}
             }
         },
@@ -155,6 +880,74 @@
                     "性能"
                 ],
                 "summary": "获取性能指标摘要",
+                "responses": {}
+            }
+        },
+        "/api/performance/disk_cache": {
+            "delete": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "清理不活跃的磁盘缓存",
+                "responses": {}
+            }
+        },
+        "/api/performance/gc": {
+            "post": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "强制执行 GC",
+                "responses": {}
+            }
+        },
+        "/api/performance/logs": {
+            "get": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "获取日志文件列表",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "清理过期日志文件",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "by_count/by_days",
+                        "name": "mode",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "保留前value个/保留前value天",
+                        "name": "value",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/performance/reset_stats": {
+            "post": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "重置性能统计",
+                "responses": {}
+            }
+        },
+        "/api/performance/stats": {
+            "get": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "获取性能统计信息",
                 "responses": {}
             }
         },
@@ -190,6 +983,113 @@
                     "通用"
                 ],
                 "summary": "获取倍率配置",
+                "responses": {}
+            }
+        },
+        "/api/ratio_sync/channels": {
+            "get": {
+                "tags": [
+                    "性能"
+                ],
+                "summary": "获取可同步的渠道",
+                "responses": {}
+            }
+        },
+        "/api/ratio_sync/fetch": {
+            "post": {
+                "tags": [
+                    "倍率同步"
+                ],
+                "summary": "倍率同步",
+                "responses": {}
+            }
+        },
+        "/api/redemption/": {
+            "get": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "获取所有兑换码",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页数",
+                        "name": "p",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "更新兑换码",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "创建兑换码",
+                "responses": {}
+            }
+        },
+        "/api/redemption/:id": {
+            "get": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "获取指定兑换码",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "兑换码ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "删除兑换码",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "兑换码ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/redemption/invalid": {
+            "delete": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "删除无效兑换码",
+                "responses": {}
+            }
+        },
+        "/api/redemption/search": {
+            "get": {
+                "tags": [
+                    "兑换码"
+                ],
+                "summary": "搜索兑换码",
                 "responses": {}
             }
         },
@@ -270,11 +1170,41 @@
                 "responses": {}
             }
         },
+        "/api/subscription/epay/notify": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
         "/api/subscription/epay/pay": {
             "post": {
                 "tags": [
                     "订阅"
                 ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/epay/return": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "处理付款后浏览器返回，其会校验并结束订单，重定向到控制台",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "处理付款后浏览器返回，其会校验并结束订单，重定向到控制台",
                 "responses": {}
             }
         },
@@ -343,20 +1273,6 @@
             }
         },
         "/api/subscription/stripe/pay": {
-            "post": {
-                "tags": [
-                    "订阅"
-                ],
-                "responses": {}
-            }
-        },
-        "/api/subscription/subscription/epay/notify": {
-            "get": {
-                "tags": [
-                    "订阅"
-                ],
-                "responses": {}
-            },
             "post": {
                 "tags": [
                     "订阅"
@@ -442,11 +1358,143 @@
                 "responses": {}
             }
         },
+        "/api/token/": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "获取用户的 token 用量信息",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "更新 token",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "添加 token",
+                "responses": {}
+            }
+        },
+        "/api/token/:id": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "TokenId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "删除指定 token",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "tokenID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/token/:id/key": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "读取指定 token 的 key",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "TokenId",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/token/auto-groups": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/token/batch": {
+            "post": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "批量删除 token",
+                "responses": {}
+            }
+        },
+        "/api/token/batch/keys": {
+            "post": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "获取指定用户名下多个 token key",
+                "responses": {}
+            }
+        },
+        "/api/token/search": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "查询用户的 token 用量信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "query"
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/api/uptime/status": {
             "get": {
                 "tags": [
                     "通用"
                 ],
+                "responses": {}
+            }
+        },
+        "/api/usage/token/": {
+            "get": {
+                "tags": [
+                    "Token"
+                ],
+                "summary": "获取 token 使用用量",
                 "responses": {}
             }
         },

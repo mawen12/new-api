@@ -8,9 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetMissingModels returns the list of model names that are referenced by channels
-// but do not have corresponding records in the models meta table.
-// This helps administrators quickly discover models that need configuration.
+// GetMissingModels godoc
+// @Summary 获取缺失模型
+// @Description returns the list of model names that are referenced by channels. but do not have corresponding records in the models meta table.This helps administrators quickly discover models that need configuration.
+// @Tags 模型
+// @Router /api/models/missing [get]
 func GetMissingModels(c *gin.Context) {
 	missing, err := model.GetMissingModels()
 	if err != nil {

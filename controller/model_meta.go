@@ -13,7 +13,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetAllModelsMeta 获取模型列表（分页）
+// GetAllModelsMeta godoc
+// @Summary 获取模型列表（分页）
+// @Tags 模型
+// @Router /api/models/ [get]
 func GetAllModelsMeta(c *gin.Context) {
 
 	pageInfo := common.GetPageQuery(c)
@@ -41,7 +44,10 @@ func GetAllModelsMeta(c *gin.Context) {
 	})
 }
 
-// SearchModelsMeta 搜索模型列表
+// SearchModelsMeta godoc
+// @Summary 搜索模型列表
+// @Tags 模型
+// @Router /api/models/search [get]
 func SearchModelsMeta(c *gin.Context) {
 
 	keyword := c.Query("keyword")
@@ -69,7 +75,11 @@ func SearchModelsMeta(c *gin.Context) {
 	})
 }
 
-// GetModelMeta 根据 ID 获取单条模型信息
+// GetModelMeta godoc
+// @Summary 根据 ID 获取单条模型信息
+// @Tags 模型
+// @Param id path int true "模型ID"
+// @Router /api/models/:id [get]
 func GetModelMeta(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -86,7 +96,10 @@ func GetModelMeta(c *gin.Context) {
 	common.ApiSuccess(c, &m)
 }
 
-// CreateModelMeta 新建模型
+// CreateModelMeta godoc
+// @Summary 新建模型
+// @Tags 模型
+// @Router /api/models/ [post]
 func CreateModelMeta(c *gin.Context) {
 	var m model.Model
 	if err := c.ShouldBindJSON(&m); err != nil {
@@ -114,7 +127,10 @@ func CreateModelMeta(c *gin.Context) {
 	common.ApiSuccess(c, &m)
 }
 
-// UpdateModelMeta 更新模型
+// UpdateModelMeta godoc
+// @Summary 更新模型
+// @Tags 模型
+// @Router /api/models/ [put]
 func UpdateModelMeta(c *gin.Context) {
 	statusOnly := c.Query("status_only") == "true"
 
@@ -153,7 +169,11 @@ func UpdateModelMeta(c *gin.Context) {
 	common.ApiSuccess(c, &m)
 }
 
-// DeleteModelMeta 删除模型
+// DeleteModelMeta godoc
+// @Summary 删除模型
+// @Tags 模型
+// @Param id path int true "模型ID"
+// @Router /api/models/:id [delete]
 func DeleteModelMeta(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

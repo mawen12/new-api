@@ -13,6 +13,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllTask godoc
+// @Summary 获取所有任务
+// @Tags 任务
+// @Router /api/task/ [get]
 func GetAllTask(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 
@@ -36,6 +40,10 @@ func GetAllTask(c *gin.Context) {
 	common.ApiSuccess(c, pageInfo)
 }
 
+// GetUserTask godoc
+// @Summary 获取个人任务
+// @Tags 任务
+// @Router /api/task/self [get]
 func GetUserTask(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 

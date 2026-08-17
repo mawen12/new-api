@@ -23,3 +23,8 @@ SELECT xxx FROM xxx
 # OpenTelemetry Protocol
 
 # Testing
+
+- CREATE POST
+- UPDATE PUT
+- SEARCH GET
+- DELETE DELETE

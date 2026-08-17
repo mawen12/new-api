@@ -9,7 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// GetPrefillGroups 获取预填组列表，可通过 ?type=xxx 过滤
+// GetPrefillGroups godoc
+// @Summary 获取预填分组列表
+// @Tags 分组
+// @Param type query string false "类型"
+// @Router /api/prefill_group/ [get]
 func GetPrefillGroups(c *gin.Context) {
 	groupType := c.Query("type")
 	groups, err := model.GetAllPrefillGroups(groupType)
@@ -20,7 +24,10 @@ func GetPrefillGroups(c *gin.Context) {
 	common.ApiSuccess(c, groups)
 }
 
-// CreatePrefillGroup 创建新的预填组
+// CreatePrefillGroup godoc
+// @Summary 创建预填分组
+// @Tags 分组
+// @Router /api/prefill_group/ [post]
 func CreatePrefillGroup(c *gin.Context) {
 	var g model.PrefillGroup
 	if err := c.ShouldBindJSON(&g); err != nil {
@@ -47,7 +54,10 @@ func CreatePrefillGroup(c *gin.Context) {
 	common.ApiSuccess(c, &g)
 }
 
-// UpdatePrefillGroup 更新预填组
+// UpdatePrefillGroup godoc
+// @Summary 更新预填组
+// @Tags 分组
+// @Router /api/prefill_group/ [put]
 func UpdatePrefillGroup(c *gin.Context) {
 	var g model.PrefillGroup
 	if err := c.ShouldBindJSON(&g); err != nil {
@@ -74,7 +84,11 @@ func UpdatePrefillGroup(c *gin.Context) {
 	common.ApiSuccess(c, &g)
 }
 
-// DeletePrefillGroup 删除预填组
+// DeletePrefillGroup godoc
+// @Summary 删除预填组
+// @Tags 分组
+// @Param id path int true "分组ID"
+// @Router /api/prefill_group/:id [delete]
 func DeletePrefillGroup(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

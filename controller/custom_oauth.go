@@ -223,7 +223,7 @@ func FetchCustomOAuthDiscovery(c *gin.Context) {
 // CreateCustomOAuthProvider godoc
 // @Summary 创建一个 OAuth 提供商
 // @Tags OAuth 提供商
-// @Router /api/custom-oauth-provider/ [create]
+// @Router /api/custom-oauth-provider/ [post]
 func CreateCustomOAuthProvider(c *gin.Context) {
 	var req CreateCustomOAuthProviderRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

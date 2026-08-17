@@ -25,27 +25,29 @@ const (
 
 var ErrSystemTaskLockLost = errors.New("system task lock lost")
 
+// SystemTask 系统任务表
 type SystemTask struct {
-	ID        int64            `json:"id" gorm:"primary_key"`
-	TaskID    string           `json:"task_id" gorm:"type:varchar(64);uniqueIndex"`
-	Type      string           `json:"type" gorm:"type:varchar(64);index"`
-	Status    SystemTaskStatus `json:"status" gorm:"type:varchar(32);index"`
-	ActiveKey *string          `json:"active_key,omitempty" gorm:"type:varchar(64);uniqueIndex"`
-	Payload   string           `json:"payload" gorm:"type:text"`
-	State     string           `json:"state" gorm:"type:text"`
-	Result    string           `json:"result" gorm:"type:text"`
-	Error     string           `json:"error" gorm:"type:text"`
-	LockedBy  string           `json:"locked_by" gorm:"type:varchar(128);index"`
-	CreatedAt int64            `json:"created_at" gorm:"bigint;index"`
-	UpdatedAt int64            `json:"updated_at" gorm:"bigint;index"`
+	ID        int64            `json:"id" gorm:"primary_key;comment:系统任务ID"`
+	TaskID    string           `json:"task_id" gorm:"type:varchar(64);uniqueIndex;comment:任务ID"`
+	Type      string           `json:"type" gorm:"type:varchar(64);index;comment:任务类型"`
+	Status    SystemTaskStatus `json:"status" gorm:"type:varchar(32);index;comment:任务状态 pending-发送中 running-运行中 succeeded-成功 failed-失败"`
+	ActiveKey *string          `json:"active_key,omitempty" gorm:"type:varchar(64);uniqueIndex;comment:激活密钥"`
+	Payload   string           `json:"payload" gorm:"type:text;comment:负载"`
+	State     string           `json:"state" gorm:"type:text;comment:状态"`
+	Result    string           `json:"result" gorm:"type:text;comment:执行结果"`
+	Error     string           `json:"error" gorm:"type:text;comment:错误"`
+	LockedBy  string           `json:"locked_by" gorm:"type:varchar(128);index;comment:被谁锁住"`
+	CreatedAt int64            `json:"created_at" gorm:"bigint;index;comment:创建时间"`
+	UpdatedAt int64            `json:"updated_at" gorm:"bigint;index;comment:更新时间"`
 }
 
+// SystemTaskLock 系统任务锁表
 type SystemTaskLock struct {
-	Type        string `json:"type" gorm:"type:varchar(64);primaryKey"`
-	TaskID      string `json:"task_id" gorm:"type:varchar(64);index"`
-	LockedBy    string `json:"locked_by" gorm:"type:varchar(128);index"`
-	LockedUntil int64  `json:"locked_until" gorm:"bigint;index"`
-	UpdatedAt   int64  `json:"updated_at" gorm:"bigint;index"`
+	Type        string `json:"type" gorm:"type:varchar(64);primaryKey;comment:锁类型"`
+	TaskID      string `json:"task_id" gorm:"type:varchar(64);index;comment:任务ID"`
+	LockedBy    string `json:"locked_by" gorm:"type:varchar(128);index;comment:被谁锁住"`
+	LockedUntil int64  `json:"locked_until" gorm:"bigint;index;comment:加锁到期时间"`
+	UpdatedAt   int64  `json:"updated_at" gorm:"bigint;index;comment:更新时间"`
 }
 
 type SystemTaskResponse struct {
@@ -120,6 +122,7 @@ func CreateSystemTask(taskType string, payload any, state any) (*SystemTask, err
 
 func GetSystemTaskByTaskID(taskID string) (*SystemTask, error) {
 	var task SystemTask
+	// SELECT * FROM system_task WHERE task_id = ?
 	if err := DB.Where("task_id = ?", taskID).First(&task).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil

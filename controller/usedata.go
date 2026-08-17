@@ -28,6 +28,10 @@ func parseFlowQuotaTimeRange(c *gin.Context) (int64, int64, bool) {
 	return startTimestamp, endTimestamp, true
 }
 
+// GetAllQuotaDates godoc
+// @Summary 获取所有使用数据
+// @Tags 数据
+// @Router /api/data/ [get]
 func GetAllQuotaDates(c *gin.Context) {
 	startTimestamp, _ := strconv.ParseInt(c.Query("start_timestamp"), 10, 64)
 	endTimestamp, _ := strconv.ParseInt(c.Query("end_timestamp"), 10, 64)
@@ -45,6 +49,10 @@ func GetAllQuotaDates(c *gin.Context) {
 	return
 }
 
+// GetQuotaDatesByUser godoc
+// @Summary 按用户获取使用数据
+// @Tags 数据
+// @Router /api/data/users [get]
 func GetQuotaDatesByUser(c *gin.Context) {
 	startTimestamp, _ := strconv.ParseInt(c.Query("start_timestamp"), 10, 64)
 	endTimestamp, _ := strconv.ParseInt(c.Query("end_timestamp"), 10, 64)
@@ -60,6 +68,10 @@ func GetQuotaDatesByUser(c *gin.Context) {
 	})
 }
 
+// GetUserQuotaDates godoc
+// @Summary 获取自己的使用数据
+// @Tags 数据
+// @Router /api/data/self [get]
 func GetUserQuotaDates(c *gin.Context) {
 	userId := c.GetInt("id")
 	startTimestamp, _ := strconv.ParseInt(c.Query("start_timestamp"), 10, 64)
@@ -85,6 +97,10 @@ func GetUserQuotaDates(c *gin.Context) {
 	return
 }
 
+// GetAllFlowQuotaDates godoc
+// @Summary 获取所有跟随者的使用数据
+// @Tags 数据
+// @Router /api/data/ [get]
 func GetAllFlowQuotaDates(c *gin.Context) {
 	startTimestamp, endTimestamp, ok := parseFlowQuotaTimeRange(c)
 	if !ok {
@@ -104,6 +120,10 @@ func GetAllFlowQuotaDates(c *gin.Context) {
 	return
 }
 
+// GetUserFlowQuotaDates godoc
+// @Summary 获取当前用户的跟随者的使用数据
+// @Tags 数据
+// @Router /api/data/flow/self [get]
 func GetUserFlowQuotaDates(c *gin.Context) {
 	userId := c.GetInt("id")
 	startTimestamp, endTimestamp, ok := parseFlowQuotaTimeRange(c)

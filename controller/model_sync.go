@@ -262,9 +262,11 @@ func ensureVendorID(vendorName string, vendorByName map[string]upstreamVendor, v
 	return 0
 }
 
-// SyncUpstreamModels 同步上游模型与供应商：
-// - 默认仅创建「未配置模型」
-// - 可通过 overwrite 选择性覆盖更新本地已有模型的字段（前提：sync_official <> 0）
+// SyncUpstreamModels godoc
+// @Summary 预览上游模型同步
+// @Description 默认仅创建「未配置模型」,可通过 overwrite 选择性覆盖更新本地已有模型的字段（前提：sync_official <> 0）
+// @Tags 模型
+// @Router /api/models/sync_upstream [get]
 func SyncUpstreamModels(c *gin.Context) {
 	var req syncRequest
 	// 允许空体
@@ -495,7 +497,10 @@ func chooseStatus(primary, fallback int) int {
 	return 1
 }
 
-// SyncUpstreamPreview 预览上游与本地的差异（仅用于弹窗选择）
+// SyncUpstreamPreview godoc
+// @Summary 预览上游与本地的差异（仅用于弹窗选择）
+// @Tags 模型
+// @Router /api/models/sync_upstream/preview [get]
 func SyncUpstreamPreview(c *gin.Context) {
 	// 1) 拉取上游数据
 	timeoutSec := common.GetEnvOrDefault("SYNC_HTTP_TIMEOUT_SECONDS", 15)

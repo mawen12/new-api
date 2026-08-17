@@ -46,7 +46,7 @@ type Channel struct {
 	//MaxInputTokens     *int    `json:"max_input_tokens" gorm:"default:0"`
 	StatusCodeMapping *string `json:"status_code_mapping" gorm:"type:varchar(1024);default:'';comment:状态码映射"`
 	Priority          *int64  `json:"priority" gorm:"bigint;default:0;comment:优先级"`
-	AutoBan           *int    `json:"auto_ban" gorm:"default:1:comment:自动Ban"`
+	AutoBan           *int    `json:"auto_ban" gorm:"default:1;comment:自动Ban"`
 	OtherInfo         string  `json:"other_info" gorm:"comment:其他信息"`
 	Tag               *string `json:"tag" gorm:"index;comment:标签"`
 	Setting           *string `json:"setting" gorm:"type:text;comment:额外设置"` // 渠道额外设置
@@ -886,7 +886,7 @@ func DeleteChannelByStatus(status int64) (int64, error) {
 
 // DeleteDisabledChannel 删除禁用（包含手动禁用和自动禁用）的渠道
 func DeleteDisabledChannel() (int64, error) {
-	// DELETE FROM channel WHERE status = 2 or status = 3 
+	// DELETE FROM channel WHERE status = 2 or status = 3
 	result := DB.Where("status = ? or status = ?", common.ChannelStatusAutoDisabled, common.ChannelStatusManuallyDisabled).Delete(&Channel{})
 	return result.RowsAffected, result.Error
 }

@@ -20,7 +20,7 @@ cheatsheet do
     category do
         id 'Channel'
 
-        header '通道'
+        header '渠道'
         header '适配器'
         header '模型列表'
 

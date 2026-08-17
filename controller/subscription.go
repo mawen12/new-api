@@ -410,7 +410,11 @@ func AdminBindSubscription(c *gin.Context) {
 }
 
 // ---- Admin: user subscription management ----
-
+// AdminListUserSubscriptions godoc
+// @Summary 管理员查询用户订阅
+// @Tags 订阅
+// @Param id path int true "用户ID"
+// @Router /api/subscription/users/:id/subscriptions [get]
 func AdminListUserSubscriptions(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("id"))
 	if userId <= 0 {
@@ -452,6 +456,11 @@ func recordSubscriptionResetUserLogs(result *model.SubscriptionResetResult, admi
 }
 
 // AdminCreateUserSubscription creates a new user subscription from a plan (no payment).
+// AdminCreateUserSubscription godoc
+// @Summary 管理员创建用户订阅
+// @Tags 订阅
+// @Param id path int true "用户ID"
+// @Router /api/subscription/users/:id/subscriptions [post]
 func AdminCreateUserSubscription(c *gin.Context) {
 	if !requirePaymentCompliance(c) {
 		return
@@ -479,6 +488,11 @@ func AdminCreateUserSubscription(c *gin.Context) {
 	common.ApiSuccess(c, nil)
 }
 
+// AdminResetUserSubscriptionsByPlan godoc
+// @Summary 管理员重置用户订阅
+// @Tags 订阅
+// @Param id path int true "用户ID"
+// @Router /api/subscription/users/:id/subscriptions/reset [post]
 func AdminResetUserSubscriptionsByPlan(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("id"))
 	if userId <= 0 {
@@ -513,7 +527,7 @@ func AdminResetUserSubscriptionsByPlan(c *gin.Context) {
 }
 
 // AdminResetPlanSubscriptions godoc
-// @Summary 
+// @Summary 管理员重置用户订阅
 // @Tags 订阅
 // @Param id path int true "订阅ID"
 // @Router /api/subscription/plans/:id/subscriptions/reset [post]
@@ -547,7 +561,11 @@ func AdminResetPlanSubscriptions(c *gin.Context) {
 	common.ApiSuccess(c, result)
 }
 
-// AdminInvalidateUserSubscription cancels a user subscription immediately.
+// AdminInvalidateUserSubscription godoc
+// @Summary 管理员撤销用户订阅
+// @Tags 订阅
+// @Param id path int true "订阅ID"
+// @Router /api/subscription/user_subscriptions/:id/invalidate [post]
 func AdminInvalidateUserSubscription(c *gin.Context) {
 	subId, _ := strconv.Atoi(c.Param("id"))
 	if subId <= 0 {

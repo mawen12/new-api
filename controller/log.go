@@ -10,6 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetAllLogs godoc
+// @Summary 获取所有日志
+// @Tags 日志
+// @Router /api/log/ [get]
 func GetAllLogs(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	logType, _ := strconv.Atoi(c.Query("type"))
@@ -33,6 +37,10 @@ func GetAllLogs(c *gin.Context) {
 	return
 }
 
+// GetUserLogs godoc
+// @Summary 获取个人日志
+// @Tags 日志
+// @Router /api/log/self [get]
 func GetUserLogs(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	userId := c.GetInt("id")
@@ -56,6 +64,10 @@ func GetUserLogs(c *gin.Context) {
 }
 
 // Deprecated: SearchAllLogs 已废弃，前端未使用该接口。
+// SearchAllLogs godoc
+// @Summary 搜索日志
+// @Tags 日志
+// @Router /api/log/search [get]
 func SearchAllLogs(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": false,
@@ -64,6 +76,10 @@ func SearchAllLogs(c *gin.Context) {
 }
 
 // Deprecated: SearchUserLogs 已废弃，前端未使用该接口。
+// SearchUserLogs godoc
+// @Summary 搜索个人日志
+// @Tags 日志
+// @Router /api/log/self/search [get]
 func SearchUserLogs(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"success": false,
@@ -71,6 +87,10 @@ func SearchUserLogs(c *gin.Context) {
 	})
 }
 
+// GetLogByKey godoc
+// @Summary 通过令牌获取日志
+// @Tags 日志
+// @Router /api/log/token [get]
 func GetLogByKey(c *gin.Context) {
 	tokenId := c.GetInt("token_id")
 	if tokenId == 0 {
@@ -95,6 +115,10 @@ func GetLogByKey(c *gin.Context) {
 	})
 }
 
+// GetLogsStat godoc
+// @Summary 获取日志统计
+// @Tags 日志
+// @Router /api/log/stat [get]
 func GetLogsStat(c *gin.Context) {
 	logType, _ := strconv.Atoi(c.Query("type"))
 	startTimestamp, _ := strconv.ParseInt(c.Query("start_timestamp"), 10, 64)
@@ -122,6 +146,10 @@ func GetLogsStat(c *gin.Context) {
 	return
 }
 
+// GetLogsSelfStat godoc
+// @Summary 获取个人日志统计
+// @Tags 日志
+// @Router /api/log/self/stat [get]
 func GetLogsSelfStat(c *gin.Context) {
 	username := c.GetString("username")
 	logType, _ := strconv.Atoi(c.Query("type"))

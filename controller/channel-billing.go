@@ -421,6 +421,10 @@ func updateChannelBalance(channel *model.Channel) (float64, error) {
 	return balance, nil
 }
 
+// UpdateChannelBalance godoc
+// @Summary 更新指定渠道余额
+// @Tags 渠道
+// @Router /api/channel/update_balance/:id [get]
 func UpdateChannelBalance(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -481,6 +485,10 @@ func updateAllChannelsBalance() error {
 	return nil
 }
 
+// UpdateAllChannelsBalance godoc
+// @Summary 更新所有渠道余额
+// @Tags 渠道
+// @Router /api/channel/update_balance [get]
 func UpdateAllChannelsBalance(c *gin.Context) {
 	// TODO: make it async
 	err := updateAllChannelsBalance()

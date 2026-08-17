@@ -81,6 +81,10 @@ func GetPricing(c *gin.Context) {
 	})
 }
 
+// ResetModelRatio godoc
+// @Summary 重置模型倍率
+// @Tags 选项
+// @Router /api/option/rest_model_ratio [post]
 func ResetModelRatio(c *gin.Context) {
 	defaultStr := ratio_setting.DefaultModelRatio2JSONString()
 	err := model.UpdateOption("ModelRatio", defaultStr)

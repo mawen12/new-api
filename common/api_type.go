@@ -2,7 +2,7 @@ package common
 
 import "github.com/QuantumNous/new-api/constant"
 
-// ChannelType2APIType 将通道类型转换为对应的AI模型供应商，fallback为OpenAI
+// ChannelType2APIType 将渠道类型转换为对应的AI模型供应商，fallback为OpenAI
 func ChannelType2APIType(channelType int) (int, bool) {
 	apiType := -1
 	switch channelType {

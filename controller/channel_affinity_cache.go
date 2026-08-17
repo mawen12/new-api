@@ -8,6 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetChannelAffinityCacheStats godoc
+// @Summary 获取渠道亲和性的缓存统计信息
+// @Tags 选项
+// @Router /api/option/channel_affinity_cache [get]
 func GetChannelAffinityCacheStats(c *gin.Context) {
 	stats := service.GetChannelAffinityCacheStats()
 	c.JSON(http.StatusOK, gin.H{
@@ -17,6 +21,10 @@ func GetChannelAffinityCacheStats(c *gin.Context) {
 	})
 }
 
+// ClearChannelAffinityCache godoc
+// @Summary 删除渠道亲和性的缓存统计信息
+// @Tags 选项
+// @Router /api/option/channel_affinity_cache [delete]
 func ClearChannelAffinityCache(c *gin.Context) {
 	all := strings.TrimSpace(c.Query("all"))
 	ruleName := strings.TrimSpace(c.Query("rule_name"))

@@ -256,6 +256,202 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/subscription/balance/pay": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/bind": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/creem/pay": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/epay/pay": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/plans": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/plans/:id": {
+            "put": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            },
+            "patch": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/plans/:id/subscriptions/reset": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "管理员重置用户订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/self": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "获取订阅计划详细信息",
+                "responses": {}
+            }
+        },
+        "/api/subscription/self/preference": {
+            "put": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "更新订阅",
+                "responses": {}
+            }
+        },
+        "/api/subscription/stripe/pay": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/subscription/epay/notify": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/user_subscriptions/:id/invalidate": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "管理员撤销用户订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "订阅ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/users/:id/subscriptions": {
+            "get": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "管理员查询用户订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "管理员创建用户订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/users/:id/subscriptions/reset": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "summary": "管理员重置用户订阅",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/subscription/waffo-pancake/pay": {
+            "post": {
+                "tags": [
+                    "订阅"
+                ],
+                "responses": {}
+            }
+        },
         "/api/uptime/status": {
             "get": {
                 "tags": [
@@ -270,6 +466,236 @@ const docTemplate = `{
                     "通用"
                 ],
                 "summary": "获取用户同意信息",
+                "responses": {}
+            }
+        },
+        "/api/user/": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "获取所有系统内所有用户",
+                "responses": {}
+            },
+            "put": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "更新用户",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "创建用户",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/backup_codes": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "重新生成备用码",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/disable": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "禁用2FA",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/enable": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "启用2FA",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/setup": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "初始化2FA设置",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/stats": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "管理员获取2FA统计信息",
+                "responses": {}
+            }
+        },
+        "/api/user/2fa/status": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取用户2FA状态",
+                "responses": {}
+            }
+        },
+        "/api/user/:id": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "获取给定用户信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/:id/2fa": {
+            "delete": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "管理员强制禁用用户2FA",
+                "responses": {}
+            }
+        },
+        "/api/user/:id/bindings/:binding_type": {
+            "delete": {
+                "tags": [
+                    "管理员"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "绑定类型",
+                        "name": "binding_type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/:id/oauth/bindings": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/:id/oauth/bindings/:provider_id": {
+            "delete": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "解绑给定的 OAuth 供应商",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "OAuth供应商ID",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/:id/reset_passkey": {
+            "delete": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "重置用户的 passkey",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/aff": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取该用户的 aff 代码",
+                "responses": {}
+            }
+        },
+        "/api/user/aff_transfer": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/amount": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "充值帐户金额",
                 "responses": {}
             }
         },
@@ -291,6 +717,31 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/user/checkin": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取用户签到状态和历史记录",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "执行用户签到",
+                "responses": {}
+            }
+        },
+        "/api/user/creem/pay": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "创建 Creem 支付订单",
+                "responses": {}
+            }
+        },
         "/api/user/epay/notify": {
             "post": {
                 "tags": [
@@ -303,7 +754,8 @@ const docTemplate = `{
         "/api/user/groups": {
             "get": {
                 "tags": [
-                    "用户 已登录用户"
+                    "用户",
+                    "已登录用户"
                 ],
                 "summary": "获取用户组",
                 "responses": {}
@@ -327,6 +779,67 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/user/manage": {
+            "post": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "管理用户",
+                "responses": {}
+            }
+        },
+        "/api/user/models": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取用户的模型",
+                "responses": {}
+            }
+        },
+        "/api/user/oauth/bindings": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "返回当前用户绑定的所有 OAuth",
+                "responses": {}
+            }
+        },
+        "/api/user/oauth/bindings/:provider_id": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "解绑指定的 OAuth",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "OAuth供应商",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/user/passkey": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取 passkey 状态",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "删除 passkey",
+                "responses": {}
+            }
+        },
         "/api/user/passkey/login/begin": {
             "post": {
                 "tags": [
@@ -345,6 +858,51 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/api/user/passkey/register/begin": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "passkey 注册开始",
+                "responses": {}
+            }
+        },
+        "/api/user/passkey/register/finish": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "完成 passkey 注册",
+                "responses": {}
+            }
+        },
+        "/api/user/passkey/verify/begin": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "开始 passkey 验证",
+                "responses": {}
+            }
+        },
+        "/api/user/passkey/verify/finish": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "验证 passkey 完成",
+                "responses": {}
+            }
+        },
+        "/api/user/pay": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "请求支付",
+                "responses": {}
+            }
+        },
         "/api/user/register": {
             "post": {
                 "tags": [
@@ -360,6 +918,38 @@ const docTemplate = `{
                     "通用"
                 ],
                 "summary": "重置用户密码",
+                "responses": {}
+            }
+        },
+        "/api/user/search": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "查询系统内的用户",
+                "responses": {}
+            }
+        },
+        "/api/user/self": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取用户信息",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "更新用户信息",
+                "responses": {}
+            },
+            "delete": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "删除用户信息",
                 "responses": {}
             }
         },
@@ -395,6 +985,121 @@ const docTemplate = `{
                     "已登录用户"
                 ],
                 "summary": "撤销该用户其他的所有 session",
+                "responses": {}
+            }
+        },
+        "/api/user/setting": {
+            "put": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "更新用户设置",
+                "responses": {}
+            }
+        },
+        "/api/user/stripe/amount": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取 Stripe 帐户余额",
+                "responses": {}
+            }
+        },
+        "/api/user/stripe/pay": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "创建 Stripe 支付订单",
+                "responses": {}
+            }
+        },
+        "/api/user/token": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "生成 access token",
+                "responses": {}
+            }
+        },
+        "/api/user/topup": {
+            "get": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "管理员获取全平台充值记录",
+                "responses": {}
+            },
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "当前用户充值",
+                "responses": {}
+            }
+        },
+        "/api/user/topup/complete": {
+            "post": {
+                "tags": [
+                    "管理员"
+                ],
+                "summary": "管理员补单接口",
+                "responses": {}
+            }
+        },
+        "/api/user/topup/info": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取该用户的支付信息",
+                "responses": {}
+            }
+        },
+        "/api/user/topup/self": {
+            "get": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取当前用户的充值记录",
+                "responses": {}
+            }
+        },
+        "/api/user/waffo-pancake/amount": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取 Waffo Pancake 帐户余额",
+                "responses": {}
+            }
+        },
+        "/api/user/waffo-pancake/pay": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "创建 Waffo Pancake 支付订单",
+                "responses": {}
+            }
+        },
+        "/api/user/waffo/amount": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "获取 Waffo 余额",
+                "responses": {}
+            }
+        },
+        "/api/user/waffo/pay": {
+            "post": {
+                "tags": [
+                    "已登录用户"
+                ],
+                "summary": "创建 Waffo 支付订单",
                 "responses": {}
             }
         },

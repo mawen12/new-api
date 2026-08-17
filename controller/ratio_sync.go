@@ -139,6 +139,10 @@ func getLocalPricingSyncData() map[string]any {
 	return data
 }
 
+// FetchUpstreamRatios godoc
+// @Summary 倍率同步
+// @Tags 倍率同步
+// @Router /api/ratio_sync/fetch [post]
 func FetchUpstreamRatios(c *gin.Context) {
 	var req dto.UpstreamRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -984,6 +988,10 @@ func convertModelsDevToRatioData(reader io.Reader) (map[string]any, error) {
 	return converted, nil
 }
 
+// GetSyncableChannels godoc
+// @Summary 获取可同步的渠道
+// @Tags 性能
+// @Router /api/ratio_sync/channels [get]
 func GetSyncableChannels(c *gin.Context) {
 	channels, err := model.GetAllChannels(0, 0, true, false)
 	if err != nil {
@@ -996,6 +1004,7 @@ func GetSyncableChannels(c *gin.Context) {
 
 	var syncableChannels []dto.SyncableChannel
 	for _, channel := range channels {
+		// 如果渠道提供了 url，则视为可同步
 		if channel.GetBaseURL() != "" {
 			syncableChannels = append(syncableChannels, dto.SyncableChannel{
 				ID:      channel.Id,

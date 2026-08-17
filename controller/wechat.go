@@ -129,7 +129,7 @@ type wechatBindRequest struct {
 }
 
 // WeChatBind godoc
-// @Summary 绑定微信账号
+// @Summary 绑定微信
 // @Tags 通用
 // @Router /api/oauth/wechat/bind [post]
 func WeChatBind(c *gin.Context) {

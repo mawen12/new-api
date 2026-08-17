@@ -77,38 +77,38 @@ func resolveUserSortOptions(sortOptions []UserSortOptions) UserSortOptions {
 // User if you add sensitive fields, don't forget to clean them in setupLogin function.
 // Otherwise, the sensitive information will be saved on local storage in plain text!
 type User struct {
-	Id               int                        `json:"id"`
-	Username         string                     `json:"username" gorm:"unique;index" validate:"max=20"`
-	Password         string                     `json:"password" gorm:"not null;" validate:"min=8,max=20"`
+	Id               int                        `json:"id" gorm:"comment:用户ID"`
+	Username         string                     `json:"username" gorm:"unique;index;comment:用户名称，全局唯一" validate:"max=20"`
+	Password         string                     `json:"password" gorm:"not null;comment:用户密码" validate:"min=8,max=20"`
 	OriginalPassword string                     `json:"original_password" gorm:"-:all"` // this field is only for Password change verification, don't save it to database!
-	DisplayName      string                     `json:"display_name" gorm:"index" validate:"max=20"`
-	Role             int                        `json:"role" gorm:"type:int;default:1"`   // admin, common
-	Status           int                        `json:"status" gorm:"type:int;default:1"` // enabled, disabled
-	Email            string                     `json:"email" gorm:"index" validate:"max=50"`
-	GitHubId         string                     `json:"github_id" gorm:"column:github_id;index"`
-	DiscordId        string                     `json:"discord_id" gorm:"column:discord_id;index"`
-	OidcId           string                     `json:"oidc_id" gorm:"column:oidc_id;index"`
-	WeChatId         string                     `json:"wechat_id" gorm:"column:wechat_id;index"`
-	TelegramId       string                     `json:"telegram_id" gorm:"column:telegram_id;index"`
+	DisplayName      string                     `json:"display_name" gorm:"index;comment:对外展示名称" validate:"max=20"`
+	Role             int                        `json:"role" gorm:"type:int;default:1;comment:角色 0-guest 1-common 2-admin 3-root"`   // admin, common
+	Status           int                        `json:"status" gorm:"type:int;default:1;comment:用户状态 0-禁用 1-启用"` // enabled, disabled
+	Email            string                     `json:"email" gorm:"index" validate:"max=50;comment:邮箱"`
+	GitHubId         string                     `json:"github_id" gorm:"column:github_id;index;comment:关联 GithubID"`
+	DiscordId        string                     `json:"discord_id" gorm:"column:discord_id;index;comment:关联 DiscordID"`
+	OidcId           string                     `json:"oidc_id" gorm:"column:oidc_id;index;comment:关联 oidcID"`
+	WeChatId         string                     `json:"wechat_id" gorm:"column:wechat_id;index;comment:关联 微信ID"`
+	TelegramId       string                     `json:"telegram_id" gorm:"column:telegram_id;index;comment:关联 TelegramID"`
 	VerificationCode string                     `json:"verification_code" gorm:"-:all"`                         // this field is only for Email verification, don't save it to database!
-	AccessToken      *string                    `json:"-" gorm:"type:char(32);column:access_token;uniqueIndex"` // this token is for system management
-	Quota            int                        `json:"quota" gorm:"type:int;default:0"`
-	UsedQuota        int                        `json:"used_quota" gorm:"type:int;default:0;column:used_quota"` // used quota
-	RequestCount     int                        `json:"request_count" gorm:"type:int;default:0;"`               // request number
-	Group            string                     `json:"group" gorm:"type:varchar(64);default:'default'"`
-	AffCode          string                     `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex"`
-	AffCount         int                        `json:"aff_count" gorm:"type:int;default:0;column:aff_count"`
-	AffQuota         int                        `json:"aff_quota" gorm:"type:int;default:0;column:aff_quota"`           // 邀请剩余额度
-	AffHistoryQuota  int                        `json:"aff_history_quota" gorm:"type:int;default:0;column:aff_history"` // 邀请历史额度
-	InviterId        int                        `json:"inviter_id" gorm:"type:int;column:inviter_id;index"`
-	DeletedAt        gorm.DeletedAt             `gorm:"index"`
-	LinuxDOId        string                     `json:"linux_do_id" gorm:"column:linux_do_id;index"`
-	Setting          string                     `json:"setting" gorm:"type:text;column:setting"`
-	Remark           string                     `json:"remark,omitempty" gorm:"type:varchar(255)" validate:"max=255"`
-	StripeCustomer   string                     `json:"stripe_customer" gorm:"type:varchar(64);column:stripe_customer;index"`
-	CreatedAt        int64                      `json:"created_at" gorm:"autoCreateTime;column:created_at"`
-	LastLoginAt      int64                      `json:"last_login_at" gorm:"default:0;column:last_login_at"`
-	AuthVersion      int64                      `json:"-" gorm:"type:bigint;not null;default:1;column:auth_version"`
+	AccessToken      *string                    `json:"-" gorm:"type:char(32);column:access_token;uniqueIndex;comment:访问 Token"` // this token is for system management
+	Quota            int                        `json:"quota" gorm:"type:int;default:0;comment:配额"`
+	UsedQuota        int                        `json:"used_quota" gorm:"type:int;default:0;column:used_quota;comment:已使用配额"` // used quota
+	RequestCount     int                        `json:"request_count" gorm:"type:int;default:0;comment:请求总数"`               // request number
+	Group            string                     `json:"group" gorm:"type:varchar(64);default:'default';comment:分组，默认为 default"`
+	AffCode          string                     `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex;comment:邀请码"`
+	AffCount         int                        `json:"aff_count" gorm:"type:int;default:0;column:aff_count;comment:已邀请总数"`
+	AffQuota         int                        `json:"aff_quota" gorm:"type:int;default:0;column:aff_quota;comment:邀请码剩余额度"`           // 邀请剩余额度
+	AffHistoryQuota  int                        `json:"aff_history_quota" gorm:"type:int;default:0;column:aff_history;comment:邀请历史额度"` // 邀请历史额度
+	InviterId        int                        `json:"inviter_id" gorm:"type:int;column:inviter_id;index;comment:邀请人ID"`
+	DeletedAt        gorm.DeletedAt             `gorm:"index;comment:删除时间"`
+	LinuxDOId        string                     `json:"linux_do_id" gorm:"column:linux_do_id;index;comment:关联 LinuxDOID"`
+	Setting          string                     `json:"setting" gorm:"type:text;column:setting;comment:设置"`
+	Remark           string                     `json:"remark,omitempty" gorm:"type:varchar(255);comment:评论" validate:"max=255"`
+	StripeCustomer   string                     `json:"stripe_customer" gorm:"type:varchar(64);column:stripe_customer;index;comment:Stripe客户"`
+	CreatedAt        int64                      `json:"created_at" gorm:"autoCreateTime;column:created_at;comment:创建时间"`
+	LastLoginAt      int64                      `json:"last_login_at" gorm:"default:0;column:last_login_at;comment:最后登录时间"`
+	AuthVersion      int64                      `json:"-" gorm:"type:bigint;not null;default:1;column:auth_version;comment:认证版本"`
 	AdminPermissions map[string]map[string]bool `json:"admin_permissions,omitempty" gorm:"-:all"`
 }
 

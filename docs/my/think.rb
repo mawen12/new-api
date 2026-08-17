@@ -544,7 +544,7 @@ cheatsheet do
 
         entry do
             name 'abilities'
-            td_notes '通道能力表'
+            td_notes '渠道能力表'
         end
         entry do
             name 'auth_flows'
@@ -560,7 +560,7 @@ cheatsheet do
         end
         entry do
             name 'channel'
-            td_notes '通道表'
+            td_notes '渠道表'
         end
         entry do
             name 'checkins'

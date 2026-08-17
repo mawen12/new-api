@@ -14,6 +14,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// https://www.newapi.ai/zh/docs/api/management/redemption/redemption-search-get
+
+// GetAllRedemptions godoc
+// @Summary 获取所有兑换码
+// @Tags 兑换码
+// @Param p query int false "页数"
+// @Param page_size query int false "每页数量"
+// @Router /api/redemption/ [get]
 func GetAllRedemptions(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	redemptions, total, err := model.GetAllRedemptions(pageInfo.GetStartIdx(), pageInfo.GetPageSize())
@@ -27,6 +35,10 @@ func GetAllRedemptions(c *gin.Context) {
 	return
 }
 
+// SearchRedemptions godoc
+// @Summary 搜索兑换码
+// @Tags 兑换码
+// @Router /api/redemption/search [get]
 func SearchRedemptions(c *gin.Context) {
 	keyword := c.Query("keyword")
 	status := c.Query("status")
@@ -42,6 +54,11 @@ func SearchRedemptions(c *gin.Context) {
 	return
 }
 
+// GetRedemption godoc
+// @Summary 获取指定兑换码
+// @Tags 兑换码
+// @Param id path int true "兑换码ID"
+// @Router /api/redemption/:id [get]
 func GetRedemption(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -61,6 +78,10 @@ func GetRedemption(c *gin.Context) {
 	return
 }
 
+// AddRedemption godoc
+// @Summary 创建兑换码
+// @Tags 兑换码
+// @Router /api/redemption/ [post]
 func AddRedemption(c *gin.Context) {
 	if !operation_setting.IsPaymentComplianceConfirmed() {
 		common.ApiErrorI18n(c, i18n.MsgPaymentComplianceRequired)
@@ -125,6 +146,11 @@ func AddRedemption(c *gin.Context) {
 	return
 }
 
+// DeleteRedemption godoc
+// @Summary 删除兑换码
+// @Tags 兑换码
+// @Param id path int true "兑换码ID"
+// @Router /api/redemption/:id [delete]
 func DeleteRedemption(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	err := model.DeleteRedemptionById(id)
@@ -139,6 +165,10 @@ func DeleteRedemption(c *gin.Context) {
 	return
 }
 
+// UpdateRedemption godoc
+// @Summary 更新兑换码
+// @Tags 兑换码
+// @Router /api/redemption/ [put]
 func UpdateRedemption(c *gin.Context) {
 	statusOnly := c.Query("status_only")
 	redemption := model.Redemption{}
@@ -178,6 +208,10 @@ func UpdateRedemption(c *gin.Context) {
 	return
 }
 
+// DeleteInvalidRedemption godoc
+// @Summary 删除无效兑换码
+// @Tags 兑换码
+// @Router /api/redemption/invalid [delete]
 func DeleteInvalidRedemption(c *gin.Context) {
 	rows, err := model.DeleteInvalidRedemptions()
 	if err != nil {

@@ -116,6 +116,10 @@ func setTokenAutoGroups(c *gin.Context, token *model.Token, groups []string) boo
 	return true
 }
 
+// GetAllTokens godoc
+// @Summary 获取用户的 token 用量信息
+// @Tags Token
+// @Router /api/token/ [get]
 func GetAllTokens(c *gin.Context) {
 	userId := c.GetInt("id")
 	pageInfo := common.GetPageQuery(c)
@@ -130,6 +134,12 @@ func GetAllTokens(c *gin.Context) {
 	common.ApiSuccess(c, pageInfo)
 }
 
+// SearchTokens godoc
+// @Summary 查询用户的 token 用量信息
+// @Tags Token
+// @Param keyword query string false "关键词"
+// @Param token query string false "token"
+// @Router /api/token/search [get]
 func SearchTokens(c *gin.Context) {
 	userId := c.GetInt("id")
 	keyword := c.Query("keyword")
@@ -147,6 +157,11 @@ func SearchTokens(c *gin.Context) {
 	common.ApiSuccess(c, pageInfo)
 }
 
+// GetToken godoc
+// @Summary
+// @Tags Token
+// @Param id path int true "TokenId"
+// @Router /api/token/:id [get]
 func GetToken(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	userId := c.GetInt("id")
@@ -162,6 +177,10 @@ func GetToken(c *gin.Context) {
 	common.ApiSuccess(c, buildMaskedTokenResponse(token))
 }
 
+// GetTokenAutoGroups godoc
+// @Summary
+// @Tags Token
+// @Router /api/token/auto-groups [get]
 func GetTokenAutoGroups(c *gin.Context) {
 	userGroup, err := getTokenRequestUserGroup(c)
 	if err != nil {
@@ -174,6 +193,11 @@ func GetTokenAutoGroups(c *gin.Context) {
 	})
 }
 
+// GetTokenKey godoc
+// @Summary 读取指定 token 的 key
+// @Tags Token
+// @Param id path int true "TokenId"
+// @Router /api/token/:id/key [get]
 func GetTokenKey(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	userId := c.GetInt("id")
@@ -212,6 +236,10 @@ func GetTokenStatus(c *gin.Context) {
 	})
 }
 
+// GetTokenUsage godoc
+// @Summary 获取 token 使用用量
+// @Tags Token
+// @Router /api/usage/token/ [get]
 func GetTokenUsage(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
@@ -261,6 +289,10 @@ func GetTokenUsage(c *gin.Context) {
 	})
 }
 
+// AddToken godoc
+// @Summary 添加 token
+// @Tags Token
+// @Router /api/token/ [post]
 func AddToken(c *gin.Context) {
 	request := tokenRequest{}
 	err := c.ShouldBindJSON(&request)
@@ -340,6 +372,11 @@ func AddToken(c *gin.Context) {
 	})
 }
 
+// DeleteToken godoc
+// @Summary 删除指定 token
+// @Tags Token
+// @Param id path int true "tokenID"
+// @Router /api/token/:id [delete]
 func DeleteToken(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	userId := c.GetInt("id")
@@ -354,6 +391,10 @@ func DeleteToken(c *gin.Context) {
 	})
 }
 
+// UpdateToken godoc
+// @Summary 更新 token
+// @Tags Token
+// @Router /api/token/ [put]
 func UpdateToken(c *gin.Context) {
 	userId := c.GetInt("id")
 	statusOnly := c.Query("status_only")
@@ -432,6 +473,10 @@ type TokenBatch struct {
 	Ids []int `json:"ids"`
 }
 
+// DeleteTokenBatch godoc
+// @Summary 批量删除 token
+// @Tags Token
+// @Router /api/token/batch [post]
 func DeleteTokenBatch(c *gin.Context) {
 	tokenBatch := TokenBatch{}
 	if err := c.ShouldBindJSON(&tokenBatch); err != nil || len(tokenBatch.Ids) == 0 {
@@ -451,6 +496,10 @@ func DeleteTokenBatch(c *gin.Context) {
 	})
 }
 
+// GetTokenKeysBatch godoc
+// @Summary 获取指定用户名下多个 token key
+// @Tags Token
+// @Router /api/token/batch/keys [post]
 func GetTokenKeysBatch(c *gin.Context) {
 	tokenBatch := TokenBatch{}
 	if err := c.ShouldBindJSON(&tokenBatch); err != nil || len(tokenBatch.Ids) == 0 {

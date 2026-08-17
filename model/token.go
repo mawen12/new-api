@@ -12,24 +12,24 @@ import (
 )
 
 type Token struct {
-	Id                 int            `json:"id"`
-	UserId             int            `json:"user_id" gorm:"index"`
-	Key                string         `json:"key" gorm:"type:varchar(128);uniqueIndex"`
-	Status             int            `json:"status" gorm:"default:1"`
-	Name               string         `json:"name" gorm:"index" `
-	CreatedTime        int64          `json:"created_time" gorm:"bigint"`
-	AccessedTime       int64          `json:"accessed_time" gorm:"bigint"`
-	ExpiredTime        int64          `json:"expired_time" gorm:"bigint;default:-1"` // -1 means never expired
-	RemainQuota        int            `json:"remain_quota" gorm:"default:0"`
-	UnlimitedQuota     bool           `json:"unlimited_quota"`
-	ModelLimitsEnabled bool           `json:"model_limits_enabled"`
-	ModelLimits        string         `json:"model_limits" gorm:"type:text"`
-	AllowIps           *string        `json:"allow_ips" gorm:"default:''"`
-	UsedQuota          int            `json:"used_quota" gorm:"default:0"` // used quota
-	Group              string         `json:"group" gorm:"default:''"`
-	CrossGroupRetry    bool           `json:"cross_group_retry"` // 跨分组重试，仅auto分组有效
-	AutoGroups         string         `json:"-" gorm:"type:text"`
-	DeletedAt          gorm.DeletedAt `gorm:"index"`
+	Id                 int            `json:"id" gorm:"comment:tokenID"`
+	UserId             int            `json:"user_id" gorm:"index;comment:用户ID"`
+	Key                string         `json:"key" gorm:"type:varchar(128);uniqueIndex;comment:键"`
+	Status             int            `json:"status" gorm:"default:1;comment:状态"`
+	Name               string         `json:"name" gorm:"index;comment:token名称" `
+	CreatedTime        int64          `json:"created_time" gorm:"bigint;comment:创建时间"`
+	AccessedTime       int64          `json:"accessed_time" gorm:"bigint;comment:访问时间"`
+	ExpiredTime        int64          `json:"expired_time" gorm:"bigint;default:-1;comment:过期时间，-1代表永不过期"` // -1 means never expired
+	RemainQuota        int            `json:"remain_quota" gorm:"default:0;comment:剩余配额"`
+	UnlimitedQuota     bool           `json:"unlimited_quota" gorm:"comment:是否为无限配额"`
+	ModelLimitsEnabled bool           `json:"model_limits_enabled" gorm:"comment:是否启用模型限制"`
+	ModelLimits        string         `json:"model_limits" gorm:"type:text;comment:模型限制"`
+	AllowIps           *string        `json:"allow_ips" gorm:"default:'';gorm:允许的ip"`
+	UsedQuota          int            `json:"used_quota" gorm:"default:0;comment:使用的配额"` // used quota
+	Group              string         `json:"group" gorm:"default:'';comment:分组"`
+	CrossGroupRetry    bool           `json:"cross_group_retry" gorm:"comment:是否跨分组尝试，仅在auto分组有效"` // 跨分组重试，仅auto分组有效
+	AutoGroups         string         `json:"-" gorm:"type:text;comment:自动分组"`
+	DeletedAt          gorm.DeletedAt `gorm:"index;comment:删除时间"`
 }
 
 func (token *Token) GetAutoGroups() ([]string, error) {

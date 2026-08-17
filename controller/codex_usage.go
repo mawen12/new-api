@@ -17,6 +17,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetCodexChannelUsage godoc
+// @Summary 获取指定渠道的 Codex 用量信息
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id/codex/usage [get]
 func GetCodexChannelUsage(c *gin.Context) {
 	fetchCodexChannelWhamData(
 		c,
@@ -26,6 +31,11 @@ func GetCodexChannelUsage(c *gin.Context) {
 	)
 }
 
+// GetCodexChannelRateLimitResetCredits godoc
+// @Summary 获取指定渠道的 Codex 重置次数详情
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id/codex/usage/reset-credits [get]
 func GetCodexChannelRateLimitResetCredits(c *gin.Context) {
 	fetchCodexChannelWhamData(
 		c,
@@ -35,6 +45,11 @@ func GetCodexChannelRateLimitResetCredits(c *gin.Context) {
 	)
 }
 
+// ResetCodexChannelUsage godoc
+// @Summary 重置指定渠道的 Codex 用量
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id/codex/usage/reset [post]
 func ResetCodexChannelUsage(c *gin.Context) {
 	fetchCodexChannelWhamData(
 		c,

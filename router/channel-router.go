@@ -39,6 +39,9 @@ func registerChannelRoutes(apiRouter *gin.RouterGroup) {
 	}
 }
 
+// https://www.newapi.ai/zh/docs/api/management/channel-management/channel-batch-post
+
+// 渠道路由
 var channelPermissionRoutes = []permissionRoute{
 	{method: http.MethodGet, path: "/", permission: authz.ChannelRead, handler: controller.GetAllChannels},
 	{method: http.MethodGet, path: "/search", permission: authz.ChannelRead, handler: controller.SearchChannels},

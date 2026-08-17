@@ -20,40 +20,43 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-type Channel struct {
-	Id                 int     `json:"id"`
-	Type               int     `json:"type" gorm:"default:0"`
-	Key                string  `json:"key" gorm:"not null"`
-	OpenAIOrganization *string `json:"openai_organization"`
-	TestModel          *string `json:"test_model"`
-	Status             int     `json:"status" gorm:"default:1"`
-	Name               string  `json:"name" gorm:"index"`
-	Weight             *uint   `json:"weight" gorm:"default:0"`
-	CreatedTime        int64   `json:"created_time" gorm:"bigint"`
-	TestTime           int64   `json:"test_time" gorm:"bigint"`
-	ResponseTime       int     `json:"response_time"` // in milliseconds
-	BaseURL            *string `json:"base_url" gorm:"column:base_url;default:''"`
-	Other              string  `json:"other"`
-	Balance            float64 `json:"balance"` // in USD
-	BalanceUpdatedTime int64   `json:"balance_updated_time" gorm:"bigint"`
-	Models             string  `json:"models"`
-	Group              string  `json:"group" gorm:"type:varchar(64);default:'default'"`
-	UsedQuota          int64   `json:"used_quota" gorm:"bigint;default:0"`
-	ModelMapping       *string `json:"model_mapping" gorm:"type:text"`
-	//MaxInputTokens     *int    `json:"max_input_tokens" gorm:"default:0"`
-	StatusCodeMapping *string `json:"status_code_mapping" gorm:"type:varchar(1024);default:''"`
-	Priority          *int64  `json:"priority" gorm:"bigint;default:0"`
-	AutoBan           *int    `json:"auto_ban" gorm:"default:1"`
-	OtherInfo         string  `json:"other_info"`
-	Tag               *string `json:"tag" gorm:"index"`
-	Setting           *string `json:"setting" gorm:"type:text"` // 渠道额外设置
-	ParamOverride     *string `json:"param_override" gorm:"type:text"`
-	HeaderOverride    *string `json:"header_override" gorm:"type:text"`
-	Remark            *string `json:"remark" gorm:"type:varchar(255)" validate:"max=255"`
-	// add after v0.8.5
-	ChannelInfo ChannelInfo `json:"channel_info" gorm:"type:json"`
+// https://www.newapi.ai/zh/docs/api/management/channel-management/channel-disabled-delete
 
-	OtherSettings string `json:"settings" gorm:"column:settings"` // 其他设置，存储azure版本等不需要检索的信息，详见dto.ChannelOtherSettings
+// 渠道
+type Channel struct {
+	Id                 int     `json:"id" gorm:"comment:渠道ID"`
+	Type               int     `json:"type" gorm:"default:0;comment:渠道类型"`
+	Key                string  `json:"key" gorm:"not null;comment:密钥"`
+	OpenAIOrganization *string `json:"openai_organization" gorm:"comment:openai组织"`
+	TestModel          *string `json:"test_model" gorm:"comment:测试模型"`
+	Status             int     `json:"status" gorm:"default:1;comment:渠道状态 0-未知 1-启用 2-手动禁用 3-自动禁用"`
+	Name               string  `json:"name" gorm:"index;comment:渠道名称"`
+	Weight             *uint   `json:"weight" gorm:"default:0;comment:渠道权重"`
+	CreatedTime        int64   `json:"created_time" gorm:"bigint;comment:创建时间"`
+	TestTime           int64   `json:"test_time" gorm:"bigint;comment:测试时间"`
+	ResponseTime       int     `json:"response_time" gorm:"comment:响应耗时，单位毫秒"` // in milliseconds
+	BaseURL            *string `json:"base_url" gorm:"column:base_url;default:'';comment:上游路径"`
+	Other              string  `json:"other" gorm:"comment:其他信息"`
+	Balance            float64 `json:"balance" gorm:"comment:渠道余额，单位美元"` // in USD
+	BalanceUpdatedTime int64   `json:"balance_updated_time" gorm:"bigint;comment:渠道余额更新时间"`
+	Models             string  `json:"models" gorm:"渠道模型"`
+	Group              string  `json:"group" gorm:"type:varchar(64);default:'default';comment:分组"`
+	UsedQuota          int64   `json:"used_quota" gorm:"bigint;default:0;comment:已使用配额"`
+	ModelMapping       *string `json:"model_mapping" gorm:"type:text;comment:模型映射"`
+	//MaxInputTokens     *int    `json:"max_input_tokens" gorm:"default:0"`
+	StatusCodeMapping *string `json:"status_code_mapping" gorm:"type:varchar(1024);default:'';comment:状态码映射"`
+	Priority          *int64  `json:"priority" gorm:"bigint;default:0;comment:优先级"`
+	AutoBan           *int    `json:"auto_ban" gorm:"default:1:comment:自动Ban"`
+	OtherInfo         string  `json:"other_info" gorm:"comment:其他信息"`
+	Tag               *string `json:"tag" gorm:"index;comment:标签"`
+	Setting           *string `json:"setting" gorm:"type:text;comment:额外设置"` // 渠道额外设置
+	ParamOverride     *string `json:"param_override" gorm:"type:text;comment:覆盖参数"`
+	HeaderOverride    *string `json:"header_override" gorm:"type:text;comment:覆盖请求头"`
+	Remark            *string `json:"remark" gorm:"type:varchar(255)" validate:"max=255;comment:备注"`
+	// add after v0.8.5
+	ChannelInfo ChannelInfo `json:"channel_info" gorm:"type:json;comment:渠道信息"`
+
+	OtherSettings string `json:"settings" gorm:"column:settings;comment:"其他设置""` // 其他设置，存储azure版本等不需要检索的信息，详见dto.ChannelOtherSettings
 
 	// cache info
 	Keys []string `json:"-" gorm:"-"`
@@ -409,12 +412,15 @@ func SearchChannels(keyword string, group string, model string, idSort bool, sor
 	return channels, nil
 }
 
+// GetChannelById 获取指定渠道
 func GetChannelById(id int, selectAll bool) (*Channel, error) {
 	channel := &Channel{Id: id}
 	var err error = nil
 	if selectAll {
+		// SELECT * FROM channel WHERE id = ?
 		err = DB.First(channel, "id = ?", id).Error
 	} else {
+		// 查询时不包含 key
 		err = DB.Omit("key").First(channel, "id = ?", id).Error
 	}
 	if err != nil {
@@ -878,7 +884,9 @@ func DeleteChannelByStatus(status int64) (int64, error) {
 	return result.RowsAffected, result.Error
 }
 
+// DeleteDisabledChannel 删除禁用（包含手动禁用和自动禁用）的渠道
 func DeleteDisabledChannel() (int64, error) {
+	// DELETE FROM channel WHERE status = 2 or status = 3 
 	result := DB.Where("status = ? or status = ?", common.ChannelStatusAutoDisabled, common.ChannelStatusManuallyDisabled).Delete(&Channel{})
 	return result.RowsAffected, result.Error
 }

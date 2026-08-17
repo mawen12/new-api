@@ -69,7 +69,10 @@ func toCustomOAuthProviderResponse(p *model.CustomOAuthProvider) *CustomOAuthPro
 	}
 }
 
-// GetCustomOAuthProviders returns all custom OAuth providers
+// GetCustomOAuthProviders godoc
+// @Summary 返回所有的自定义 OAuth 提供商
+// @Tags OAuth 提供商
+// @Router /api/custom-oauth-provider/ [get]
 func GetCustomOAuthProviders(c *gin.Context) {
 	providers, err := model.GetAllCustomOAuthProviders()
 	if err != nil {
@@ -89,7 +92,11 @@ func GetCustomOAuthProviders(c *gin.Context) {
 	})
 }
 
-// GetCustomOAuthProvider returns a single custom OAuth provider by ID
+// GetCustomOAuthProvider godoc
+// @Summary 返回给定的 OAuth 提供商
+// @Tags OAuth 提供商
+// @Param id path int true "OAuth提供商ID"
+// @Router /api/custom-oauth-provider/:id [get]
 func GetCustomOAuthProvider(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -138,7 +145,10 @@ type FetchCustomOAuthDiscoveryRequest struct {
 	IssuerURL    string `json:"issuer_url"`
 }
 
-// FetchCustomOAuthDiscovery fetches OIDC discovery document via backend (root-only route)
+// FetchCustomOAuthDiscovery godoc
+// @Summary 返回后端（仅限根路由）获取 OIDC 发现文档
+// @Tags OAuth 提供商
+// @Router /api/custom-oauth-provider/discovery [get]
 func FetchCustomOAuthDiscovery(c *gin.Context) {
 	var req FetchCustomOAuthDiscoveryRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -210,7 +220,10 @@ func FetchCustomOAuthDiscovery(c *gin.Context) {
 	})
 }
 
-// CreateCustomOAuthProvider creates a new custom OAuth provider
+// CreateCustomOAuthProvider godoc
+// @Summary 创建一个 OAuth 提供商
+// @Tags OAuth 提供商
+// @Router /api/custom-oauth-provider/ [create]
 func CreateCustomOAuthProvider(c *gin.Context) {
 	var req CreateCustomOAuthProviderRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -288,7 +301,11 @@ type UpdateCustomOAuthProviderRequest struct {
 	AccessDeniedMessage   *string `json:"access_denied_message"` // Optional: if nil, keep existing
 }
 
-// UpdateCustomOAuthProvider updates an existing custom OAuth provider
+// UpdateCustomOAuthProvider godoc
+// @Summary 更新一个 OAuth 提供商
+// @Tags OAuth 提供商
+// @Param id path int true "OAuth提供商ID"
+// @Router /api/custom-oauth-provider/ [put]
 func UpdateCustomOAuthProvider(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)
@@ -399,7 +416,11 @@ func UpdateCustomOAuthProvider(c *gin.Context) {
 	})
 }
 
-// DeleteCustomOAuthProvider deletes a custom OAuth provider
+// DeleteCustomOAuthProvider godoc
+// @Summary 删除一个 OAuth 提供商
+// @Tags OAuth 提供商
+// @Param id path int true "OAuth提供商ID"
+// @Router /api/custom-oauth-provider/:id [delete]
 func DeleteCustomOAuthProvider(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.Atoi(idStr)

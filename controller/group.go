@@ -11,6 +11,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetGroups godoc
+// @Summary 获取所有分组
+// @Tags 分组
+// @Router /api/group/ [get]
 func GetGroups(c *gin.Context) {
 	groupNames := make([]string, 0)
 	for groupName := range ratio_setting.GetGroupRatioCopy() {
@@ -25,7 +29,8 @@ func GetGroups(c *gin.Context) {
 
 // GetUserGroups godoc
 // @Summary 获取用户组
-// @Tags 用户 已登录用户
+// @Tags 用户
+// @Tags 已登录用户
 // @Router /api/user/groups [get]
 func GetUserGroups(c *gin.Context) {
 	usableGroups := make(map[string]map[string]interface{})

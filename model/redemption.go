@@ -11,19 +11,21 @@ import (
 	"gorm.io/gorm"
 )
 
+// Redemption 兑换码
+// https://www.newapi.ai/zh/docs/api/management/redemption/redemption-id-get
 type Redemption struct {
-	Id           int            `json:"id"`
-	UserId       int            `json:"user_id"`
-	Key          string         `json:"key" gorm:"type:char(32);uniqueIndex"`
-	Status       int            `json:"status" gorm:"default:1"`
-	Name         string         `json:"name" gorm:"index"`
-	Quota        int            `json:"quota" gorm:"default:100"`
-	CreatedTime  int64          `json:"created_time" gorm:"bigint"`
-	RedeemedTime int64          `json:"redeemed_time" gorm:"bigint"`
+	Id           int            `json:"id" gorm:"comment:兑换码ID"`
+	UserId       int            `json:"user_id" gorm:"comment:用户ID"`
+	Key          string         `json:"key" gorm:"type:char(32);uniqueIndex;comment:键，全局唯一"`
+	Status       int            `json:"status" gorm:"default:1;comment:状态"`
+	Name         string         `json:"name" gorm:"index;comment:兑换码名称"`
+	Quota        int            `json:"quota" gorm:"default:100;comment:兑换码配额"`
+	CreatedTime  int64          `json:"created_time" gorm:"bigint;comment:创建时间"`
+	RedeemedTime int64          `json:"redeemed_time" gorm:"bigint;comment:已兑换时间"`
 	Count        int            `json:"count" gorm:"-:all"` // only for api request
-	UsedUserId   int            `json:"used_user_id"`
-	DeletedAt    gorm.DeletedAt `gorm:"index"`
-	ExpiredTime  int64          `json:"expired_time" gorm:"bigint"` // 过期时间，0 表示不过期
+	UsedUserId   int            `json:"used_user_id" gorm:"所属用户"`
+	DeletedAt    gorm.DeletedAt `gorm:"index;comment:删除时间"`
+	ExpiredTime  int64          `json:"expired_time" gorm:"bigint;comment:过期时间 0-永不过期"` // 过期时间，0 表示不过期
 }
 
 func GetAllRedemptions(startIdx int, num int) (redemptions []*Redemption, total int64, err error) {

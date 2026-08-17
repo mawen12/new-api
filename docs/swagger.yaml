@@ -163,6 +163,134 @@ paths:
       summary: 处理 Stripe 回调通知（支付/退款/订阅）
       tags:
       - 通用
+  /api/subscription/balance/pay:
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/bind:
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/creem/pay:
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/epay/pay:
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/plans:
+    get:
+      responses: {}
+      tags:
+      - 订阅
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/plans/:id:
+    patch:
+      responses: {}
+      tags:
+      - 订阅
+    put:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/plans/:id/subscriptions/reset:
+    post:
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 管理员重置用户订阅
+      tags:
+      - 订阅
+  /api/subscription/self:
+    get:
+      responses: {}
+      summary: 获取订阅计划详细信息
+      tags:
+      - 订阅
+  /api/subscription/self/preference:
+    put:
+      responses: {}
+      summary: 更新订阅
+      tags:
+      - 订阅
+  /api/subscription/stripe/pay:
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/subscription/epay/notify:
+    get:
+      responses: {}
+      tags:
+      - 订阅
+    post:
+      responses: {}
+      tags:
+      - 订阅
+  /api/subscription/user_subscriptions/:id/invalidate:
+    post:
+      parameters:
+      - description: 订阅ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 管理员撤销用户订阅
+      tags:
+      - 订阅
+  /api/subscription/users/:id/subscriptions:
+    get:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 管理员查询用户订阅
+      tags:
+      - 订阅
+    post:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 管理员创建用户订阅
+      tags:
+      - 订阅
+  /api/subscription/users/:id/subscriptions/reset:
+    post:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 管理员重置用户订阅
+      tags:
+      - 订阅
+  /api/subscription/waffo-pancake/pay:
+    post:
+      responses: {}
+      tags:
+      - 订阅
   /api/uptime/status:
     get:
       responses: {}
@@ -174,6 +302,160 @@ paths:
       summary: 获取用户同意信息
       tags:
       - 通用
+  /api/user/:
+    get:
+      responses: {}
+      summary: 获取所有系统内所有用户
+      tags:
+      - 管理员
+    post:
+      responses: {}
+      summary: 创建用户
+      tags:
+      - 管理员
+    put:
+      responses: {}
+      summary: 更新用户
+      tags:
+      - 管理员
+  /api/user/:id:
+    delete:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 删除用户
+      tags:
+      - 管理员
+    get:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 获取给定用户信息
+      tags:
+      - 管理员
+  /api/user/:id/2fa:
+    delete:
+      responses: {}
+      summary: 管理员强制禁用用户2FA
+      tags:
+      - 管理员
+  /api/user/:id/bindings/:binding_type:
+    delete:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 绑定类型
+        in: path
+        name: binding_type
+        required: true
+        type: string
+      responses: {}
+      tags:
+      - 管理员
+  /api/user/:id/oauth/bindings:
+    get:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      tags:
+      - 管理员
+  /api/user/:id/oauth/bindings/:provider_id:
+    delete:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: OAuth供应商ID
+        in: path
+        name: provider_id
+        required: true
+        type: string
+      responses: {}
+      summary: 解绑给定的 OAuth 供应商
+      tags:
+      - 管理员
+  /api/user/:id/reset_passkey:
+    delete:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      summary: 重置用户的 passkey
+      tags:
+      - 管理员
+  /api/user/2fa/backup_codes:
+    post:
+      responses: {}
+      summary: 重新生成备用码
+      tags:
+      - 已登录用户
+  /api/user/2fa/disable:
+    post:
+      responses: {}
+      summary: 禁用2FA
+      tags:
+      - 已登录用户
+  /api/user/2fa/enable:
+    post:
+      responses: {}
+      summary: 启用2FA
+      tags:
+      - 已登录用户
+  /api/user/2fa/setup:
+    post:
+      responses: {}
+      summary: 初始化2FA设置
+      tags:
+      - 已登录用户
+  /api/user/2fa/stats:
+    get:
+      responses: {}
+      summary: 管理员获取2FA统计信息
+      tags:
+      - 管理员
+  /api/user/2fa/status:
+    get:
+      responses: {}
+      summary: 获取用户2FA状态
+      tags:
+      - 已登录用户
+  /api/user/aff:
+    get:
+      responses: {}
+      summary: 获取该用户的 aff 代码
+      tags:
+      - 已登录用户
+  /api/user/aff_transfer:
+    post:
+      responses: {}
+      tags:
+      - 已登录用户
+  /api/user/amount:
+    get:
+      responses: {}
+      summary: 充值帐户金额
+      tags:
+      - 已登录用户
   /api/user/auth/logout:
     post:
       responses: {}
@@ -186,6 +468,23 @@ paths:
       summary: 刷新认证
       tags:
       - 用户
+  /api/user/checkin:
+    get:
+      responses: {}
+      summary: 获取用户签到状态和历史记录
+      tags:
+      - 已登录用户
+    post:
+      responses: {}
+      summary: 执行用户签到
+      tags:
+      - 已登录用户
+  /api/user/creem/pay:
+    post:
+      responses: {}
+      summary: 创建 Creem 支付订单
+      tags:
+      - 已登录用户
   /api/user/epay/notify:
     post:
       responses: {}
@@ -197,7 +496,8 @@ paths:
       responses: {}
       summary: 获取用户组
       tags:
-      - 用户 已登录用户
+      - 用户
+      - 已登录用户
   /api/user/login:
     post:
       responses: {}
@@ -210,6 +510,47 @@ paths:
       summary: 登录时验证2FA
       tags:
       - 用户
+  /api/user/manage:
+    post:
+      responses: {}
+      summary: 管理用户
+      tags:
+      - 管理员
+  /api/user/models:
+    get:
+      responses: {}
+      summary: 获取用户的模型
+      tags:
+      - 已登录用户
+  /api/user/oauth/bindings:
+    get:
+      responses: {}
+      summary: 返回当前用户绑定的所有 OAuth
+      tags:
+      - 已登录用户
+  /api/user/oauth/bindings/:provider_id:
+    post:
+      parameters:
+      - description: OAuth供应商
+        in: path
+        name: provider_id
+        required: true
+        type: string
+      responses: {}
+      summary: 解绑指定的 OAuth
+      tags:
+      - 已登录用户
+  /api/user/passkey:
+    delete:
+      responses: {}
+      summary: 删除 passkey
+      tags:
+      - 已登录用户
+    get:
+      responses: {}
+      summary: 获取 passkey 状态
+      tags:
+      - 已登录用户
   /api/user/passkey/login/begin:
     post:
       responses: {}
@@ -222,6 +563,36 @@ paths:
       summary: passkey 登录
       tags:
       - 用户
+  /api/user/passkey/register/begin:
+    post:
+      responses: {}
+      summary: passkey 注册开始
+      tags:
+      - 已登录用户
+  /api/user/passkey/register/finish:
+    post:
+      responses: {}
+      summary: 完成 passkey 注册
+      tags:
+      - 已登录用户
+  /api/user/passkey/verify/begin:
+    post:
+      responses: {}
+      summary: 开始 passkey 验证
+      tags:
+      - 已登录用户
+  /api/user/passkey/verify/finish:
+    post:
+      responses: {}
+      summary: 验证 passkey 完成
+      tags:
+      - 已登录用户
+  /api/user/pay:
+    post:
+      responses: {}
+      summary: 请求支付
+      tags:
+      - 已登录用户
   /api/user/register:
     post:
       responses: {}
@@ -234,6 +605,28 @@ paths:
       summary: 重置用户密码
       tags:
       - 通用
+  /api/user/search:
+    get:
+      responses: {}
+      summary: 查询系统内的用户
+      tags:
+      - 管理员
+  /api/user/self:
+    delete:
+      responses: {}
+      summary: 删除用户信息
+      tags:
+      - 已登录用户
+    get:
+      responses: {}
+      summary: 获取用户信息
+      tags:
+      - 已登录用户
+    post:
+      responses: {}
+      summary: 更新用户信息
+      tags:
+      - 已登录用户
   /api/user/sessions:
     get:
       responses: {}
@@ -255,6 +648,83 @@ paths:
     post:
       responses: {}
       summary: 撤销该用户其他的所有 session
+      tags:
+      - 已登录用户
+  /api/user/setting:
+    put:
+      responses: {}
+      summary: 更新用户设置
+      tags:
+      - 已登录用户
+  /api/user/stripe/amount:
+    post:
+      responses: {}
+      summary: 获取 Stripe 帐户余额
+      tags:
+      - 已登录用户
+  /api/user/stripe/pay:
+    post:
+      responses: {}
+      summary: 创建 Stripe 支付订单
+      tags:
+      - 已登录用户
+  /api/user/token:
+    get:
+      responses: {}
+      summary: 生成 access token
+      tags:
+      - 已登录用户
+  /api/user/topup:
+    get:
+      responses: {}
+      summary: 管理员获取全平台充值记录
+      tags:
+      - 管理员
+    post:
+      responses: {}
+      summary: 当前用户充值
+      tags:
+      - 已登录用户
+  /api/user/topup/complete:
+    post:
+      responses: {}
+      summary: 管理员补单接口
+      tags:
+      - 管理员
+  /api/user/topup/info:
+    get:
+      responses: {}
+      summary: 获取该用户的支付信息
+      tags:
+      - 已登录用户
+  /api/user/topup/self:
+    get:
+      responses: {}
+      summary: 获取当前用户的充值记录
+      tags:
+      - 已登录用户
+  /api/user/waffo-pancake/amount:
+    post:
+      responses: {}
+      summary: 获取 Waffo Pancake 帐户余额
+      tags:
+      - 已登录用户
+  /api/user/waffo-pancake/pay:
+    post:
+      responses: {}
+      summary: 创建 Waffo Pancake 支付订单
+      tags:
+      - 已登录用户
+  /api/user/waffo/amount:
+    post:
+      responses: {}
+      summary: 获取 Waffo 余额
+      tags:
+      - 已登录用户
+  /api/user/waffo/pay:
+    post:
+      responses: {}
+      summary: 创建 Waffo 支付订单
       tags:
       - 已登录用户
   /api/verification:

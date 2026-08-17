@@ -243,7 +243,7 @@ func telegramBindFailure(c *gin.Context, errorCode string) {
 }
 
 // TelegramLogin godoc
-// @Summary 通过 Telegram 登录
+// @Summary Telegram登录
 // @Tags 通用
 // @Router /api/oauth/telegram/login [get]
 func TelegramLogin(c *gin.Context) {

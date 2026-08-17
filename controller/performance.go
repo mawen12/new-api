@@ -79,7 +79,10 @@ type PerformanceConfig struct {
 	MonitorDiskThreshold int `json:"monitor_disk_threshold"`
 }
 
-// GetPerformanceStats 获取性能统计信息
+// GetPerformanceStats godoc
+// @Summary 获取性能统计信息
+// @Tags 性能
+// @Router /api/performance/stats [get]
 func GetPerformanceStats(c *gin.Context) {
 	// 不再每次获取统计都全量扫描磁盘，依赖原子计数器保证性能
 	// 仅在系统启动或显式清理时同步
@@ -139,7 +142,10 @@ func GetPerformanceStats(c *gin.Context) {
 	})
 }
 
-// ClearDiskCache 清理不活跃的磁盘缓存
+// ClearDiskCache godoc
+// @Summary 清理不活跃的磁盘缓存
+// @Tags 性能
+// @Router /api/performance/disk_cache [delete]
 func ClearDiskCache(c *gin.Context) {
 	// 清理超过 10 分钟未使用的缓存文件
 	// 10 分钟是一个安全的阈值，确保正在进行的请求不会被误删
@@ -155,7 +161,10 @@ func ClearDiskCache(c *gin.Context) {
 	})
 }
 
-// ResetPerformanceStats 重置性能统计
+// ResetPerformanceStats godoc 
+// @Summary 重置性能统计
+// @Tags 性能
+// @Router /api/performance/reset_stats [post]
 func ResetPerformanceStats(c *gin.Context) {
 	common.ResetDiskCacheStats()
 
@@ -165,7 +174,10 @@ func ResetPerformanceStats(c *gin.Context) {
 	})
 }
 
-// ForceGC 强制执行 GC
+// ForceGC godoc
+// @Summary 强制执行 GC 
+// @Tags 性能
+// @Router /api/performance/gc [post]
 func ForceGC(c *gin.Context) {
 	runtime.GC()
 
@@ -228,7 +240,10 @@ func getLogFiles() ([]LogFileInfo, error) {
 	return files, nil
 }
 
-// GetLogFiles 获取日志文件列表
+// GetLogFiles godoc
+// @Summary 获取日志文件列表
+// @Tags 性能
+// @Router /api/performance/logs [get]
 func GetLogFiles(c *gin.Context) {
 	if *common.LogDir == "" {
 		common.ApiSuccess(c, LogFilesResponse{Enabled: false})
@@ -264,7 +279,12 @@ func GetLogFiles(c *gin.Context) {
 	common.ApiSuccess(c, resp)
 }
 
-// CleanupLogFiles 清理过期日志文件
+// CleanupLogFiles godoc
+// @Summary 清理过期日志文件
+// @Tags 性能
+// @Param mode query string true "by_count/by_days"
+// @Param value query int true "保留前value个/保留前value天"
+// @Router /api/performance/logs [delete]
 func CleanupLogFiles(c *gin.Context) {
 	mode := c.Query("mode")
 	valueStr := c.Query("value")

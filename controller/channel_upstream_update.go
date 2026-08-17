@@ -816,6 +816,10 @@ scanLoop:
 	return summary
 }
 
+// ApplyChannelUpstreamModelUpdates godoc
+// @Summary 应用上游的模型更新
+// @Tags 渠道
+// @Router /api/channel/upstream_updates/apply [post]
 func ApplyChannelUpstreamModelUpdates(c *gin.Context) {
 	var req applyChannelUpstreamModelUpdatesRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -872,6 +876,10 @@ func ApplyChannelUpstreamModelUpdates(c *gin.Context) {
 	})
 }
 
+// DetectChannelUpstreamModelUpdates godoc
+// @Summary 检测上游模型更新
+// @Tags 渠道
+// @Router /api/channel/upstream_updates/detect [post]
 func DetectChannelUpstreamModelUpdates(c *gin.Context) {
 	var req applyChannelUpstreamModelUpdatesRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -983,6 +991,10 @@ func findEnabledChannelsAfterID(lastID int, batchSize int) ([]*model.Channel, er
 	return channels, query.Find(&channels).Error
 }
 
+// ApplyAllChannelUpstreamModelUpdates godoc
+// @Summary 应用所有的上游模型更新
+// @Tags 渠道
+// @Router /api/channel/upstream_updates/apply_all [post]
 func ApplyAllChannelUpstreamModelUpdates(c *gin.Context) {
 	results := make([]applyAllChannelUpstreamModelUpdatesResult, 0)
 	failed := make([]int, 0)
@@ -1067,12 +1079,11 @@ func ApplyAllChannelUpstreamModelUpdates(c *gin.Context) {
 	})
 }
 
-// DetectAllChannelUpstreamModelUpdates enqueues a model_update system task
-// (manual variant) instead of scanning inline. Routing the manual trigger
-// through the framework gives it the same cross-instance lease dedup and run
-// history as the scheduled scan. If any model_update task is already active, the
-// manual run is rejected so the caller does not mistake a scheduled run for this
-// manual one.
+// DetectAllChannelUpstreamModelUpdates godoc
+// @Summary 检测所有的上游模型渠道更新
+// @Description enqueues a model_update system task (manual variant) instead of scanning inline. Routing the manual trigger through the framework gives it the same cross-instance lease dedup and run history as the scheduled scan. If any model_update task is already active, the manual run is rejected so the caller does not mistake a scheduled run for this manual one.
+// @Tags 渠道
+// @Router /api/channel/upstream_updates/detect_all [post]
 func DetectAllChannelUpstreamModelUpdates(c *gin.Context) {
 	task, created, err := service.EnqueueSystemTask(model.SystemTaskTypeModelUpdate, modelUpdateTaskPayload{Manual: true})
 	if err != nil {

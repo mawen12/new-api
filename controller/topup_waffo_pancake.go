@@ -121,8 +121,10 @@ type createWaffoPancakePairRequest struct {
 	ReturnURL  string `json:"return_url"`
 }
 
-// SaveWaffoPancake atomically persists all five operator-controlled fields.
-// Catalog / pair endpoints are transient — only this one writes the OptionMap.
+// SaveWaffoPancake godoc
+// @Summary 原子地持久化所有五个操作符控制的字段，Catalog/pair 端点是瞬态的，只有此端点会写入 OptionMap
+// @Tags 选项
+// @Router /api/option/waffo-pancake/save [post]
 func SaveWaffoPancake(c *gin.Context) {
 	var req saveWaffoPancakeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -166,9 +168,10 @@ func resolveWaffoPancakeAdminCreds(bodyMerchantID, bodyPrivateKey string) (strin
 	return m, k
 }
 
-// CreateWaffoPancakePair mints a Store + OnetimeProduct pair in one round-
-// trip. Surfaces an orphan-store flag when the product half fails so the
-// frontend can preselect / retry without losing context.
+// CreateWaffoPancakePair godoc
+// @Summary 一次往返即可生成一个 Store + 一次产品对，当产品部分失效时，会显示一个孤立 Store 标志，以便前端可以预先选择/重试，而不会丢失上下文
+// @Tags 选项
+// @Router /api/option/waffo-pancake/pair [post]
 func CreateWaffoPancakePair(c *gin.Context) {
 	var req createWaffoPancakePairRequest
 	if c.Request.ContentLength > 0 {
@@ -216,9 +219,11 @@ func CreateWaffoPancakePair(c *gin.Context) {
 	})
 }
 
-// ListWaffoPancakeCatalog returns the merchant's Stores + OnetimeProducts.
-// Doubles as a credential probe (a successful 200 proves the resolved creds
-// authenticate). See resolveWaffoPancakeAdminCreds for credential resolution.
+// ListWaffoPancakeCatalog godoc
+// @Summary 返回商家的存储和一次性商品，同时兼做凭证探测，200 响应码代表解析后的凭证有效
+// @Description 凭证解析请参考：resolveWaffoPancakeAdminCreds
+// @Tags 选项
+// @Router /api/option/waffo-pancake/catalog [get]
 func ListWaffoPancakeCatalog(c *gin.Context) {
 	// Missing query creds mean "use persisted creds".
 	merchantID, privateKey := resolveWaffoPancakeAdminCreds(
@@ -245,11 +250,11 @@ type createWaffoPancakeSubscriptionProductRequest struct {
 	Amount string `json:"amount"`
 }
 
-// CreateWaffoPancakeSubscriptionProduct mints an OnetimeProduct (not
-// SubscriptionProduct — see service.CreateWaffoPancakeProductForPlan)
-// sized to a plan's `name` + `amount`, using persisted Pancake credentials
-// + StoreID. Reads from the form, not the plan row, so newly-typed unsaved
-// plans can mint a product too.
+// CreateWaffoPancakeSubscriptionProduct godoc
+// @Summary 使用持久化的 Pancake 凭证和 StoreID，创建一个一次性产品
+// @Description mints an OnetimeProduct (not SubscriptionProduct — see service.CreateWaffoPancakeProductForPlan) sized to a plan's `name` + `amount`, using persisted Pancake credentials + StoreID. Reads from the form, not the plan row, so newly-typed unsaved plans can mint a product too.
+// @Tags 选项
+// @Router /api/option/waffo-pancake/subscription-product [post]
 func CreateWaffoPancakeSubscriptionProduct(c *gin.Context) {
 	var req createWaffoPancakeSubscriptionProductRequest
 	if c.Request.ContentLength > 0 {
@@ -302,6 +307,10 @@ func CreateWaffoPancakeSubscriptionProduct(c *gin.Context) {
 // ListWaffoPancakeSubscriptionProductOptions returns the OnetimeProducts
 // in the saved Pancake store, for the subscription-plan dropdown. The name
 // reflects new-api's plan concept; under the hood it's still OnetimeProducts.
+// @Summary 返回已保存的 Pancake 商店汇总的 OnetimeProducts 对象
+// @Description returns the OnetimeProducts in the saved Pancake store, for the subscription-plan dropdown. The name reflects new-api's plan concept; under the hood it's still OnetimeProducts.
+// @Tags 选项
+// @Router /api/option/waffo-pancake/subscription-product-options [get]
 func ListWaffoPancakeSubscriptionProductOptions(c *gin.Context) {
 	merchantID, privateKey := resolveWaffoPancakeAdminCreds("", "")
 	storeID := strings.TrimSpace(setting.WaffoPancakeStoreID)

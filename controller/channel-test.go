@@ -853,6 +853,10 @@ func buildTestRequest(model string, endpointType string, channel *model.Channel,
 	return testRequest
 }
 
+// TestChannel godoc
+// @Summary 测试指定渠道
+// @Tags 渠道
+// @Router /api/channel/test/:id [get]
 func TestChannel(c *gin.Context) {
 	channelId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -1057,9 +1061,11 @@ func selectChannelsForAutomaticTest(channels []*model.Channel, mode string) []*m
 	return selected
 }
 
-// TestAllChannels enqueues a channel_test system task instead of running the
-// test loop inline. If any channel_test task is already active, the manual run is
-// rejected so the caller does not mistake a scheduled run for this manual one.
+// TestAllChannels godoc
+// @Summary 测试所有渠道
+// @Description enqueues a channel_test system task instead of running the test loop inline. If any channel_test task is already active, the manual run is rejected so the caller does not mistake a scheduled run for this manual one.
+// @Tags 渠道
+// @Router /api/channel/test [get]
 func TestAllChannels(c *gin.Context) {
 	task, created, err := service.EnqueueSystemTask(model.SystemTaskTypeChannelTest, channelTestTaskPayload{
 		Mode:   operation_setting.ChannelTestModeScheduledAll,

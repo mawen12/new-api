@@ -76,6 +76,10 @@ func buildCompletionRatioMetaValue(optionValues map[string]string) string {
 	return string(jsonBytes)
 }
 
+// GetOptions godoc
+// @Summary 获取选项
+// @Tags 选项
+// @Router /api/option/ [get]
 func GetOptions(c *gin.Context) {
 	var options []*model.Option
 	optionValues := make(map[string]string)
@@ -121,6 +125,10 @@ type OptionUpdateRequest struct {
 	Value any    `json:"value"`
 }
 
+// UpdateOption godoc
+// @Summary 更新选项
+// @Tags 选项
+// @Router /api/option/ [put]
 func UpdateOption(c *gin.Context) {
 	var option OptionUpdateRequest
 	err := common.DecodeJson(c.Request.Body, &option)

@@ -27,6 +27,10 @@ func requirePaymentCompliance(c *gin.Context) bool {
 	return true
 }
 
+// ConfirmPaymentCompliance godoc
+// @Summary 确认合规声明
+// @Tags 选项
+// @Router /api/option/payment_compliance [post]
 func ConfirmPaymentCompliance(c *gin.Context) {
 	if c.GetBool("use_access_token") {
 		c.JSON(http.StatusForbidden, gin.H{

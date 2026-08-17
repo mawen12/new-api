@@ -132,11 +132,11 @@ var QuotaForNewUser = 0
 var QuotaForInviter = 0
 // 被邀请用户配额
 var QuotaForInvitee = 0
-// 通道禁用阈值
+// 渠道禁用阈值
 var ChannelDisableThreshold = 5.0
-// 是否自动禁用通道的开关
+// 是否自动禁用渠道的开关
 var AutomaticDisableChannelEnabled = false
-// 是否自动开启通道的开关
+// 是否自动开启渠道的开关
 var AutomaticEnableChannelEnabled = false
 // 配额提醒阈值
 var QuotaRemindThreshold = 1000
@@ -253,7 +253,7 @@ const (
 	RedemptionCodeStatusUsed     = 3 // also don't use 0
 )
 
-// 通道状态枚举
+// 渠道状态枚举
 const (
 	ChannelStatusUnknown          = 0
 	ChannelStatusEnabled          = 1 // don't use 0, 0 is the default value!

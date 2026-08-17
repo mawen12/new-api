@@ -24,6 +24,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// https://www.newapi.ai/zh/docs/api/management/channel-management/channel-batch-post
+
 type OpenAIModel struct {
 	ID         string         `json:"id"`
 	Object     string         `json:"object"`
@@ -91,13 +93,20 @@ func buildChannelListQuery(group string, statusFilter int, typeFilter int) *gorm
 	return query
 }
 
+// GetChannelOps godoc
+// @Summary 获取渠道的重试次数
+// @Tags 渠道
+// @Router /api/channel/ops [get]
 func GetChannelOps(c *gin.Context) {
 	common.ApiSuccess(c, gin.H{
 		"retry_times": common.RetryTimes,
 	})
 }
 
-// GetAllChannels 读取所有通道
+// GetAllChannels godoc
+// @Summary 获取所有渠道
+// @Tags 渠道
+// @Router /api/channel/ [get]
 func GetAllChannels(c *gin.Context) {
 	/* 查询参数解析 */
 	pageInfo := common.GetPageQuery(c)
@@ -237,6 +246,11 @@ func applyFetchModelsHeaderOverrides(channel *model.Channel, key string, headers
 	return nil
 }
 
+// FetchUpstreamModels godoc
+// @Summary 获取上游模型列表
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/fetch_models/:id [get]
 func FetchUpstreamModels(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -266,6 +280,10 @@ func FetchUpstreamModels(c *gin.Context) {
 	})
 }
 
+// FixChannelsAbilities godoc
+// @Summary 修复渠道能力
+// @Tags 渠道
+// @Router /api/channel/fix [post]
 func FixChannelsAbilities(c *gin.Context) {
 	success, fails, err := model.FixAbility()
 	if err != nil {
@@ -282,6 +300,10 @@ func FixChannelsAbilities(c *gin.Context) {
 	})
 }
 
+// SearchChannels godoc
+// @Summary 搜索渠道
+// @Tags 渠道
+// @Router /api/channel/search [get]
 func SearchChannels(c *gin.Context) {
 	keyword := c.Query("keyword")
 	group := c.Query("group")
@@ -404,6 +426,11 @@ func SearchChannels(c *gin.Context) {
 	return
 }
 
+// GetChannel godoc
+// @Summary 获取指定渠道
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id [get]
 func GetChannel(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -426,8 +453,11 @@ func GetChannel(c *gin.Context) {
 	return
 }
 
-// GetChannelKey 获取渠道密钥（需要通过安全验证中间件）
-// 此函数依赖 SecureVerificationRequired 中间件，确保用户已通过安全验证
+// GetChannelKey godoc
+// @Summary 获取渠道密钥（需要通过安全验证中间件）
+// @Description 此函数依赖 SecureVerificationRequired 中间件，确保用户已通过安全验证
+// @Tags 渠道
+// @Router /api/channel/:id/key [post]
 func GetChannelKey(c *gin.Context) {
 	channelId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -548,6 +578,11 @@ func validateChannel(channel *model.Channel, isAdd bool) error {
 	return nil
 }
 
+// RefreshCodexChannelCredential godoc
+// @Summary 刷新指定渠道的 Codex 凭证
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id/codex/refresh [post]
 func RefreshCodexChannelCredential(c *gin.Context) {
 	channelId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -619,6 +654,10 @@ func getVertexArrayKeys(keys string) ([]string, error) {
 	return cleanKeys, nil
 }
 
+// AddChannel godoc
+// @Summary 添加渠道
+// @Tags 渠道
+// @Router /api/channel/ [post]
 func AddChannel(c *gin.Context) {
 	addChannelRequest := AddChannelRequest{}
 	err := c.ShouldBindJSON(&addChannelRequest)
@@ -723,6 +762,11 @@ func AddChannel(c *gin.Context) {
 	return
 }
 
+// DeleteChannel godoc
+// @Summary 删除渠道
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id [delete]
 func DeleteChannel(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	channelName := ""
@@ -757,6 +801,10 @@ func DeleteChannel(c *gin.Context) {
 	return
 }
 
+// DeleteDisabledChannel godoc
+// @Summary 删除已禁用的渠道
+// @Tags 渠道
+// @Router /api/channel/disabled [delete]
 func DeleteDisabledChannel(c *gin.Context) {
 	rows, err := model.DeleteDisabledChannel()
 	if err != nil {
@@ -790,6 +838,10 @@ type ChannelTag struct {
 	HeaderOverride *string `json:"header_override"`
 }
 
+// DisableTagChannels godoc
+// @Summary 禁用标签渠道
+// @Tags 渠道
+// @Router /api/channel/tag/disabled [post]
 func DisableTagChannels(c *gin.Context) {
 	channelTag := ChannelTag{}
 	err := c.ShouldBindJSON(&channelTag)
@@ -816,6 +868,10 @@ func DisableTagChannels(c *gin.Context) {
 	return
 }
 
+// EnableTagChannels godoc
+// @Summary 启用标签渠道
+// @Tags 渠道
+// @Router /api/channel/tag/enabled [post]
 func EnableTagChannels(c *gin.Context) {
 	channelTag := ChannelTag{}
 	err := c.ShouldBindJSON(&channelTag)
@@ -842,6 +898,10 @@ func EnableTagChannels(c *gin.Context) {
 	return
 }
 
+// EditTagChannels godoc
+// @Summary 标记标签渠道
+// @Tags 渠道
+// @Router /api/channel/tag [put]
 func EditTagChannels(c *gin.Context) {
 	channelTag := ChannelTag{}
 	err := c.ShouldBindJSON(&channelTag)
@@ -907,6 +967,10 @@ type ChannelBatch struct {
 	Tag *string `json:"tag"`
 }
 
+// DeleteChannelBatch godoc
+// @Summary 批量删除渠道
+// @Tags 渠道
+// @Router /api/channel/batch [post]
 func DeleteChannelBatch(c *gin.Context) {
 	channelBatch := ChannelBatch{}
 	err := c.ShouldBindJSON(&channelBatch)
@@ -952,6 +1016,11 @@ type ChannelStatusBatchRequest struct {
 	Status int   `json:"status"`
 }
 
+// UpdateChannel godoc
+// @Summary 更新渠道
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id [put]
 func UpdateChannel(c *gin.Context) {
 	channel := PatchChannel{}
 	rawBody, err := c.GetRawData()
@@ -1134,6 +1203,11 @@ func UpdateChannel(c *gin.Context) {
 	return
 }
 
+// UpdateChannelStatus godoc
+// @Summary 更新渠道
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/:id/status [post]
 func UpdateChannelStatus(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -1161,6 +1235,10 @@ func UpdateChannelStatus(c *gin.Context) {
 	})
 }
 
+// BatchUpdateChannelStatus godoc
+// @Summary 批量更新渠道状态
+// @Tags 渠道
+// @Router /api/channel/status/batch [post]
 func BatchUpdateChannelStatus(c *gin.Context) {
 	req := ChannelStatusBatchRequest{}
 	if err := c.ShouldBindJSON(&req); err != nil || len(req.Ids) == 0 || !isManageableChannelStatus(req.Status) {
@@ -1281,6 +1359,10 @@ func buildAdvancedCustomModelPreviewChannel(req fetchModelsRequest) (*model.Chan
 	return channel, nil
 }
 
+// FetchModels godoc
+// @Summary 获取所有渠道的上游模型列表
+// @Tags 渠道
+// @Router /api/channel/fetch_models [post]
 func FetchModels(c *gin.Context) {
 	var req fetchModelsRequest
 
@@ -1338,6 +1420,10 @@ func FetchModels(c *gin.Context) {
 	})
 }
 
+// BatchSetChannelTag godoc
+// @Summary 批量设置渠道标签
+// @Tags 渠道
+// @Router /api/channel/batch/tag [post]
 func BatchSetChannelTag(c *gin.Context) {
 	channelBatch := ChannelBatch{}
 	err := c.ShouldBindJSON(&channelBatch)
@@ -1365,6 +1451,11 @@ func BatchSetChannelTag(c *gin.Context) {
 	return
 }
 
+// GetTagModels godoc
+// @Summary 获取标签模型
+// @Tags 渠道
+// @Param tag query string true "标签"
+// @Router /api/channel/tag/models [get]
 func GetTagModels(c *gin.Context) {
 	tag := c.Query("tag")
 	if tag == "" {
@@ -1406,12 +1497,12 @@ func GetTagModels(c *gin.Context) {
 	return
 }
 
-// CopyChannel handles cloning an existing channel with its key.
-// POST /api/channel/copy/:id
-// Optional query params:
-//
-//	suffix         - string appended to the original name (default "_复制")
-//	reset_balance  - bool, when true will reset balance & used_quota to 0 (default true)
+// CopyChannel godoc
+// @Summary 拷贝指定渠道
+// @Tags 渠道
+// @Param suffix query string false "追加到原始名称的后缀"
+// @Param reset_balance query bool false "是否重置余额，并将用量设置为 0，默认为 true"
+// @Router /api/channel/copy/:id [post]
 func CopyChannel(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -1500,7 +1591,10 @@ type KeyStatus struct {
 	KeyPreview   string `json:"key_preview"` // first 10 chars of key for identification
 }
 
-// ManageMultiKeys handles multi-key management operations
+// ManageMultiKeys godoc
+// @Summary 管理多密钥
+// @Tags 渠道
+// @Router /api/channel/multi_key/manage [post]
 func ManageMultiKeys(c *gin.Context) {
 	request := MultiKeyManageRequest{}
 	err := c.ShouldBindJSON(&request)
@@ -1978,7 +2072,10 @@ func multiKeyActionRequiresSensitiveWrite(action string) bool {
 	return action == "delete_key" || action == "delete_disabled_keys"
 }
 
-// OllamaPullModel 拉取 Ollama 模型
+// OllamaPullModel godoc
+// @Summary 拉取 Ollama 模型
+// @Tags 渠道
+// @Router /api/channel/ollama/pull [post]
 func OllamaPullModel(c *gin.Context) {
 	var req struct {
 		ChannelID int    `json:"channel_id"`
@@ -2041,7 +2138,10 @@ func OllamaPullModel(c *gin.Context) {
 	})
 }
 
-// OllamaPullModelStream 流式拉取 Ollama 模型
+// OllamaPullModelStream godoc
+// @Summary 流式拉取 Ollama 模型
+// @Tags 渠道
+// @Router /api/channel/ollama/pull/stream [post]
 func OllamaPullModelStream(c *gin.Context) {
 	var req struct {
 		ChannelID int    `json:"channel_id"`
@@ -2123,7 +2223,10 @@ func OllamaPullModelStream(c *gin.Context) {
 	c.Writer.Flush()
 }
 
-// OllamaDeleteModel 删除 Ollama 模型
+// OllamaDeleteModel godoc
+// @Summary 删除 Ollama 模型
+// @Tags 渠道
+// @Router /api/channel/ollama/delete [delete]
 func OllamaDeleteModel(c *gin.Context) {
 	var req struct {
 		ChannelID int    `json:"channel_id"`
@@ -2186,7 +2289,11 @@ func OllamaDeleteModel(c *gin.Context) {
 	})
 }
 
-// OllamaVersion 获取 Ollama 服务版本信息
+// OllamaVersion godoc
+// @Summary 获取 Ollama 服务版本信息
+// @Tags 渠道
+// @Param id path int true "渠道ID"
+// @Router /api/channel/ollama/version/:id [get]
 func OllamaVersion(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

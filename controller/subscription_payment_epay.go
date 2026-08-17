@@ -22,7 +22,7 @@ type SubscriptionEpayPayRequest struct {
 }
 
 // SubscriptionRequestEpay godoc
-// @Summary 
+// @Summary
 // @Tags 订阅
 // @Router /api/subscription/epay/pay [post]
 func SubscriptionRequestEpay(c *gin.Context) {
@@ -119,6 +119,11 @@ func SubscriptionRequestEpay(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "success", "data": params, "url": uri})
 }
 
+// SubscriptionEpayNotify godoc
+// @Summary
+// @Tags 订阅
+// @Router /api/subscription/epay/notify [get]
+// @Router /api/subscription/epay/notify [post]
 func SubscriptionEpayNotify(c *gin.Context) {
 	var params map[string]string
 
@@ -172,8 +177,11 @@ func SubscriptionEpayNotify(c *gin.Context) {
 	_, _ = c.Writer.Write([]byte("success"))
 }
 
-// SubscriptionEpayReturn handles browser return after payment.
-// It verifies the payload and completes the order, then redirects to console.
+// SubscriptionEpayReturn godoc
+// @Summary 处理付款后浏览器返回，其会校验并结束订单，重定向到控制台
+// @Tags 订阅
+// @Router /api/subscription/epay/return [get]
+// @Router /api/subscription/epay/return [post]
 func SubscriptionEpayReturn(c *gin.Context) {
 	var params map[string]string
 

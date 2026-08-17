@@ -45,7 +45,7 @@ func init() {
 		}
 		// 供应商适配器
 		adaptor := relay.GetAdaptor(i)
-		// 通道名称
+		// 渠道名称
 		channelName := adaptor.GetChannelName()
 		// 供应商支持的模型列表
 		modelNames := adaptor.GetModelList()
@@ -322,6 +322,10 @@ func ListModels(c *gin.Context, modelType int) {
 	}
 }
 
+// ChannelListModels godoc
+// @Summary 获取渠道模型列表
+// @Tags 渠道
+// @Router /api/channel/models [get]
 func ChannelListModels(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success": true,
@@ -340,6 +344,10 @@ func DashboardListModels(c *gin.Context) {
 	})
 }
 
+// EnabledListModels godoc
+// @Summary 获取已启用模型列表
+// @Tags 渠道
+// @Router /api/channel/models_enabled [get]
 func EnabledListModels(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success": true,

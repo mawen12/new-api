@@ -2,7 +2,9 @@ package operation_setting
 
 import "strings"
 
+// Demo站点开关
 var DemoSiteEnabled = false
+// 自用模式开关
 var SelfUseModeEnabled = false
 
 var AutomaticDisableKeywords = []string{

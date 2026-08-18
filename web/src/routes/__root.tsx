@@ -45,12 +45,15 @@ import { resolveLegacyRoute } from '@/lib/legacy-route'
 import { useAuthStore } from '@/stores/auth-store'
 
 function RootComponent() {
+  // 导航
   const navigate = useNavigate()
+  // 发起 http 请求
   const queryClient = useQueryClient()
 
   // Load system configuration (logo, system name, etc.) from backend
   useSystemConfig({ autoLoad: true })
 
+  // 处理带有邀请码的请求
   useEffect(() => {
     const aff = new URLSearchParams(window.location.search).get('aff')?.trim()
     if (aff) {
@@ -94,8 +97,10 @@ function RootComponent() {
 
   return (
     <ThemeCustomizationProvider>
+      {/* 发起请求的导航栏进度展示 */}
       <NavigationProgress />
       <Outlet />
+      {/* 吐司 */}
       <Toaster closeButton duration={5000} position='top-center' richColors />
       {import.meta.env.MODE === 'development' && (
         <>

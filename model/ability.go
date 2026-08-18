@@ -15,14 +15,15 @@ import (
 	"gorm.io/gorm/clause"
 )
 
+// Ability 能力表
 type Ability struct {
-	Group     string  `json:"group" gorm:"type:varchar(64);primaryKey;autoIncrement:false"`
-	Model     string  `json:"model" gorm:"type:varchar(255);primaryKey;autoIncrement:false"`
-	ChannelId int     `json:"channel_id" gorm:"primaryKey;autoIncrement:false;index"`
-	Enabled   bool    `json:"enabled"`
-	Priority  *int64  `json:"priority" gorm:"bigint;default:0;index"`
-	Weight    uint    `json:"weight" gorm:"default:0;index"`
-	Tag       *string `json:"tag" gorm:"index"`
+	Group     string  `json:"group" gorm:"type:varchar(64);primaryKey;autoIncrement:false;comment:分组"`
+	Model     string  `json:"model" gorm:"type:varchar(255);primaryKey;autoIncrement:false;comment:模型"`
+	ChannelId int     `json:"channel_id" gorm:"primaryKey;autoIncrement:false;index;comment:渠道ID"`
+	Enabled   bool    `json:"enabled" gorm:"comment:开关"`
+	Priority  *int64  `json:"priority" gorm:"bigint;default:0;index;comment:优先级"`
+	Weight    uint    `json:"weight" gorm:"default:0;index;comment:权重"`
+	Tag       *string `json:"tag" gorm:"index;comment:标签"`
 }
 
 type AbilityWithChannel struct {

@@ -25,20 +25,31 @@ import {
   usePlaygroundState,
 } from './hooks'
 
+// 游乐场页面入口
 export function Playground() {
   const {
+    // 全局配置
     config,
+    // 聊天参数
     parameterEnabled,
+    // 消息列表
     messages,
+    // 是否加载消息中
     isLoadingMessages,
+    // 模型
     models,
+    // 分组
     groups,
     updateMessages,
     setModels,
     setGroups,
+    // 更新配置
     updateConfig,
+    // 更新配置
     updateParameterEnabled,
+    // 清理数据
     clearMessages,
+    // 读取该页面初始配置
   } = usePlaygroundState()
 
   const { sendChat, stopGeneration, isGenerating } = useChatHandler({
@@ -61,8 +72,11 @@ export function Playground() {
     sendChat,
   })
 
+  // 清理消息
   const handleClearMessages = () => {
+    // 关闭 dialog
     handleEditOpenChange(false)
+    // 清空消息
     clearMessages()
   }
 

@@ -82,23 +82,23 @@ type User struct {
 	Password         string                     `json:"password" gorm:"not null;comment:用户密码" validate:"min=8,max=20"`
 	OriginalPassword string                     `json:"original_password" gorm:"-:all"` // this field is only for Password change verification, don't save it to database!
 	DisplayName      string                     `json:"display_name" gorm:"index;comment:对外展示名称" validate:"max=20"`
-	Role             int                        `json:"role" gorm:"type:int;default:1;comment:角色 0-guest 1-common 2-admin 3-root"`   // admin, common
-	Status           int                        `json:"status" gorm:"type:int;default:1;comment:用户状态 0-禁用 1-启用"` // enabled, disabled
-	Email            string                     `json:"email" gorm:"index" validate:"max=50;comment:邮箱"`
+	Role             int                        `json:"role" gorm:"type:int;default:1;comment:角色 0-guest(访客) 1-common(用户) 2-admin(管理员) 3-root(ROOT)"` // admin, common
+	Status           int                        `json:"status" gorm:"type:int;default:1;comment:用户状态 1-启用 2-禁用 "`                                     // enabled, disabled
+	Email            string                     `json:"email" gorm:"index;comment:邮箱" validate:"max=50"`
 	GitHubId         string                     `json:"github_id" gorm:"column:github_id;index;comment:关联 GithubID"`
 	DiscordId        string                     `json:"discord_id" gorm:"column:discord_id;index;comment:关联 DiscordID"`
 	OidcId           string                     `json:"oidc_id" gorm:"column:oidc_id;index;comment:关联 oidcID"`
 	WeChatId         string                     `json:"wechat_id" gorm:"column:wechat_id;index;comment:关联 微信ID"`
 	TelegramId       string                     `json:"telegram_id" gorm:"column:telegram_id;index;comment:关联 TelegramID"`
-	VerificationCode string                     `json:"verification_code" gorm:"-:all"`                         // this field is only for Email verification, don't save it to database!
+	VerificationCode string                     `json:"verification_code" gorm:"-:all"`                                          // this field is only for Email verification, don't save it to database!
 	AccessToken      *string                    `json:"-" gorm:"type:char(32);column:access_token;uniqueIndex;comment:访问 Token"` // this token is for system management
 	Quota            int                        `json:"quota" gorm:"type:int;default:0;comment:配额"`
 	UsedQuota        int                        `json:"used_quota" gorm:"type:int;default:0;column:used_quota;comment:已使用配额"` // used quota
-	RequestCount     int                        `json:"request_count" gorm:"type:int;default:0;comment:请求总数"`               // request number
+	RequestCount     int                        `json:"request_count" gorm:"type:int;default:0;comment:请求总数"`                 // request number
 	Group            string                     `json:"group" gorm:"type:varchar(64);default:'default';comment:分组，默认为 default"`
 	AffCode          string                     `json:"aff_code" gorm:"type:varchar(32);column:aff_code;uniqueIndex;comment:邀请码"`
 	AffCount         int                        `json:"aff_count" gorm:"type:int;default:0;column:aff_count;comment:已邀请总数"`
-	AffQuota         int                        `json:"aff_quota" gorm:"type:int;default:0;column:aff_quota;comment:邀请码剩余额度"`           // 邀请剩余额度
+	AffQuota         int                        `json:"aff_quota" gorm:"type:int;default:0;column:aff_quota;comment:邀请码剩余额度"`          // 邀请剩余额度
 	AffHistoryQuota  int                        `json:"aff_history_quota" gorm:"type:int;default:0;column:aff_history;comment:邀请历史额度"` // 邀请历史额度
 	InviterId        int                        `json:"inviter_id" gorm:"type:int;column:inviter_id;index;comment:邀请人ID"`
 	DeletedAt        gorm.DeletedAt             `gorm:"index;comment:删除时间"`
@@ -962,7 +962,6 @@ func deleteUserAuthenticationData(tx *gorm.DB, userId int) error {
 }
 
 // ValidateAndFill check password & user status
-// 校验用户账户、密码是否匹配，状态是否正常
 func (user *User) ValidateAndFill() (err error) {
 	// When querying with struct, GORM will only query with non-zero fields,
 	// that means if your field's value is 0, '', false or other zero values,
@@ -972,7 +971,7 @@ func (user *User) ValidateAndFill() (err error) {
 	if username == "" || password == "" {
 		return ErrUserEmptyCredentials
 	}
-	// find by username or email
+	// SELECT * FROM users WHERE username = ? OR email = ?
 	err = DB.Where("username = ? OR email = ?", username, username).First(user).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) { // 记录不存在
@@ -985,7 +984,7 @@ func (user *User) ValidateAndFill() (err error) {
 	}
 	// 密码校验
 	okay := common.ValidatePasswordAndHash(password, user.Password)
-	if !okay || user.Status != common.UserStatusEnabled { // 用户状态检查
+	if !okay || user.Status != common.UserStatusEnabled { // 密码及用户状态检查
 		return ErrInvalidCredentials
 	}
 	return nil
@@ -1446,6 +1445,7 @@ func (user *User) FillUserByLinuxDOId() error {
 // RootUserExists 检查 root 角色的用户是否存在
 func RootUserExists() bool {
 	var user User
+	// SELECT * FROM users WHERE role = 100
 	err := DB.Where("role = ?", common.RoleRootUser).First(&user).Error
 	if err != nil {
 		return false

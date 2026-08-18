@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetDashboardRouter 设置仪表板路由
 func SetDashboardRouter(router *gin.Engine) {
 	apiRouter := router.Group("/")
 	apiRouter.Use(middleware.RouteTag("old_api"))
@@ -14,7 +15,7 @@ func SetDashboardRouter(router *gin.Engine) {
 	apiRouter.Use(middleware.GlobalAPIRateLimit())
 	apiRouter.Use(middleware.CORS())
 	apiRouter.Use(middleware.TokenAuth())
-	{
+	{ // 仪表板
 		apiRouter.GET("/dashboard/billing/subscription", controller.GetSubscription)
 		apiRouter.GET("/v1/dashboard/billing/subscription", controller.GetSubscription)
 		apiRouter.GET("/dashboard/billing/usage", controller.GetUsage)

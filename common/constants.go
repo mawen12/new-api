@@ -51,6 +51,7 @@ const (
 )
 
 var (
+	// 用户最大可同时登录设备数
 	UserSessionActiveLimit           = DefaultUserSessionActiveLimit
 	UserSessionIssuanceLimit         = DefaultUserSessionIssuanceLimit
 	UserSessionIssuanceWindowSeconds = int64(DefaultUserSessionIssuanceWindowSeconds)

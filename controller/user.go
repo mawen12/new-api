@@ -28,8 +28,8 @@ import (
 )
 
 type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `json:"username"` // 用户名/邮箱
+	Password string `json:"password"` // 密码
 }
 
 var (
@@ -169,7 +169,6 @@ func setupLoginAtAuthVersion(user *model.User, expectedAuthVersion int64, c *gin
 		common.ApiErrorI18n(c, i18n.MsgAuthUserBanned)
 		return
 	}
-	// 从数据库查询用户
 	currentUser, err := model.GetUserById(user.Id, false)
 	if err != nil {
 		common.ApiError(c, err)

@@ -72,11 +72,17 @@ func GetPricing(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"success":            true,
 		"data":               pricing,
+		// 所有模型供应商以及模型数量
 		"vendors":            model.GetVendors(),
+		// 所有分组以及分组中数量
 		"group_ratio":        groupRatio,
+		// 分组名称
 		"usable_group":       usableGroup,
+		// 支持的端点汇总
 		"supported_endpoint": model.GetSupportedEndpointMap(),
+		// 自动分组
 		"auto_groups":        service.GetUserAutoGroup(group),
+		// 价格版本
 		"pricing_version":    "a42d372ccf0b5dd13ecf71203521f9d2",
 	})
 }

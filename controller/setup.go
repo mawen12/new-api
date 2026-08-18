@@ -11,22 +11,22 @@ import (
 )
 
 type Setup struct {
-	Status       bool   `json:"status"`
-	RootInit     bool   `json:"root_init"`
-	DatabaseType string `json:"database_type"`
+	Status       bool   `json:"status"`        // 状态
+	RootInit     bool   `json:"root_init"`     // root 用户是否存在
+	DatabaseType string `json:"database_type"` // 数据库类型
 }
 
 type SetupRequest struct {
-	Username           string `json:"username"`
-	Password           string `json:"password"`
-	ConfirmPassword    string `json:"confirmPassword"`
-	SelfUseModeEnabled bool   `json:"SelfUseModeEnabled"`
-	DemoSiteEnabled    bool   `json:"DemoSiteEnabled"`
+	Username           string `json:"username"`           // 用户名
+	Password           string `json:"password"`           // 密码
+	ConfirmPassword    string `json:"confirmPassword"`    // 确认密码
+	SelfUseModeEnabled bool   `json:"SelfUseModeEnabled"` // 自用模式开关
+	DemoSiteEnabled    bool   `json:"DemoSiteEnabled"`    // 演示站点开关
 }
 
 // GetSetup godoc
-// @Summary 读取应用初始化状态
-// @Description 读取应用初始化状态，如果未初始化完毕，则返回 root 用户是否已初始化，以及主数据库的类型
+// @Summary 检查应用初始化状态
+// @Description 如果应用尚未初始化，则应使用 /api/setup [post] 接口进行初始化
 // @Tags 通用
 // @Router /api/setup [get]
 func GetSetup(c *gin.Context) {
@@ -49,7 +49,8 @@ func GetSetup(c *gin.Context) {
 }
 
 // PostSetup godoc
-// @Summary 发起应用配置变更
+// @Summary 初始化应用，创建 Root 用户
+// @Description 仅当应用尚未初始化时才能调用，仅能起效一次
 // @Tags 通用
 // @Router /api/setup [post]
 func PostSetup(c *gin.Context) {
@@ -113,13 +114,14 @@ func PostSetup(c *gin.Context) {
 		}
 		rootUser := model.User{
 			Username:    req.Username,
-			Password:    hashedPassword,
-			Role:        common.RoleRootUser,
-			Status:      common.UserStatusEnabled,
+			Password:    hashedPassword,           // 保存 hash 加密后的密码
+			Role:        common.RoleRootUser,      // Root 用户
+			Status:      common.UserStatusEnabled, // 启用状态
 			DisplayName: "Root User",
 			AccessToken: nil,
 			Quota:       100000000,
 		}
+		// INSERT INTO users
 		err = model.DB.Create(&rootUser).Error
 		if err != nil {
 			c.JSON(200, gin.H{

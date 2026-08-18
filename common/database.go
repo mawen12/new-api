@@ -9,6 +9,7 @@ const (
 	DatabaseTypeClickHouse DatabaseType = "clickhouse"
 )
 
+// 启动时按实际配置的数据库进行更新
 var mainDatabaseType = DatabaseTypeSQLite
 var logDatabaseType = DatabaseTypeSQLite
 

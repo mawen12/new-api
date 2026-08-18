@@ -35,10 +35,10 @@ type LoginSessionView struct {
 }
 
 type AuthBundle struct {
-	AccessToken     string           `json:"access_token"`
-	TokenType       string           `json:"token_type"`
-	AccessExpiresAt int64            `json:"access_expires_at"`
-	Session         LoginSessionView `json:"session"`
+	AccessToken     string           `json:"access_token"` // access token
+	TokenType       string           `json:"token_type"` // token 类型
+	AccessExpiresAt int64            `json:"access_expires_at"` // 访问过期时间
+	Session         LoginSessionView `json:"session"` // 会话
 	RefreshToken    string           `json:"-"`
 }
 

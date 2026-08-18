@@ -46,6 +46,7 @@ const MIN_PREFIX_COLLAPSE_LENGTH = 2000
 const MIN_REPEATED_SECTION_COUNT = 3
 const SECTION_HEADING_LINE_PATTERN = /^#{2,6}\s+\d+\.\s+.+$/gm
 
+// 从本地存储读取数据
 function readStoredValue(key: string): unknown | null {
   const saved = localStorage.getItem(key)
   if (!saved) return null
@@ -337,6 +338,7 @@ export function saveParameterEnabled(
 
 /**
  * Load messages from localStorage
+ * 从本地存储加载消息
  */
 export function loadMessages(): Message[] | null {
   try {

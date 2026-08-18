@@ -39,8 +39,11 @@ export function AuthenticatedLayout(props: AuthenticatedLayoutProps) {
       <SearchProvider>
         <SidebarProvider defaultOpen={defaultOpen} className='flex-col'>
           <SkipToMain />
+          {/* 头部 */}
           <AppHeader />
+
           <div className='flex min-h-0 w-full flex-1'>
+            {/* 侧边栏 */}
             <AppSidebar />
             <SidebarInset
               className={cn(

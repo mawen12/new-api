@@ -15,7 +15,9 @@ import (
 	"github.com/QuantumNous/new-api/types"
 )
 
+// Pricing 价格表
 type Pricing struct {
+	// 模型名称
 	ModelName              string                  `json:"model_name"`
 	Description            string                  `json:"description,omitempty"`
 	Icon                   string                  `json:"icon,omitempty"`

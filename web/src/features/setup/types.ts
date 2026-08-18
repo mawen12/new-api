@@ -21,9 +21,12 @@ export type SetupUsageMode = 'external' | 'self' | 'demo'
 export interface SetupStatus {
   status: boolean
   root_init: boolean
+  // 数据库类型
   database_type: string
   // Some backends also echo mode flags; they are optional here.
+  // 自用模式开关
   SelfUseModeEnabled?: boolean
+  // 演示站点模式
   DemoSiteEnabled?: boolean
 }
 

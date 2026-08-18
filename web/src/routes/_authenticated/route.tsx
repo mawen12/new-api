@@ -22,9 +22,11 @@ import { AuthenticatedLayout } from '@/components/layout'
 import { useAuthStore } from '@/stores/auth-store'
 
 export const Route = createFileRoute('/_authenticated')({
+  // 权限检查
   beforeLoad: ({ location }) => {
     const { auth } = useAuthStore.getState()
 
+    // 对于未登录或没有访问token，跳转到登录页面
     if (!auth.user || !auth.accessToken) {
       throw redirect({
         to: '/sign-in',

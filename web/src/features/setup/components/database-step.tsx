@@ -68,6 +68,7 @@ function resolveDatabaseMeta(type?: string) {
   )
 }
 
+// 数据库检查步骤
 export function DatabaseStep({ status }: DatabaseStepProps) {
   const { t } = useTranslation()
   const meta = resolveDatabaseMeta(status?.database_type)

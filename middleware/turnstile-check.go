@@ -12,6 +12,7 @@ type turnstileCheckResponse struct {
 	Success bool `json:"success"`
 }
 
+// TurnstileCheck 人机验证
 func TurnstileCheck() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if common.TurnstileCheckEnabled {

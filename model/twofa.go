@@ -10,29 +10,29 @@ import (
 	"gorm.io/gorm"
 )
 
-// TwoFA 用户2FA设置表
+// TwoFA 用户2FA设置表 two_fas
 type TwoFA struct {
-	Id             int            `json:"id" gorm:"primaryKey"`
-	UserId         int            `json:"user_id" gorm:"unique;not null;index"`
-	Secret         string         `json:"-" gorm:"type:varchar(255);not null"` // TOTP密钥，不返回给前端
-	IsEnabled      bool           `json:"is_enabled"`
-	FailedAttempts int            `json:"failed_attempts" gorm:"default:0"`
-	LockedUntil    *time.Time     `json:"locked_until,omitempty"`
-	LastUsedAt     *time.Time     `json:"last_used_at,omitempty"`
-	CreatedAt      time.Time      `json:"created_at"`
-	UpdatedAt      time.Time      `json:"updated_at"`
-	DeletedAt      gorm.DeletedAt `json:"-" gorm:"index"`
+	Id             int            `json:"id" gorm:"primaryKey;comment:ID"`
+	UserId         int            `json:"user_id" gorm:"unique;not null;index;comment:用户ID"`
+	Secret         string         `json:"-" gorm:"type:varchar(255);not null;comment:密钥"` // TOTP密钥，不返回给前端
+	IsEnabled      bool           `json:"is_enabled" gorm:"comment:是否开启了两阶段验证"`
+	FailedAttempts int            `json:"failed_attempts" gorm:"default:0;comment:最大失败尝试次数"`
+	LockedUntil    *time.Time     `json:"locked_until,omitempty" gorm:"comment:锁定截止时间"`
+	LastUsedAt     *time.Time     `json:"last_used_at,omitempty" gorm:"comment:最后使用时间"`
+	CreatedAt      time.Time      `json:"created_at" gorm:"comment:创建时间"`
+	UpdatedAt      time.Time      `json:"updated_at" gorm:"comment:更新时间"`
+	DeletedAt      gorm.DeletedAt `json:"-" gorm:"index;comment:删除时间"`
 }
 
-// TwoFABackupCode 备用码使用记录表
+// TwoFABackupCode 备用码使用记录表 two_fa_backup_codes
 type TwoFABackupCode struct {
-	Id        int            `json:"id" gorm:"primaryKey"`
-	UserId    int            `json:"user_id" gorm:"not null;index"`
-	CodeHash  string         `json:"-" gorm:"type:varchar(255);not null"` // 备用码哈希
-	IsUsed    bool           `json:"is_used"`
-	UsedAt    *time.Time     `json:"used_at,omitempty"`
-	CreatedAt time.Time      `json:"created_at"`
-	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
+	Id        int            `json:"id" gorm:"primaryKey;comment:ID"`
+	UserId    int            `json:"user_id" gorm:"not null;index;comment:用户ID"`
+	CodeHash  string         `json:"-" gorm:"type:varchar(255);not null;comment:备用码哈希"` // 备用码哈希
+	IsUsed    bool           `json:"is_used" gorm:"comment:是否被使用"`
+	UsedAt    *time.Time     `json:"used_at,omitempty" gorm:"comment:使用时间"`
+	CreatedAt time.Time      `json:"created_at" gorm:"comment:创建时间"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index;comment:删除时间"`
 }
 
 // GetTwoFAByUserId 根据用户ID获取2FA设置
@@ -42,6 +42,7 @@ func GetTwoFAByUserId(userId int) (*TwoFA, error) {
 	}
 
 	var twoFA TwoFA
+	// SELECT * FROM two_fas WHERE user_id = ?
 	err := DB.Where("user_id = ?", userId).First(&twoFA).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

@@ -12,6 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Playground godoc
+// @Summary 游乐场聊天入口
+// @Tags 中转
+// @Router /pg/chat/completions [post]
 func Playground(c *gin.Context) {
 	var newAPIError *types.NewAPIError
 

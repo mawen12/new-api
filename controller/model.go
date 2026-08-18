@@ -222,6 +222,12 @@ func getModelListGroups(c *gin.Context) (modelListGroups, error) {
 	}, nil
 }
 
+// ListModels godoc
+// @Summary 获取模型
+// @Tags 中转
+// @Router /v1/models [get]
+// @Router /v1beta/models [get]
+// @Router /v1beta/openai/models [get]
 func ListModels(c *gin.Context, modelType int) {
 	acceptUnsetRatioModel := operation_setting.SelfUseModeEnabled
 	if !acceptUnsetRatioModel {
@@ -355,6 +361,11 @@ func EnabledListModels(c *gin.Context) {
 	})
 }
 
+// RetrieveModel godoc
+// @Summary 获取给定模型
+// @Tags 中转
+// @Router /v1/models [get]
+// @Router /v1/models/:model [get]
 func RetrieveModel(c *gin.Context, modelType int) {
 	modelId := c.Param("model")
 	if aiModel, ok := openAIModelsMap[modelId]; ok {

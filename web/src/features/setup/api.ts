@@ -21,6 +21,7 @@ import { api } from '@/lib/api'
 import type { SetupFormValues, SetupResponse } from './types'
 
 export async function getSetupStatus(): Promise<SetupResponse> {
+  // 获取初始化状态
   const res = await api.get('/api/setup', {
     // We want fresh status on every visit.
     params: {
@@ -33,6 +34,7 @@ export async function getSetupStatus(): Promise<SetupResponse> {
 export async function submitSetup(
   payload: Record<string, unknown>
 ): Promise<SetupResponse> {
+  // 提交初始化状态
   const res = await api.post('/api/setup', payload)
   return res.data
 }

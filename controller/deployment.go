@@ -25,6 +25,10 @@ func getIoAPIKey(c *gin.Context) (string, bool) {
 	return apiKey, true
 }
 
+// GetModelDeploymentSettings godoc
+// @Summary 获取模型部署配置
+// @Tags 部署
+// @Router /api/deployments/settings [get]
 func GetModelDeploymentSettings(c *gin.Context) {
 	common.OptionMapRWMutex.RLock()
 	enabled := common.OptionMap["model_deployment.ionet.enabled"] == "true"
@@ -55,6 +59,11 @@ func getIoEnterpriseClient(c *gin.Context) (*ionet.Client, bool) {
 	return ionet.NewEnterpriseClient(apiKey), true
 }
 
+// TestIoNetConnection godoc
+// @Summary 测试连接
+// @Tags 部署
+// @Router /api/deployments/settings/test-connection [post]
+// @Router /api/deployments/test-connection [post]
 func TestIoNetConnection(c *gin.Context) {
 	var req struct {
 		APIKey string `json:"api_key"`
@@ -203,6 +212,10 @@ func computeStatusCounts(total int, deployments []ionet.Deployment) map[string]i
 	return counts
 }
 
+// GetAllDeployments godoc
+// @Summary 获取所有部署信息
+// @Tags 部署
+// @Router /api/deployments/ [get]
 func GetAllDeployments(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	client, ok := getIoEnterpriseClient(c)
@@ -240,6 +253,10 @@ func GetAllDeployments(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// SearchDeployments godoc
+// @Summary 搜索部署
+// @Tags 部署
+// @Router /api/deployments/search [get]
 func SearchDeployments(c *gin.Context) {
 	pageInfo := common.GetPageQuery(c)
 	client, ok := getIoEnterpriseClient(c)
@@ -293,6 +310,11 @@ func SearchDeployments(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// GetDeployment godoc
+// @Summary 获取给定部署
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id [get]
 func GetDeployment(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -342,6 +364,11 @@ func GetDeployment(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// UpdateDeploymentName godoc
+// @Summary 更新部署名称
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id/name [put]
 func UpdateDeploymentName(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -397,6 +424,11 @@ func UpdateDeploymentName(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// UpdateDeployment godoc
+// @Summary 更新部署
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id [put]
 func UpdateDeployment(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -427,6 +459,11 @@ func UpdateDeployment(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// ExtendDeployment godoc
+// @Summary 扩展部署
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id/extend [post]
 func ExtendDeployment(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -466,6 +503,11 @@ func ExtendDeployment(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// DeleteDeployment godoc
+// @Summary 删除部署
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id [delete]
 func DeleteDeployment(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -491,6 +533,10 @@ func DeleteDeployment(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// CreateDeployment godoc
+// @Summary 创建部署
+// @Tags 部署
+// @Router /api/deployments/ [post]
 func CreateDeployment(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -517,6 +563,10 @@ func CreateDeployment(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// GetHardwareTypes godoc
+// @Summary 获取硬件类型
+// @Tags 部署
+// @Router /api/deployments/hardware-types [get]
 func GetHardwareTypes(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -537,6 +587,10 @@ func GetHardwareTypes(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// GetLocations godoc
+// @Summary 获取部署位置
+// @Tags 部署
+// @Router /api/deployments/locations [get]
 func GetLocations(c *gin.Context) {
 	client, ok := getIoClient(c)
 	if !ok {
@@ -561,6 +615,10 @@ func GetLocations(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// GetAvailableReplicas godoc
+// @Summary 获取可用的副本
+// @Tags 部署
+// @Router /api/deployments/available-replicas [get]
 func GetAvailableReplicas(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -597,6 +655,10 @@ func GetAvailableReplicas(c *gin.Context) {
 	common.ApiSuccess(c, replicas)
 }
 
+// GetPriceEstimation godoc
+// @Summary
+// @Tags 部署
+// @Router /api/deployments/price-estimation [post]
 func GetPriceEstimation(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -618,6 +680,10 @@ func GetPriceEstimation(c *gin.Context) {
 	common.ApiSuccess(c, priceResp)
 }
 
+// CheckClusterNameAvailability godoc
+// @Summary
+// @Tags 部署
+// @Router /api/deployments/check-name [get]
 func CheckClusterNameAvailability(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -643,6 +709,11 @@ func CheckClusterNameAvailability(c *gin.Context) {
 	common.ApiSuccess(c, data)
 }
 
+// GetDeploymentLogs godoc
+// @Summary 获取给定部署日志
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id/logs [get]
 func GetDeploymentLogs(c *gin.Context) {
 	client, ok := getIoClient(c)
 	if !ok {
@@ -703,6 +774,11 @@ func GetDeploymentLogs(c *gin.Context) {
 	common.ApiSuccess(c, rawLogs)
 }
 
+// ListDeploymentContainers godoc
+// @Summary 获取部署的容器
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Router /api/deployments/:id/containers [get]
 func ListDeploymentContainers(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {
@@ -758,6 +834,12 @@ func ListDeploymentContainers(c *gin.Context) {
 	common.ApiSuccess(c, response)
 }
 
+// GetContainerDetails godoc
+// @Summary 获取给定部署的给定容器信息
+// @Tags 部署
+// @Param id path int true "部署ID"
+// @Param container_id path int true "容器ID"
+// @Router /api/deployments/:id/containers/:container_id [get]
 func GetContainerDetails(c *gin.Context) {
 	client, ok := getIoEnterpriseClient(c)
 	if !ok {

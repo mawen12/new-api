@@ -40,22 +40,22 @@ var (
 // RefreshHash values are HMAC digests supplied by the service layer; opaque
 // refresh secrets are never persisted.
 type UserSession struct {
-	SID                 string `json:"sid" gorm:"column:sid;type:varchar(64);primaryKey"`
-	UserID              int    `json:"user_id" gorm:"column:user_id;not null;index:idx_user_sessions_user_status_expiry,priority:1;index:idx_user_sessions_user_created,priority:1"`
-	Version             int64  `json:"version" gorm:"type:bigint;not null;default:1"`
-	UserAuthVersion     int64  `json:"user_auth_version" gorm:"type:bigint;not null"`
-	Status              string `json:"status" gorm:"type:varchar(16);not null;index:idx_user_sessions_user_status_expiry,priority:2;index:idx_user_sessions_status_revoked,priority:1"`
-	RefreshHash         string `json:"-" gorm:"type:char(64);not null"`
-	PreviousRefreshHash string `json:"-" gorm:"type:varchar(64)"`
-	PreviousValidUntil  int64  `json:"-" gorm:"type:bigint;not null;default:0"`
-	LoginMethod         string `json:"login_method" gorm:"type:varchar(32);not null"`
-	IP                  string `json:"ip" gorm:"type:varchar(64)"`
-	UserAgent           string `json:"user_agent" gorm:"type:text"`
-	CreatedAt           int64  `json:"created_at" gorm:"autoCreateTime;column:created_at;index:idx_user_sessions_user_created,priority:2"`
-	LastActiveAt        int64  `json:"last_active_at" gorm:"type:bigint;not null;column:last_active_at"`
-	ExpiresAt           int64  `json:"expires_at" gorm:"type:bigint;not null;column:expires_at;index:idx_user_sessions_user_status_expiry,priority:3;index:idx_user_sessions_expires_at"`
-	RevokedAt           int64  `json:"revoked_at,omitempty" gorm:"type:bigint;not null;default:0;column:revoked_at;index:idx_user_sessions_status_revoked,priority:2"`
-	RevokedReason       string `json:"revoked_reason,omitempty" gorm:"type:varchar(64);column:revoked_reason"`
+	SID                 string `json:"sid" gorm:"column:sid;type:varchar(64);primaryKey;comment:用户会话ID"`
+	UserID              int    `json:"user_id" gorm:"column:user_id;not null;index:idx_user_sessions_user_status_expiry,priority:1;index:idx_user_sessions_user_created,priority:1;comment:用户ID"`
+	Version             int64  `json:"version" gorm:"type:bigint;not null;default:1;comment:会话版本"`
+	UserAuthVersion     int64  `json:"user_auth_version" gorm:"type:bigint;not null;comment:用户认证版本"`
+	Status              string `json:"status" gorm:"type:varchar(16);not null;index:idx_user_sessions_user_status_expiry,priority:2;index:idx_user_sessions_status_revoked,priority:1;comment:会话状态 active-活跃 revoking-撤销中 revoked-已撤销"`
+	RefreshHash         string `json:"-" gorm:"type:char(64);not null;comment:刷新哈希"`
+	PreviousRefreshHash string `json:"-" gorm:"type:varchar(64);comment:前一个刷新哈希"`
+	PreviousValidUntil  int64  `json:"-" gorm:"type:bigint;not null;default:0;comment:前一个合法结束时间"`
+	LoginMethod         string `json:"login_method" gorm:"type:varchar(32);not null;comment:登录方法"`
+	IP                  string `json:"ip" gorm:"type:varchar(64);comment:IP"`
+	UserAgent           string `json:"user_agent" gorm:"type:text;comment:用户代理"`
+	CreatedAt           int64  `json:"created_at" gorm:"autoCreateTime;column:created_at;index:idx_user_sessions_user_created,priority:2;comment:创建时间"`
+	LastActiveAt        int64  `json:"last_active_at" gorm:"type:bigint;not null;column:last_active_at;comment:最后活跃时间"`
+	ExpiresAt           int64  `json:"expires_at" gorm:"type:bigint;not null;column:expires_at;index:idx_user_sessions_user_status_expiry,priority:3;index:idx_user_sessions_expires_at;commnet:过期时间"`
+	RevokedAt           int64  `json:"revoked_at,omitempty" gorm:"type:bigint;not null;default:0;column:revoked_at;index:idx_user_sessions_status_revoked,priority:2;comment:撤销时间"`
+	RevokedReason       string `json:"revoked_reason,omitempty" gorm:"type:varchar(64);column:revoked_reason;comment:撤销原因"`
 }
 
 func (UserSession) TableName() string {
@@ -151,9 +151,11 @@ func CreateUserSession(session *UserSession) error {
 		session.CreatedAt = now
 	}
 	cacheDeadline := userSessionCacheDeadline()
+	// INSERT INTO user_session
 	if err := DB.Create(session).Error; err != nil {
 		return err
 	}
+	// SET 
 	if err := writeUserSessionCache(session.cacheEntry(), cacheDeadline); err != nil {
 		if errors.Is(err, errUserSessionCacheObservationStale) {
 			return confirmUserSessionActiveSnapshot(session)
@@ -166,6 +168,7 @@ func CreateUserSession(session *UserSession) error {
 	return nil
 }
 
+// CountActiveUserSessions 统计给定用户已经登录的尚未过期的活跃 Session 
 func CountActiveUserSessions(userID int, now int64) (int64, error) {
 	if userID <= 0 {
 		return 0, ErrUserSessionInvalid
@@ -174,6 +177,7 @@ func CountActiveUserSessions(userID int, now int64) (int64, error) {
 		now = time.Now().Unix()
 	}
 	var count int64
+	// SELECT COUNT(1) FROM user_sessions WHERE user_id = ? AND status = ? AND expires_at > ? 
 	err := DB.Model(&UserSession{}).
 		Where("user_id = ? AND status = ? AND expires_at > ?", userID, UserSessionStatusActive, now).
 		Count(&count).Error
@@ -191,6 +195,7 @@ func CountUserSessionsCreatedSince(userID int, createdAfter int64) (int64, error
 		query = query.Where("user_id = ?", userID)
 	}
 	var count int64
+	// SELECT COUNT(1) FROM user_sessions WHERE created_at > ? AND user_id = ?
 	err := query.Count(&count).Error
 	return count, err
 }

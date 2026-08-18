@@ -44,6 +44,7 @@ const MESSAGE_SAVE_DEBOUNCE_MS = 500
  */
 export function usePlaygroundState() {
   // Load initial state from localStorage
+  // 游乐场配置
   const [config, setConfig] = useState<PlaygroundConfig>(
     getInitialPlaygroundConfig
   )
@@ -52,13 +53,17 @@ export function usePlaygroundState() {
     getInitialParameterEnabled
   )
 
+  // 保存当前对话中所有的消息
   const [messages, setMessages] = useState<Message[]>([])
+  // 是否处于加载消息的状态
   const [isLoadingMessages, setIsLoadingMessages] = useState(true)
   const messagesSaveTimerRef = useRef<number | null>(null)
   const latestMessagesRef = useRef<Message[]>(messages)
   const hasLoadedMessagesRef = useRef(false)
 
+  // 模型列表
   const [models, setModels] = useState<ModelOption[]>([])
+  // 分组列表
   const [groups, setGroups] = useState<GroupOption[]>([])
 
   const persistMessages = useCallback((messagesToSave: Message[]) => {
@@ -82,13 +87,16 @@ export function usePlaygroundState() {
     let cancelled = false
 
     window.setTimeout(() => {
+      // 加载本地消息
       const loadedMessages = loadMessages() ?? []
       if (cancelled) {
         return
       }
 
+      // 指向当前消息
       latestMessagesRef.current = loadedMessages
       hasLoadedMessagesRef.current = true
+      // 保存消息
       setMessages(loadedMessages)
       setIsLoadingMessages(false)
     }, 0)
@@ -98,10 +106,13 @@ export function usePlaygroundState() {
     }
   }, [])
 
+  // 销毁回调
   useEffect(
     () => () => {
       if (messagesSaveTimerRef.current !== null) {
+        // 清理超时任务
         window.clearTimeout(messagesSaveTimerRef.current)
+        // 保存消息到本地存储
         saveMessages(latestMessagesRef.current)
       }
     },

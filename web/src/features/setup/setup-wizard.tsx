@@ -48,18 +48,22 @@ import { UsageModeStep } from './components/usage-mode-step'
 import type { SetupFormValues, SetupStatus } from './types'
 
 const STEPS = [
+  // 数据库检测
   {
     titleKey: 'Database check',
     descriptionKey: 'Verify your database connection',
   },
+  // 管理员帐号
   {
     titleKey: 'Administrator account',
     descriptionKey: 'Create credentials for the root user',
   },
+  // 使用模式
   {
     titleKey: 'Usage mode',
     descriptionKey: 'Choose how the platform will operate',
   },
+  // 审核并初始化
   {
     titleKey: 'Review & initialize',
     descriptionKey: 'Confirm settings and finish setup',
@@ -186,6 +190,7 @@ export function SetupWizard() {
     }
   }, [setupStatus, form])
 
+  // 获取当前步骤组件
   const currentStepComponent = useMemo(() => {
     if (currentStep === 0) {
       return <DatabaseStep status={setupStatus} />
@@ -280,11 +285,13 @@ export function SetupWizard() {
 
   return (
     <div className='bg-muted/40 relative min-h-svh py-10'>
+      {/* 右上角展示语言选择器 */}
       <div className='absolute top-4 right-4 sm:top-6 sm:right-6'>
         <LanguageSwitcher />
       </div>
       <div className='container mx-auto flex max-w-5xl flex-col gap-8 px-4 sm:px-6'>
         <div className='flex flex-col items-center gap-3'>
+          {/* 顶部展示系统 logo */}
           <div className='relative h-12 w-12'>
             {systemConfigLoading ? (
               <Skeleton className='absolute inset-0 rounded-full' />
@@ -296,6 +303,8 @@ export function SetupWizard() {
               />
             )}
           </div>
+
+          {/* 展示系统名称 */}
           {systemConfigLoading ? (
             <Skeleton className='h-7 w-40' />
           ) : (
@@ -303,6 +312,8 @@ export function SetupWizard() {
               {t('Initialize')} {systemName}
             </h1>
           )}
+
+          {/* 展示描述 */}
           <p className='text-muted-foreground text-center text-sm sm:text-base'>
             {t(
               'Follow the guided steps to prepare your workspace before the first login.'
@@ -311,6 +322,7 @@ export function SetupWizard() {
         </div>
 
         <Card className='shadow-lg'>
+          {/* 卡片头部展示设置向导及描述 */}
           <CardHeader className='space-y-2'>
             <CardTitle className='text-xl font-semibold'>
               {t('System setup wizard')}
@@ -322,6 +334,7 @@ export function SetupWizard() {
 
           <CardContent className='space-y-6'>
             <ol className='grid gap-3 sm:grid-cols-4'>
+              {/* 使用列表展示所有步骤，高亮当前步骤 */}
               {STEPS.map((step, index) => {
                 const isActive = currentStep === index
                 const isCompleted = currentStep > index
@@ -385,6 +398,7 @@ export function SetupWizard() {
 
           {!isLoading && !isError && (
             <CardFooter className='w-full justify-end border-t'>
+              {/* 导航步骤，可以进行下一步和回到上一步 */}
               <StepNavigation
                 currentStep={currentStep}
                 totalSteps={STEPS.length}

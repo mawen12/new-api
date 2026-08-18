@@ -30,13 +30,20 @@ export interface MessageVersion {
 
 export interface Message {
   key: string
+  // 消息角色
   from: MessageRole
+  // 消息版本列表
   versions: MessageVersion[]
+  // 创建时间
   createdAt?: number
+  // 开始时间
   startedAt?: number
+  // 完成时间
   completedAt?: number
+  // 耗时
   durationMs?: number
   sources?: { href: string; title: string }[]
+  // 推理
   reasoning?: {
     content: string
     duration: number
@@ -117,17 +124,27 @@ export interface ChatCompletionResponse {
 
 // Configuration types
 export interface PlaygroundConfig {
+  // 模型名称
   model: string
+  // 分组
   group: string
+  // 采样温度；越低越稳定；0~2
   temperature: number
+  // 核采样累计概率；0~1
   top_p: number
+  // 响应中最大 token 数
   max_tokens: number
+  // 惩罚高频 token 的重复出现；-2~2
   frequency_penalty: number
+  // 鼓励引入新话题；-2~2
   presence_penalty: number
+  // 尽量保证可复现的采样种子
   seed: number | null
+  // 通过SSE流式返回token
   stream: boolean
 }
 
+// 聊天参数设置
 export interface ParameterEnabled {
   temperature: boolean
   top_p: boolean
@@ -139,13 +156,19 @@ export interface ParameterEnabled {
 
 // Model and group options
 export interface ModelOption {
+  // 模型标签
   label: string
+  // 模型名称
   value: string
 }
 
 export interface GroupOption {
+  // 分组描述
   label: string
+  // 分组
   value: string
+  // 倍率
   ratio: number
+  // 描述
   desc?: string
 }

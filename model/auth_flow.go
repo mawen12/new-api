@@ -37,11 +37,11 @@ var (
 // AuthFlow stores one-time, short-lived state for authentication ceremonies.
 // TokenHash is an HMAC of the opaque token; the token itself is never persisted.
 type AuthFlow struct {
-	Id         int64      `json:"id" gorm:"primaryKey"`
-	TokenHash  string     `json:"-" gorm:"type:char(64);not null;uniqueIndex"`
-	Purpose    string     `json:"purpose" gorm:"type:varchar(32);not null;index:idx_auth_flow_purpose_expiry"`
-	Provider   string     `json:"provider,omitempty" gorm:"type:varchar(64)"`
-	Intent     string     `json:"intent,omitempty" gorm:"type:varchar(16)"`
+	Id         int64      `json:"id" gorm:"primaryKey;comment:ID"`
+	TokenHash  string     `json:"-" gorm:"type:char(64);not null;uniqueIndex;comment:Token 哈希"`
+	Purpose    string     `json:"purpose" gorm:"type:varchar(32);not null;index:idx_auth_flow_purpose_expiry;comment:用途 oauth-OAuth验证 2fa_login-两因素登录 passkey_login-passkey登录 "`
+	Provider   string     `json:"provider,omitempty" gorm:"type:varchar(64);comment:提供商"`
+	Intent     string     `json:"intent,omitempty" gorm:"type:varchar(16);comment:"`
 	UserId     int        `json:"user_id,omitempty" gorm:"index"`
 	SessionId  string     `json:"session_id,omitempty" gorm:"type:varchar(64);index"`
 	Payload    string     `json:"-" gorm:"type:text"`

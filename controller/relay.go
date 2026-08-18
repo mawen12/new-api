@@ -71,7 +71,27 @@ func geminiRelayHandler(c *gin.Context, info *relaycommon.RelayInfo) *types.NewA
 	return err
 }
 
-// Relay 中继入口
+// Relay godoc
+// @Summary WebSocket 路由,中继入口
+// @Tags 中转
+// @Router /v1/realtime [get]
+// @Router /v1/messages [post]
+// @Router /v1/completions [post]
+// @Router /v1/chat/completions [post]
+// @Router /v1/responses [post]
+// @Router /v1/responses/compact [post]
+// @Router /v1/alpha/search [post]
+// @Router /v1/edits [post]
+// @Router /v1/images/generations [post]
+// @Router /v1/images/edits [post]
+// @Router /v1/embeddings [post]
+// @Router /v1/audio/transcriptions [post]
+// @Router /v1/audio/translations [post]
+// @Router /v1/audio/speech [post]
+// @Router /v1/rerank [post]
+// @Router /v1/engines/:model/embeddings [post]
+// @Router /v1/models/*path [post]
+// @Router /v1/moderations [post]
 func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 	// 读取请求ID
 	requestId := c.GetString(common.RequestIdKey)
@@ -116,7 +136,7 @@ func Relay(c *gin.Context, relayFormat types.RelayFormat) {
 		}
 	}()
 
-	// 
+	//
 	request, err := helper.GetAndValidateRequest(c, relayFormat)
 	if err != nil {
 		// Map "request body too large" to 413 so clients can handle it correctly
@@ -458,6 +478,21 @@ func RelayMidjourney(c *gin.Context) {
 	}
 }
 
+// RelayNotImplemented godoc
+// @Summary
+// @Tags 中转
+// @Router /v1/images/variations [post]
+// @Router /v1/files [get]
+// @Router /v1/files [post]
+// @Router /v1/files/:id [delete]
+// @Router /v1/files/:id [get]
+// @Router /v1/files/:id/content [get]
+// @Router /v1/fine-tunes [post]
+// @Router /v1/fine-tunes [get]
+// @Router /v1/fine-tunes/:id [get]
+// @Router /v1/fine-tunes/:id/cancel [post]
+// @Router /v1/fine-tunes/:id/events [get]
+// @Router /v1/models/:model [delete]
 func RelayNotImplemented(c *gin.Context) {
 	err := types.OpenAIError{
 		Message: "API not implemented",

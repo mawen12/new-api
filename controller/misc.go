@@ -59,19 +59,19 @@ func GetStatus(c *gin.Context) {
 	legalSetting := system_setting.GetLegalSettings()
 
 	data := gin.H{
-		"version":                     common.Version,
-		"start_time":                  common.StartTime,
-		"email_verification":          common.EmailVerificationEnabled,
-		"github_oauth":                common.GitHubOAuthEnabled,
-		"github_client_id":            common.GitHubClientId,
-		"discord_oauth":               system_setting.GetDiscordSettings().Enabled,
-		"discord_client_id":           system_setting.GetDiscordSettings().ClientId,
-		"linuxdo_oauth":               common.LinuxDOOAuthEnabled,
+		"version":                     common.Version, // 应用版本
+		"start_time":                  common.StartTime, // 应用启用时间
+		"email_verification":          common.EmailVerificationEnabled, // 邮件验证开关
+		"github_oauth":                common.GitHubOAuthEnabled, // Github OAuth 集成
+		"github_client_id":            common.GitHubClientId, // Github Client ID
+		"discord_oauth":               system_setting.GetDiscordSettings().Enabled, // Discoard OAuth 集成
+		"discord_client_id":           system_setting.GetDiscordSettings().ClientId, // Discoard Client ID
+		"linuxdo_oauth":               common.LinuxDOOAuthEnabled, // LinuxDO OAuth 集成
 		"linuxdo_client_id":           common.LinuxDOClientId,
 		"linuxdo_minimum_trust_level": common.LinuxDOMinimumTrustLevel,
-		"telegram_oauth":              common.TelegramOAuthEnabled,
+		"telegram_oauth":              common.TelegramOAuthEnabled, // Telegram OAuth 集成
 		"telegram_bot_name":           common.TelegramBotName,
-		"theme":                       "default",
+		"theme":                       "default", // 主题
 		"system_name":                 common.SystemName,
 		"logo":                        common.Logo,
 		"footer_html":                 common.Footer,

@@ -8,6 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// GetSubscription godoc
+// @Summary 获取订阅
+// @Tags 仪表板
+// @Router /dashboard/billing/subscription [get]
+// @Router /v1/dashboard/billing/subscription [get]
 func GetSubscription(c *gin.Context) {
 	var remainQuota int
 	var usedQuota int
@@ -68,6 +73,11 @@ func GetSubscription(c *gin.Context) {
 	return
 }
 
+// GetUsage godoc
+// @Summary 获取使用信息
+// @Tags 仪表板
+// @Router /dashboard/billing/usage [get]
+// @Router /v1/dashboard/billing/usage [get]
 func GetUsage(c *gin.Context) {
 	var quota int
 	var err error

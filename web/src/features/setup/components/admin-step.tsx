@@ -38,6 +38,11 @@ interface AdminStepProps {
   rootInitialized?: boolean
 }
 
+/**
+ * 管理员账户
+ * @param param0 
+ * @returns 
+ */
 export function AdminStep({ form, rootInitialized }: AdminStepProps) {
   const { t } = useTranslation()
   if (rootInitialized) {

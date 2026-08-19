@@ -84,4 +84,15 @@ cheatsheet do
             END
         end
     end
+
+    category do
+        name '响应格式'
+
+        entry do
+            name 'OpenAI'
+            notes <<-'END'
+                
+            END
+        end
+    end
 end

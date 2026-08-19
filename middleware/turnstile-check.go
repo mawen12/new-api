@@ -25,6 +25,7 @@ func TurnstileCheck() gin.HandlerFunc {
 				c.Abort()
 				return
 			}
+			// 发 cloudflare 进行验证
 			rawRes, err := http.PostForm("https://challenges.cloudflare.com/turnstile/v0/siteverify", url.Values{
 				"secret":   {common.TurnstileSecretKey},
 				"response": {response},

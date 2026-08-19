@@ -75,6 +75,7 @@ func authHelper(c *gin.Context, minRole int) {
 	finishAdminAudit(c, auditWriter)
 }
 
+// TryUserAuth
 func TryUserAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		user, identity, credentialKind, err := classifyDashboardCredential(c)
@@ -89,18 +90,21 @@ func TryUserAuth() func(c *gin.Context) {
 	}
 }
 
+// UserAuth 检查用户是否具有 common 角色权限
 func UserAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHelper(c, common.RoleCommonUser)
 	}
 }
 
+// AdminAuth 检查用户是否具有 admin 角色权限
 func AdminAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHelper(c, common.RoleAdminUser)
 	}
 }
 
+// RootAuth 检查用户是否具有 root 角色权限
 func RootAuth() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		authHelper(c, common.RoleRootUser)
@@ -198,14 +202,22 @@ func authorizationToken(header string) (string, bool) {
 // setDashboardAuthContext 向上下文中写入用户的信息
 func setDashboardAuthContext(c *gin.Context, user *model.UserBase, identity service.AuthIdentity, useAccessToken bool) {
 	c.Header("Auth-Version", "864b7076dbcd0a3c01b5520316720ebf")
+	// 用户名称
 	c.Set("username", user.Username)
+	// 用户角色
 	c.Set("role", user.Role)
+	// 用户ID
 	c.Set("id", user.Id)
+	// 用户所在分组
 	c.Set("group", user.Group)
 	c.Set("user_group", user.Group)
+	// 用户访问模式，支持 access_token 和 session
 	c.Set("use_access_token", useAccessToken)
+	// 用户会话id，仅当通过 session 访问是才会有
 	c.Set("session_id", identity.SessionID)
+	// 用户认证版本
 	c.Set("auth_version", identity.UserAuthVersion)
+	// 用户会话版本
 	c.Set("session_version", identity.SessionVersion)
 	c.Set(authIdentityContextKey, identity)
 	user.WriteContext(c)
@@ -228,7 +240,7 @@ func writeDashboardAuthError(c *gin.Context, err error) {
 	c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"success": false, "code": "AUTH_INTERNAL_ERROR", "message": common.TranslateMessage(c, i18n.MsgDatabaseError)})
 }
 
-// RequirePermission 授权验证
+// RequirePermission 检查是否具有给定的权限
 func RequirePermission(permission authz.Permission) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		role := c.GetInt("role")
@@ -492,19 +504,31 @@ func SetupContextForToken(c *gin.Context, token *model.Token, parts ...string) e
 	if token == nil {
 		return fmt.Errorf("token is nil")
 	}
-	c.Set("id", token.UserId)
-	c.Set("token_id", token.Id)
-	c.Set("token_key", token.Key)
-	c.Set("token_name", token.Name)
-	c.Set("token_unlimited_quota", token.UnlimitedQuota)
+	// TODO by mawen 修改，提升可读性和代码导航
+	// c.Set("id", token.UserId)
+	// c.Set("token_id", token.Id)
+	// c.Set("token_key", token.Key)
+	// c.Set("token_name", token.Name)
+	// c.Set("token_unlimited_quota", token.UnlimitedQuota)
+	common.SetContextKey(c, constant.ContextKeyUserId, token.UserId)
+	common.SetContextKey(c, constant.ContextKeyTokenId, token.Id)
+	common.SetContextKey(c, constant.ContextKeyTokenKey, token.Key)
+	common.SetContextKey(c, constant.ContextKeyTokenName, token.Name)
+	common.SetContextKey(c, constant.ContextKeyTokenUnlimited, token.UnlimitedQuota)
 	if !token.UnlimitedQuota {
-		c.Set("token_quota", token.RemainQuota)
+		// c.Set("token_quota", token.RemainQuota)
+		common.SetContextKey(c, constant.ContextKeyTokenQuota, token.RemainQuota)
 	}
 	if token.ModelLimitsEnabled {
-		c.Set("token_model_limit_enabled", true)
-		c.Set("token_model_limit", token.GetModelLimitsMap())
+		// TODO by mawen 修改，提升可读性和代码导航
+		// c.Set("token_model_limit_enabled", true)
+		// c.Set("token_model_limit", token.GetModelLimitsMap())
+		common.SetContextKey(c, constant.ContextKeyTokenModelLimitEnabled, true)
+		common.SetContextKey(c, constant.ContextKeyTokenModelLimit, token.GetModelLimitsMap())
 	} else {
-		c.Set("token_model_limit_enabled", false)
+		// TODO by mawen 修改，提升可读性和代码导航
+		// c.Set("token_model_limit_enabled", false)
+		common.SetContextKey(c, constant.ContextKeyTokenModelLimitEnabled, false)
 	}
 	common.SetContextKey(c, constant.ContextKeyTokenGroup, token.Group)
 	common.SetContextKey(c, constant.ContextKeyTokenCrossGroupRetry, token.CrossGroupRetry)
@@ -520,7 +544,9 @@ func SetupContextForToken(c *gin.Context, token *model.Token, parts ...string) e
 	}
 	if len(parts) > 1 {
 		if model.IsAdmin(token.UserId) {
-			c.Set("specific_channel_id", parts[1])
+			// TODO by mawen 修改，提升可读性和代码导航
+			// c.Set("specific_channel_id", parts[1])
+			common.SetContextKey(c, constant.ContextKeyTokenSpecificChannelId, parts[1])
 		} else {
 			c.Header("specific_channel_version", "701e3ae1dc3f7975556d354e0675168d004891c8")
 			abortWithOpenAiMessage(c, http.StatusForbidden, "普通用户不支持指定渠道")

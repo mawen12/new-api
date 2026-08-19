@@ -51,8 +51,9 @@ const (
 )
 
 var (
-	// 用户最大可同时登录设备数
+	// 用户最大可同时登录设备数，用户通过 session 方式登录时验证，超过该值返回: ErrUserSessionLimit
 	UserSessionActiveLimit           = DefaultUserSessionActiveLimit
+	// 用户指定时间窗口内最大登录设备次数，用户通过 session 方式登录时验证，超过该值返回: ErrUserSessionIssuanceLimit
 	UserSessionIssuanceLimit         = DefaultUserSessionIssuanceLimit
 	UserSessionIssuanceWindowSeconds = int64(DefaultUserSessionIssuanceWindowSeconds)
 	UserSessionRevokedRetentionDays  = DefaultUserSessionRevokedRetentionDays
@@ -66,13 +67,21 @@ var ItemsPerPage = 10
 var MaxRecentItems = 1000
 
 var PasswordLoginEnabled = true
+// 
 var PasswordRegisterEnabled = true
+// 邮箱验证开关，
 var EmailVerificationEnabled = false
+// Github认证开关，关闭后无法绑定Github，支持实时开关
 var GitHubOAuthEnabled = false
+// LinuxDo认证开关，关闭后无法绑定LinuxDo，支持实时开关
 var LinuxDOOAuthEnabled = false
+// 微信认证开关，关闭后无法绑定微信，支持实时开关
 var WeChatAuthEnabled = false
+// Telegram认证开关，关闭后无法绑定 Telegram，支持实时开关
 var TelegramOAuthEnabled = false
+// cloudflare 人机检测开关，开启后请求上必须携带 turnstile 参数，由前端传递，关闭后不再检测，支持实时开关
 var TurnstileCheckEnabled = false
+// 新用户注册开关，关闭后不允许新用户注册，支持实时开关
 var RegisterEnabled = true
 
 var EmailDomainRestrictionEnabled = false // 是否启用邮箱域名限制

@@ -80,6 +80,7 @@ func roleSpec(roleKey string) (RoleSpec, bool) {
 	return RoleSpec{}, false
 }
 
+// isSuperuserRole 检查是否有 root / admin 权限
 func isSuperuserRole(roleKey string) bool {
 	spec, ok := roleSpec(roleKey)
 	return ok && spec.Superuser

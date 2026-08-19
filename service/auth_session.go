@@ -35,13 +35,14 @@ type LoginSessionView struct {
 }
 
 type AuthBundle struct {
-	AccessToken     string           `json:"access_token"` // access token
-	TokenType       string           `json:"token_type"` // token 类型
+	AccessToken     string           `json:"access_token"`      // access token
+	TokenType       string           `json:"token_type"`        // token 类型
 	AccessExpiresAt int64            `json:"access_expires_at"` // 访问过期时间
-	Session         LoginSessionView `json:"session"` // 会话
+	Session         LoginSessionView `json:"session"`           // 会话
 	RefreshToken    string           `json:"-"`
 }
 
+// CreateLoginSession 创建用户session并入表
 func CreateLoginSession(userID int, loginMethod, ip, userAgent string) (*AuthBundle, error) {
 	return createLoginSession(userID, 0, loginMethod, ip, userAgent)
 }

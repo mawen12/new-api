@@ -77,6 +77,11 @@ const DEFAULT_FORM_VALUES: SetupFormValues = {
   usageMode: 'external',
 }
 
+/**
+ * 启动初始化配置页面入口
+ * 
+ * @returns 
+ */
 export function SetupWizard() {
   const { t } = useTranslation()
   const navigate = useNavigate()

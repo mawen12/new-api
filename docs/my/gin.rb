@@ -18,6 +18,42 @@ cheatsheet do
     '
 
     category do
+        id '请求信息获取'
+
+        entry do
+            name '请求方法'
+            notes 'c.'
+        end
+        entry do
+            name '请求路径'
+            notes 'c.FullPath()'
+        end
+        entry do
+            name 'Path value'
+            notes <<-'END'
+                /api/oauth/:provider
+
+                c.Param("provider")
+            END
+        end
+        entry do
+            name 'Query'
+            notes <<-'END'
+                /api/login?username=xxx
+
+                c.Query("username")
+            END
+        end
+        entry do
+            name 'JSON请求体'
+            notes <<-'END'
+                var user User
+                err := c.ShouldBindJSON(&user)
+            END
+        end
+    end
+
+    category do
         id '报文响应'
 
         entry do

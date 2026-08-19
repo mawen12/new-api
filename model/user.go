@@ -78,7 +78,7 @@ func resolveUserSortOptions(sortOptions []UserSortOptions) UserSortOptions {
 // Otherwise, the sensitive information will be saved on local storage in plain text!
 type User struct {
 	Id               int                        `json:"id" gorm:"comment:用户ID"`
-	Username         string                     `json:"username" gorm:"unique;index;comment:用户名称，全局唯一" validate:"max=20"`
+	Username         string                     `json:"username" gorm:"unique;index;comment:用户名称，全局唯一，且不对外展示" validate:"max=20"`
 	Password         string                     `json:"password" gorm:"not null;comment:用户密码" validate:"min=8,max=20"`
 	OriginalPassword string                     `json:"original_password" gorm:"-:all"` // this field is only for Password change verification, don't save it to database!
 	DisplayName      string                     `json:"display_name" gorm:"index;comment:对外展示名称" validate:"max=20"`
@@ -357,8 +357,11 @@ func withNormalizedEmailLock(tx *gorm.DB, email string, fn func(tx *gorm.DB) err
 	return fn(tx)
 }
 
+// GetMaxUserId 获取数据库最大的id值
 func GetMaxUserId() int {
 	var user User
+	// 查询包含软删除的用户
+	// SELECT * FROM users ORDER BY id DESC LIMIT 1
 	DB.Unscoped().Last(&user)
 	return user.Id
 }
@@ -560,6 +563,7 @@ func (user *User) TransferAffQuotaToQuota(quota int) error {
 }
 
 func (user *User) prepareForInsert(tx *gorm.DB) error {
+	// 格式化邮箱
 	user.Email = NormalizeEmail(user.Email)
 	if err := ensureEmailAvailableWithTx(tx, user.Email, 0); err != nil {
 		return err
@@ -610,6 +614,7 @@ func ensureEmailAvailableWithTx(tx *gorm.DB, email string, excludeUserID int) er
 	return nil
 }
 
+// Insert 创建用户
 func (user *User) Insert(inviterId int) error {
 	if err := DB.Transaction(func(tx *gorm.DB) error {
 		return withNormalizedEmailLock(tx, user.Email, func(tx *gorm.DB) error {
@@ -1081,23 +1086,43 @@ func GetUniqueUserByEmail(email string) (*User, error) {
 	}
 }
 
+// IsWeChatIdAlreadyTaken 检查 wechatId 是否已经被使用
 func IsWeChatIdAlreadyTaken(wechatId string) bool {
+	// TODO by mawen 可以考虑使用 count 来检查，而不是根据元信息检查
+	// TODO by mawen 可以加入非当前用户id，以便实现用户更改绑定
+	// SELECT * FROM users WHERE wechat_id = ?
 	return DB.Unscoped().Where("wechat_id = ?", wechatId).Find(&User{}).RowsAffected == 1
 }
 
+// IsGitHubIdAlreadyTaken 检查 githubId 是否已经被使用
 func IsGitHubIdAlreadyTaken(githubId string) bool {
+	// TODO by mawen 可以考虑使用 count 来检查，而不是根据元信息检查
+	// TODO by mawen 可以加入非当前用户id，以便实现用户更改绑定
+	// SELECT * FROM users WHERE wechat_id = ?
 	return DB.Unscoped().Where("github_id = ?", githubId).Find(&User{}).RowsAffected == 1
 }
 
+// IsDiscordIdAlreadyTaken 检查 discordId 是否已经被使用
 func IsDiscordIdAlreadyTaken(discordId string) bool {
+	// TODO by mawen 可以考虑使用 count 来检查，而不是根据元信息检查
+	// TODO by mawen 可以加入非当前用户id，以便实现用户更改绑定
+	// SELECT * FROM users WHERE discord_id = ?
 	return DB.Unscoped().Where("discord_id = ?", discordId).Find(&User{}).RowsAffected == 1
 }
 
+// IsOidcIdAlreadyTaken 检查 oidc_id 是否已经被使用
 func IsOidcIdAlreadyTaken(oidcId string) bool {
+	// TODO by mawen 可以考虑使用 count 来检查，而不是根据元信息检查
+	// TODO by mawen 可以加入非当前用户id，以便实现用户更改绑定
+	// SELECT * FROM users WHERE oidc_id = ?
 	return DB.Where("oidc_id = ?", oidcId).Find(&User{}).RowsAffected == 1
 }
 
+// IsTelegramIdAlreadyTaken 检查 telegramId 是否已经被使用
 func IsTelegramIdAlreadyTaken(telegramId string) bool {
+	// TODO by mawen 可以考虑使用 count 来检查，而不是根据元信息检查
+	// TODO by mawen 可以加入非当前用户id，以便实现用户更改绑定
+	// SELECT * FROM users WHERE telegram_id = ?
 	return DB.Unscoped().Where("telegram_id = ?", telegramId).Find(&User{}).RowsAffected == 1
 }
 

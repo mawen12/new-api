@@ -15,11 +15,12 @@ import (
 )
 
 type wechatLoginResponse struct {
-	Success bool   `json:"success"`
-	Message string `json:"message"`
-	Data    string `json:"data"`
+	Success bool   `json:"success"` // 是否成功
+	Message string `json:"message"` // 返回消息
+	Data    string `json:"data"` // 数据
 }
 
+// getWeChatIdByCode 根据 code 请求微信服务器获取微信 id
 func getWeChatIdByCode(code string) (string, error) {
 	if code == "" {
 		return "", errors.New("无效的参数")
@@ -54,6 +55,7 @@ func getWeChatIdByCode(code string) (string, error) {
 // WeChatAuth godoc
 // @Summary 微信登录
 // @Tags 通用
+// @Param code query string 
 // @Router /api/oauth/wechat [get]
 func WeChatAuth(c *gin.Context) {
 	if !common.WeChatAuthEnabled {
@@ -64,7 +66,7 @@ func WeChatAuth(c *gin.Context) {
 		return
 	}
 	code := c.Query("code")
-	wechatId, err := getWeChatIdByCode(code)
+	wechatId, err := getWeChatIdByCode(code) // 获取 wechatId
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": err.Error(),
@@ -75,8 +77,8 @@ func WeChatAuth(c *gin.Context) {
 	user := model.User{
 		WeChatId: wechatId,
 	}
-	if model.IsWeChatIdAlreadyTaken(wechatId) {
-		err := user.FillUserByWeChatId()
+	if model.IsWeChatIdAlreadyTaken(wechatId) { // 已有用户使用该 wechatId
+		err := user.FillUserByWeChatId() // 查询该用户
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
@@ -84,20 +86,22 @@ func WeChatAuth(c *gin.Context) {
 			})
 			return
 		}
-		if user.Id == 0 {
+		if user.Id == 0 { // 用户已注销
 			c.JSON(http.StatusOK, gin.H{
 				"success": false,
 				"message": "用户已注销",
 			})
 			return
 		}
-	} else {
+	} else { // wechatId 未被使用
 		if common.RegisterEnabled {
+			// 使用 wechat_最新用户ID 作为用户名 
 			user.Username = "wechat_" + strconv.Itoa(model.GetMaxUserId()+1)
 			user.DisplayName = "WeChat User"
 			user.Role = common.RoleCommonUser
 			user.Status = common.UserStatusEnabled
 
+			// 新增用户
 			if err := user.Insert(0); err != nil {
 				c.JSON(http.StatusOK, gin.H{
 					"success": false,

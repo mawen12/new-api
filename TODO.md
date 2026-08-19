@@ -28,3 +28,11 @@ SELECT xxx FROM xxx
 - UPDATE PUT
 - SEARCH GET
 - DELETE DELETE
+
+# 代码优化改善
+
+## constant 中的 context_key 未被正确使用，有些直接使用字面值，不够规范和统一
+
+典型场景：auth.go
+
+## 

@@ -61,8 +61,11 @@ func SetRelayRouter(router *gin.Engine) {
 	}
 
 	playgroundRouter := router.Group("/pg")
+	// 在日志中以 relay tag 展示
 	playgroundRouter.Use(middleware.RouteTag("relay"))
+	// 该接口比较耗费性能
 	playgroundRouter.Use(middleware.SystemPerformanceCheck())
+	// 该接口需要仅面向注册用户
 	playgroundRouter.Use(middleware.UserAuth(), middleware.Distribute())
 	{
 		// 游乐场聊天入口

@@ -4,6 +4,7 @@ import "github.com/QuantumNous/new-api/common"
 
 // resolveSubjectRoles returns the role keys assigned to a subject. The mapping
 // is derived from the caller's system role.
+// resolveSubjectRoles 返回角色的权限
 var resolveSubjectRoles = func(userID int, systemRole int) []string {
 	switch {
 	case systemRole >= common.RoleRootUser:

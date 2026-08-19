@@ -1,5 +1,6 @@
 package constant
 
+// 用于 gin.Context 的键
 type ContextKey string
 
 const (
@@ -14,7 +15,9 @@ const (
 	ContextKeyTokenUnlimited         ContextKey = "token_unlimited_quota"
 	ContextKeyTokenKey               ContextKey = "token_key"
 	ContextKeyTokenId                ContextKey = "token_id"
+	ContextKeyTokenName              ContextKey = "token_name"
 	ContextKeyTokenGroup             ContextKey = "token_group"
+	ContextKeyTokenQuota             ContextKey = "token_quota"
 	ContextKeyTokenSpecificChannelId ContextKey = "specific_channel_id"
 	ContextKeyTokenModelLimitEnabled ContextKey = "token_model_limit_enabled"
 	ContextKeyTokenModelLimit        ContextKey = "token_model_limit"

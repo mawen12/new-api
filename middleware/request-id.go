@@ -11,6 +11,7 @@ import (
 func RequestId() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		id := common.NewRequestId()
+		// 写入上下文中，用于在gin日志中展示
 		c.Set(common.RequestIdKey, id)
 		ctx := context.WithValue(c.Request.Context(), common.RequestIdKey, id)
 		c.Request = c.Request.WithContext(ctx)

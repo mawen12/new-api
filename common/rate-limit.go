@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// 基于内存实现的滑动时间窗口限流算法
 type InMemoryRateLimiter struct {
 	store              map[string]*[]int64 // key -> [old << new]
 	mutex              sync.Mutex          // 排他锁
